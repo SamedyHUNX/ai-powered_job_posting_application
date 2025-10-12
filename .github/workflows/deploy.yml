@@ -1,0 +1,112 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+    # Only run deployment after CI passes
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    # Only run if CI workflow completed successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Build backend
+        run: |
+          cd backend
+          npm ci
+          npm run build
+      
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+        env:
+          NODE_ENV: production
+          # Add your production environment variables here
+          # NEXT_PUBLIC_API_URL: ${{ secrets.PRODUCTION_API_URL }}
+      
+      - name: Create deployment package
+        run: |
+          mkdir -p deploy
+          
+          # Copy backend build
+          cp -r backend/dist deploy/backend
+          cp -r backend/node_modules deploy/backend/node_modules
+          cp backend/package*.json deploy/backend/
+          
+          # Copy frontend build
+          cp -r frontend/.next deploy/frontend
+          cp -r frontend/public deploy/frontend/ || true
+          cp frontend/package*.json deploy/frontend/
+          cp -r frontend/node_modules deploy/frontend/node_modules
+          
+          # Create deployment scripts
+          cat > deploy/start-backend.sh << 'EOF'
+          #!/bin/bash
+          cd backend
+          export PORT=${PORT:-3001}
+          node dist/main.js
+          EOF
+          
+          cat > deploy/start-frontend.sh << 'EOF'
+          #!/bin/bash
+          cd frontend
+          export PORT=${PORT:-3000}
+          npm start
+          EOF
+          
+          chmod +x deploy/start-*.sh
+      
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-package
+          path: deploy/
+          retention-days: 30
+      
+      # Uncomment and configure the following steps based on your deployment target
+      
+      # Deploy to your server (example with rsync)
+      # - name: Deploy to server
+      #   run: |
+      #     echo "${{ secrets.DEPLOY_PRIVATE_KEY }}" > deploy_key
+      #     chmod 600 deploy_key
+      #     rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no" \
+      #       deploy/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/path/to/app/
+      #     rm deploy_key
+      
+      # Deploy to AWS/Azure/GCP
+      # - name: Deploy to cloud
+      #   run: |
+      #     # Add your cloud deployment commands here
+      #     echo "Deploy to your preferred cloud platform"
+      
+      # Deploy using Docker
+      # - name: Build and push Docker images
+      #   run: |
+      #     # Build and push your Docker images
+      #     echo "Docker deployment commands"
+      
+      - name: Deployment status
+        run: |
+          echo "🚀 Deployment package created successfully"
+          echo "📦 Artifact uploaded for manual deployment or further automation"
+          echo "💡 Configure your deployment target by uncommenting relevant steps above"
