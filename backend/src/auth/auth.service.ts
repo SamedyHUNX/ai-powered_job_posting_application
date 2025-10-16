@@ -27,5 +27,16 @@ export class AuthService {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    // Create user
+    const [user] = await this.dbService.db
+      .insert(UserTable)
+      .values({
+        name: dto.name,
+        email: dto.email,
+        password: hashedPassword,
+        imageUrl: dto.imageUrl,
+      })
+      .returning();
   }
 }
