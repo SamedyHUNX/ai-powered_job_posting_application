@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dtos/auth.dto';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
+import * as bcrypt from 'bcrypt';
 import { UserTable } from 'src/drizzle/schema';
 import { eq } from 'drizzle-orm';
 
@@ -19,5 +20,12 @@ export class AuthService {
       .from(UserTable)
       .where(eq(UserTable.email, dto.email))
       .limit(1);
+
+    if (existingUser.length > 0) {
+      throw new ConflictException('Email already exist');
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
   }
 }
