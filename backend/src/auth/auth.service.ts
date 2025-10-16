@@ -38,5 +38,19 @@ export class AuthService {
         imageUrl: dto.imageUrl,
       })
       .returning();
+
+    // Generate token
+    const token = this.generateToken(user.id, user.email);
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        imageUrl: user.imageUrl,
+      },
+      token,
+    };
   }
 }
