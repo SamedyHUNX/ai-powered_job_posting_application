@@ -33,6 +33,7 @@ export class AuthService {
     }
 
     if (!file) {
+      this.logger.error('Missing photo upload');
       throw new ConflictException('You must upload a photo');
     }
 
@@ -44,6 +45,9 @@ export class AuthService {
       .limit(1);
 
     if (existingUser.length > 0) {
+      this.logger.error(
+        `User with ${email} trying to create an existing account`,
+      );
       throw new ConflictException('User already exists');
     }
 
@@ -74,6 +78,7 @@ export class AuthService {
     // Generate token
     const token = this.generateToken(user.id, user.email);
 
+    this.logger.log(`User with email ${email} created an account successfully`);
     return {
       success: true,
       user: {

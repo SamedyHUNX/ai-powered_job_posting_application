@@ -1,7 +1,13 @@
 // src/logger/winston.config.ts
 import * as winston from 'winston';
 
-const logLevel = process.env.LOG_LEVEL || 'info';
+const env = process.env.NODE_ENV || 'development';
+let logLevel = '';
+if (env === 'development') {
+  logLevel = 'debug';
+} else {
+  logLevel = 'warn';
+}
 
 export const createWinstonConfig = () => {
   return {
