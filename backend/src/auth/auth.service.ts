@@ -18,10 +18,14 @@ export class AuthService {
   ) {}
 
   async singUp(dto: SignUpDto) {
-    const { name, password, email } = dto;
+    const { name, password, email, firstName, lastName, imageUrl } = dto;
 
-    if (!name || !password || !email) {
+    if (!name || !password || !email || !firstName || !lastName) {
       throw new ConflictException('Missing required fields');
+    }
+
+    if (!imageUrl) {
+      throw new ConflictException('You must upload a photo');
     }
 
     // Check if user exists
@@ -32,7 +36,7 @@ export class AuthService {
       .limit(1);
 
     if (existingUser.length > 0) {
-      throw new ConflictException('Email already exist');
+      throw new ConflictException('User already exists');
     }
 
     // Hash password
@@ -42,10 +46,13 @@ export class AuthService {
     const [user] = await this.dbService.db
       .insert(UserTable)
       .values({
-        name: dto.name,
-        email: dto.email,
+        name,
+        email,
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`,
         password: hashedPassword,
-        imageUrl: dto.imageUrl,
+        imageUrl,
       })
       .returning();
 

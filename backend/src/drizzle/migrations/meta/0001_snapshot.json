@@ -1,6 +1,6 @@
 {
-  "id": "fa9b52ea-fd8e-49fa-bba0-ce453b5354b1",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "540c7ab9-564f-449a-be6b-13f685ec3653",
+  "prevId": "fa9b52ea-fd8e-49fa-bba0-ce453b5354b1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -50,6 +50,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "fullName": {
+          "name": "fullName",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
