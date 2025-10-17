@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   UnauthorizedException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
@@ -10,9 +11,11 @@ import * as bcrypt from 'bcrypt';
 import { UserTable } from './../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { S3Service } from '../s3/s3.service';
+import { AppService } from 'src/app.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AppService.name);
   constructor(
     private jwtService: JwtService,
     private dbService: DrizzleService,
@@ -23,6 +26,9 @@ export class AuthService {
     const { name, password, email, firstName, lastName } = dto;
 
     if (!name || !password || !email || !firstName || !lastName) {
+      this.logger.error(
+        'Missing name, password, email, firstName, or lastName',
+      );
       throw new ConflictException('Missing required fields');
     }
 
