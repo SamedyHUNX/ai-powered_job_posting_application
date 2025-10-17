@@ -1,9 +1,13 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dtos/auth.dto';
-import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { SignInDto, SignUpDto } from './dtos/auth.dto';
+import { DrizzleService } from './../drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
-import { UserTable } from 'src/drizzle/schema';
+import { UserTable } from './../drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 @Injectable()
@@ -14,11 +18,17 @@ export class AuthService {
   ) {}
 
   async singUp(dto: SignUpDto) {
+    const { name, password, email } = dto;
+
+    if (!name || !password || !email) {
+      throw new ConflictException('Missing required fields');
+    }
+
     // Check if user exists
     const existingUser = await this.dbService.db
       .select()
       .from(UserTable)
-      .where(eq(UserTable.email, dto.email))
+      .where(eq(UserTable.email, email))
       .limit(1);
 
     if (existingUser.length > 0) {
@@ -52,5 +62,64 @@ export class AuthService {
       },
       token,
     };
+  }
+
+  async signIn(dto: SignInDto) {
+    // Find user
+    const [user] = await this.dbService.db
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.email, dto.email))
+      .limit(1);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentails');
+    }
+
+    // Generate token
+    const token = this.generateToken(user.id, user.email);
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        imageUrl: user.imageUrl,
+      },
+      token,
+    };
+  }
+
+  async validateUser(userId: string) {
+    const result = this.dbService.db
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.id, userId))
+      .limit(1);
+
+    const user = result[0];
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      imageUrl: user.imageUrl,
+    };
+  }
+
+  private generateToken(userId: string, email: string) {
+    return this.jwtService.sign({ sub: userId, email });
   }
 }
