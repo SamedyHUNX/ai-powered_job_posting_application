@@ -86,6 +86,9 @@ export class AuthService {
         name: user.name,
         email: user.email,
         imageUrl: user.imageUrl,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.fullName,
       },
       token,
     };
