@@ -81,6 +81,12 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto) {
+    const { email, password } = dto;
+
+    if (!email || !password) {
+      throw new ConflictException('Missing required fields');
+    }
+
     // Find user
     const [user] = await this.dbService.db
       .select()
