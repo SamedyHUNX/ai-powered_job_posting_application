@@ -4,9 +4,11 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { S3Module } from 'src/s3/s3.module';
 
 @Module({
   imports: [
+    S3Module,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,

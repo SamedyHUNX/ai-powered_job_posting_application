@@ -21,10 +21,6 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   lastName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  imageUrl: string;
 }
 
 export class SignInDto {

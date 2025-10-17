@@ -18,7 +18,7 @@ export class UploadController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: File) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const key = await this.s3Service.uploadFile(file);
     const url = await this.s3Service.getPresignedUrl(key);
 

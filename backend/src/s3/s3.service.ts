@@ -9,7 +9,6 @@ import {
 import { Upload } from '@aws-sdk/lib-storage';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Request } from 'express';
-import { File } from 'multer';
 
 @Injectable()
 export class S3Service {
@@ -28,8 +27,8 @@ export class S3Service {
   }
 
   // Upload file to S3
-  async uploadFile(file: File, key?: string): Promise<string> {
-    const fileKey = key || `${Date.now()}-${file.originalName}`;
+  async uploadFile(file: Express.Multer.File, key?: string): Promise<string> {
+    const fileKey = key || `${Date.now()}-${file.originalname}`;
 
     const upload = new Upload({
       client: this.s3Client,

@@ -9,22 +9,24 @@ import { DrizzleService } from './../drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
 import { UserTable } from './../drizzle/schema';
 import { eq } from 'drizzle-orm';
+import { S3Service } from '../s3/s3.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private dbService: DrizzleService,
+    private s3Service: S3Service,
   ) {}
 
-  async singUp(dto: SignUpDto) {
-    const { name, password, email, firstName, lastName, imageUrl } = dto;
+  async signUp(dto: SignUpDto, file: Express.Multer.File) {
+    const { name, password, email, firstName, lastName } = dto;
 
     if (!name || !password || !email || !firstName || !lastName) {
       throw new ConflictException('Missing required fields');
     }
 
-    if (!imageUrl) {
+    if (!file) {
       throw new ConflictException('You must upload a photo');
     }
 
@@ -39,8 +41,15 @@ export class AuthService {
       throw new ConflictException('User already exists');
     }
 
+    // Upload image to S3
+    const imageKey = `users/avatars/${Date.now()}-${file.originalname}`;
+    await this.s3Service.uploadFile(file, imageKey);
+
+    // Get the S3 URL (public or presigned)
+    const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${imageKey}`;
+
     // Hash password
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await bcrypt.hash(dto.password, process.env.SALT!);
 
     // Create user
     const [user] = await this.dbService.db
