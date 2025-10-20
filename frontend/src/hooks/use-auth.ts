@@ -36,7 +36,12 @@ export function useAuth() {
     dispatch(logoutAction());
     localStorage.removeItem("access_token");
     queryClient.clear();
-    router.push("/auth/login");
+    router.push("/auth/signin");
+  };
+
+  // Protect
+  const protect = () => {
+    router.push("/auth/signin");
   };
 
   return {
@@ -46,6 +51,7 @@ export function useAuth() {
     signIn: signInMutation.mutate,
     signUp: signUpMutation.mutate,
     logout,
+    protect,
     isSigningIn: signInMutation.isPending,
     isSigningUp: signUpMutation.isPending,
     signInError: signInMutation.error,

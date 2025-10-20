@@ -19,10 +19,10 @@ import { redirect } from "next/navigation";
 export default function HomePage() {
   const t = useTranslations("HomePage");
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, protect } = useAuth();
 
   // If user is not authenticated, navigate to signin page
-  if (!isAuthenticated) redirect("/auth/signin");
+  if (!isAuthenticated) protect();
 
   return (
     <SidebarProvider className="overflow-y-hidden">

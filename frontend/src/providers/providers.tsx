@@ -3,7 +3,7 @@
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "@/store/store";
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, Suspense } from "react";
 import { setCredentials } from "@/store/auth-slice";
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -33,8 +33,12 @@ export function Providers({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </Provider>
+    <Suspense>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </Provider>
+    </Suspense>
   );
 }
