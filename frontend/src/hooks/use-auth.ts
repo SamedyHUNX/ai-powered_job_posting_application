@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCredentials, logout as logoutAction } from "@/store/auth-slice";
 import { authApi, SignInRequest, SignUpRequest } from "@/lib/auth-api";
