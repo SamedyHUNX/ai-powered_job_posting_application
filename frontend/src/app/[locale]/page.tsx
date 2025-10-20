@@ -21,6 +21,7 @@ export default function HomePage() {
 
   const { isAuthenticated } = useAuth();
 
+  // If user is not authenticated, navigate to signin page
   if (!isAuthenticated) redirect("/auth/signin");
 
   return (

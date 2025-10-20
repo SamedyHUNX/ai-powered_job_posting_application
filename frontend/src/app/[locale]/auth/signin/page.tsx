@@ -1,35 +1,44 @@
 "use client";
 
-import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useForm } from "react-hook-form";
+
+type SignInForm = {
+  email: string;
+  password: string;
+};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { signIn, isSigningIn, signInError } = useAuth();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<SignInForm>();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    signIn({ email, password });
+  const onSubmit = (data: SignInForm) => {
+    signIn(data);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {signInError && <p>Error: {signInError.message}</p>}
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
+      <div>
+        <input
+          {...register("email", { required: "Email is required" })}
+          type="text"
+          placeholder="Name"
+        />
+        {errors.email && <p>{errors.email.message}</p>}
+      </div>
+      <div>
+        <input
+          {...register("password", { required: "Password is required" })}
+          type="text"
+          placeholder="Password"
+        />
+        {errors.password && <p>{errors.password.message}</p>}
+      </div>
       <button type="submit" disabled={isSigningIn}>
         {isSigningIn ? "Signing in..." : "Sign In"}
       </button>
