@@ -13,9 +13,15 @@ import {
 } from "@/components/ui/sidebar";
 import { useTranslations } from "next-intl";
 import { AppSidebarClient } from "./_AppSidebarClient";
+import { useAuth } from "@/hooks/use-auth";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
+
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) redirect("/auth/signin");
 
   return (
     <SidebarProvider className="overflow-y-hidden">
