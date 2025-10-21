@@ -14,7 +14,6 @@ import {
 import { useTranslations } from "next-intl";
 import { AppSidebarClient } from "./_AppSidebarClient";
 import { useAuth } from "@/hooks/use-auth";
-import { redirect } from "next/navigation";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");

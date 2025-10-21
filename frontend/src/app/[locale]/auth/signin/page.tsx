@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type SignInForm = {
   email: string;
@@ -13,6 +14,7 @@ type SignInForm = {
 };
 
 export default function LoginPage() {
+  const t = useTranslations("SignIn");
   const { signIn, isSigningIn, signInError } = useAuth();
   const {
     handleSubmit,
@@ -35,7 +37,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            Sign in to your account
+            {t("title")}
           </h2>
         </div>
 
@@ -46,13 +48,13 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-300 mb-1"
               >
-                Email
+                {t("email")}
               </label>
               <Input
                 {...register("email", { required: "Email is required" })}
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("email-placeholder")}
                 className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
               />
               {errors.email && (
@@ -67,7 +69,7 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-300 mb-1"
               >
-                Password
+                {t("password")}
               </label>
               <Input
                 {...register("password", { required: "Password is required" })}
