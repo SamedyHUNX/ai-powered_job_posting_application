@@ -24,7 +24,7 @@ export function useAuth() {
 
   // Sign up mutation
   const signUpMutation = useMutation({
-    mutationFn: (data: SignUpRequest) => authApi.signUp(data),
+    mutationFn: (data: FormData) => authApi.signUp(data),
     onSuccess: (data) => {
       dispatch(setCredentials({ user: data.user, token: data.token }));
       router.push("/");

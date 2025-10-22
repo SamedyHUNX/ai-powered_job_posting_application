@@ -12,6 +12,7 @@ import { UserTable } from './../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { S3Service } from '../s3/s3.service';
 import { AppService } from 'src/app.service';
+import { File } from 'winston/lib/winston/transports';
 
 @Injectable()
 export class AuthService {
@@ -23,32 +24,41 @@ export class AuthService {
   ) {}
 
   async signUp(dto: SignUpDto, file: Express.Multer.File) {
+    console.log('hi');
     const { name, password, email, firstName, lastName } = dto;
 
-    if (!name || !password || !email || !firstName || !lastName) {
-      this.logger.error(
-        'Missing name, password, email, firstName, or lastName',
-      );
-      throw new ConflictException('Missing required fields');
+    // Validate required fields from DTO
+    const requiredFields = { name, password, email, firstName, lastName, File };
+
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        const message = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+        this.logger.error(`Missing ${key}`);
+        throw new ConflictException(message);
+      }
     }
 
-    if (!file) {
-      this.logger.error('Missing photo upload');
-      throw new ConflictException('You must upload a photo');
-    }
-
-    // Check if user exists
-    const existingUser = await this.dbService.db
+    // Check if email or username already exists
+    const [existingEmail] = await this.dbService.db
       .select()
       .from(UserTable)
       .where(eq(UserTable.email, email))
       .limit(1);
 
-    if (existingUser.length > 0) {
-      this.logger.error(
-        `User with ${email} trying to create an existing account`,
-      );
-      throw new ConflictException('User already exists');
+    if (existingEmail) {
+      this.logger.error(`User with email ${email} already exists`);
+      throw new ConflictException('User with this email already exists');
+    }
+
+    const [existingUsername] = await this.dbService.db
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.name, name))
+      .limit(1);
+
+    if (existingUsername) {
+      this.logger.error(`Username ${name} is already taken`);
+      throw new ConflictException('Username is already taken');
     }
 
     // Upload image to S3

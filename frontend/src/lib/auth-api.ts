@@ -9,11 +9,11 @@ export interface SignInRequest {
 }
 
 export interface SignUpRequest {
-  email: string;
-  password: string;
   name: string;
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
 }
 
 export interface AuthResponse {
@@ -46,13 +46,10 @@ export const authApi = {
     return res.json();
   },
 
-  signUp: async (data: SignUpRequest): Promise<AuthResponse> => {
+  signUp: async (formData: FormData): Promise<AuthResponse> => {
     const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+      body: formData,
     });
 
     if (!res.ok) {
