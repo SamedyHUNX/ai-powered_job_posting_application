@@ -75,7 +75,7 @@ export default function LoginPage() {
                 {...register("password", { required: "Password is required" })}
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t("password-placeholder")}
                 className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
               />
               {errors.password && (
@@ -87,7 +87,7 @@ export default function LoginPage() {
           </div>
 
           <Button type="submit" disabled={isSigningIn} className="w-full">
-            {isSigningIn ? "Signing in..." : "Sign In"}
+            {isSigningIn ? t("Signing in...") : t("Sign In")}
           </Button>
         </form>
       </div>

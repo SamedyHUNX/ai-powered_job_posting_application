@@ -2,5 +2,14 @@
   "HomePage": {
     "title": "សូម​ស្វាគមន៍",
     "description": "នេះ​គឺ​ជា​ទំព័រ​ដើម"
+  },
+  "SignIn": {
+    "title": "ចូលគណនីរបស់អ្នក",
+    "email": "អ៊ីមែល",
+    "email-placeholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
+    "password": "ពាក្យសម្ងាត់",
+    "password-placeholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
+    "Sign In": "ចូល",
+    "Signing in...": "កំពុងចូល..."
   }
 }
