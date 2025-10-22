@@ -1,26 +1,41 @@
 "use client";
 
-import { useAuth } from "@/hooks/use-auth";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import * as z from "zod";
 import { useEffect } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/hooks/use-auth";
 
-type SignInForm = {
-  email: string;
-  password: string;
-};
+const formSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type SignInForm = z.infer<typeof formSchema>;
 
 export default function LoginPage() {
-  const t = useTranslations("SignIn");
+  const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<SignInForm>();
+
+  const form = useForm<SignInForm>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     if (signInError) {
@@ -41,55 +56,60 @@ export default function LoginPage() {
           </h2>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                {t("email")}
-              </label>
-              <Input
-                {...register("email", { required: "Email is required" })}
-                id="email"
-                type="email"
-                placeholder={t("email-placeholder")}
-                className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mt-8 space-y-6"
+          >
+            <div className="space-y-4 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-300">
+                      {t("emailLabel")}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder={t("emailPlaceholder")}
+                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-400">
-                  {errors.email.message}
-                </p>
-              )}
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-300">
+                      {t("passwordLabel")}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder={t("passwordPlaceholder")}
+                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
+              />
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                {t("password")}
-              </label>
-              <Input
-                {...register("password", { required: "Password is required" })}
-                id="password"
-                type="password"
-                placeholder={t("password-placeholder")}
-                className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-400">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <Button type="submit" disabled={isSigningIn} className="w-full">
-            {isSigningIn ? t("Signing in...") : t("Sign In")}
-          </Button>
-        </form>
+            <Button type="submit" disabled={isSigningIn} className="w-full">
+              {isSigningIn ? t("loadingText") : t("buttonText")}
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );
