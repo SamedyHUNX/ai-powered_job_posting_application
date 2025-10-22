@@ -1,15 +1,15 @@
 {
-  "HomePage": {
+  "homePage": {
     "title": "Welcome",
     "description": "This is the home page"
   },
-  "SignIn": {
+  "signIn": {
     "title": "Melden Sie sich bei Ihrem Konto an",
-    "email": "E-Mail",
-    "email-placeholder": "Geben Sie Ihr E-mail ein",
-    "password": "Passwort",
-    "password-placeholder": "Geben Sie Ihr Passwort ein",
-    "Sign In": "Anmelden",
-    "Signing in...": "Anmelden..."
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "passwordLabel": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "buttonText": "Anmelden",
+    "loadingText": "Anmeldung läuft..."
   }
 }

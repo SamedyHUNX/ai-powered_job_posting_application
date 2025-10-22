@@ -1,4 +1,5 @@
 import { env } from "@/data/env/client";
+import { ApiError } from "./api-error";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -55,7 +56,9 @@ export const authApi = {
     });
 
     if (!res.ok) {
-      throw new Error("Signup failed");
+      const errorData = await res.json().catch(() => null);
+      const message = errorData?.message || "Signup failed";
+      throw new ApiError(res.status, message);
     }
 
     return res.json();

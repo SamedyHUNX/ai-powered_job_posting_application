@@ -1,15 +1,15 @@
 {
-  "HomePage": {
+  "homePage": {
     "title": "សូម​ស្វាគមន៍",
     "description": "នេះ​គឺ​ជា​ទំព័រ​ដើម"
   },
-  "SignIn": {
+  "signIn": {
     "title": "ចូលគណនីរបស់អ្នក",
-    "email": "អ៊ីមែល",
-    "email-placeholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
-    "password": "ពាក្យសម្ងាត់",
-    "password-placeholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
-    "Sign In": "ចូល",
-    "Signing in...": "កំពុងចូល..."
+    "emailLabel": "អ៊ីមែល",
+    "emailPlaceholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
+    "passwordLabel": "ពាក្យសម្ងាត់",
+    "passwordPlaceholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
+    "buttonText": "ចូល",
+    "loadingText": "កំពុងចូល..."
   }
 }

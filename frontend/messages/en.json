@@ -1,15 +1,15 @@
 {
-  "HomePage": {
+  "homePage": {
     "title": "Welcome",
     "description": "This is the home page"
   },
-  "SignIn": {
+  "signIn": {
     "title": "Sign in to your account",
-    "email": "Email",
-    "email-placeholder": "Enter your email",
-    "password": "Password",
-    "password-placeholder": "Enter your password",
-    "Sign In": "Sign in",
-    "Signing in...": "Signing in..."
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "buttonText": "Sign In",
+    "loadingText": "Signing in..."
   }
 }
