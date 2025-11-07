@@ -16,7 +16,13 @@ export function useAuth() {
   const signInMutation = useMutation({
     mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
     onSuccess: (data) => {
-      dispatch(setCredentials({ user: data.user, token: data.token }));
+      dispatch(
+        setCredentials({
+          user: data.user,
+          token: data.token,
+          isAuthenticated: data.success,
+        })
+      );
       localStorage.setItem("access_token", data.token);
       router.push("/");
     },
@@ -26,7 +32,13 @@ export function useAuth() {
   const signUpMutation = useMutation({
     mutationFn: (data: FormData) => authApi.signUp(data),
     onSuccess: (data) => {
-      dispatch(setCredentials({ user: data.user, token: data.token }));
+      dispatch(
+        setCredentials({
+          user: data.user,
+          token: data.token,
+          isAuthenticated: data.success,
+        })
+      );
       router.push("/");
     },
   });

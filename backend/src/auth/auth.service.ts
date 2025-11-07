@@ -24,7 +24,6 @@ export class AuthService {
   ) {}
 
   async signUp(dto: SignUpDto, file: Express.Multer.File) {
-    console.log('hi');
     const { name, password, email, firstName, lastName } = dto;
 
     // Validate required fields from DTO
@@ -66,10 +65,12 @@ export class AuthService {
     await this.s3Service.uploadFile(file, imageKey);
 
     // Get the S3 URL (public or presigned)
-    const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${imageKey}`;
+    const imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(dto.password, process.env.SALT!);
+    const saltRounds = Number(process.env.SALT);
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(dto.password, salt);
 
     // Create user
     const [user] = await this.dbService.db
@@ -84,6 +85,8 @@ export class AuthService {
         imageUrl,
       })
       .returning();
+
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
     // Generate token
     const token = this.generateToken(user.id, user.email);
@@ -108,6 +111,7 @@ export class AuthService {
     const { email, password } = dto;
 
     if (!email || !password) {
+      this.logger.error('User trying to signin with missing fields');
       throw new ConflictException('Missing required fields');
     }
 
@@ -119,6 +123,7 @@ export class AuthService {
       .limit(1);
 
     if (!user) {
+      this.logger.error('User trying to signin with invalid credentials');
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -126,7 +131,10 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentails');
+      this.logger.error(
+        `User with ${email} trying to signin with invalid password`,
+      );
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     // Generate token

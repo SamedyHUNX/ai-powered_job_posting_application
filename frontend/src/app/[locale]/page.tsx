@@ -16,7 +16,7 @@ import { AppSidebarClient } from "./_AppSidebarClient";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function HomePage() {
-  const t = useTranslations("HomePage");
+  const t = useTranslations("homePage");
 
   const { isAuthenticated, protect } = useAuth();
 
