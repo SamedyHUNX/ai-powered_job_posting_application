@@ -153,7 +153,7 @@ export class AuthService {
   }
 
   async validateUser(userId: string) {
-    const result = this.dbService.db
+    const result = await this.dbService.db
       .select()
       .from(UserTable)
       .where(eq(UserTable.id, userId))
