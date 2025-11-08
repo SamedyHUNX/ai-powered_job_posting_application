@@ -162,7 +162,8 @@ export class AuthService {
     const user = result[0];
 
     if (!user) {
-      return null;
+      this.logger.error(`User with ID ${userId} not found during validation`);
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     return {

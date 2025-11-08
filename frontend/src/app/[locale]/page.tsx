@@ -4,6 +4,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -14,6 +15,10 @@ import {
 import { useTranslations } from "next-intl";
 import { AppSidebarClient } from "./_AppSidebarClient";
 import PrivateRoute from "../../../routes/PrivateRoute";
+import Link from "next/link";
+import { LogInIcon } from "lucide-react";
+import { SignedOut } from "../../../services/auth/components/SignedOut";
+import { SidebarUserButton } from "../../../features/users/components/SidebarUserButton";
 
 export default function HomePage() {
   const t = useTranslations("homePage");
@@ -27,11 +32,24 @@ export default function HomePage() {
               <SidebarTrigger />
               <span>SamedyX Jobs</span>
             </SidebarHeader>
-            <SidebarContent>fhjkskhjfs</SidebarContent>
+            <SidebarContent>
+              <SidebarGroup>
+                <SignedOut>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link href={"/auth/signin"}>
+                        <LogInIcon />
+                        <span>Sign In</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SignedOut>
+              </SidebarGroup>
+            </SidebarContent>
             <SidebarFooter>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton>jdksjfksjk</SidebarMenuButton>
+                  <SidebarUserButton />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarFooter>
