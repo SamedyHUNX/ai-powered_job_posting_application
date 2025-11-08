@@ -25,7 +25,6 @@ export function Providers({ children }: { children: ReactNode }) {
     if (token) {
       store.dispatch(
         setCredentials({
-          user: { id: "", email: "", name: "" },
           token,
         })
       );

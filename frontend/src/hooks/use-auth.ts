@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setCredentials, logout as logoutAction } from "@/store/auth-slice";
-import { authApi, SignInRequest, SignUpRequest } from "@/lib/auth-api";
+import {
+  setCredentials,
+  logout as logoutAction,
+  setUser,
+} from "@/store/auth-slice";
+import { authApi, SignInRequest } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 
 export function useAuth() {
@@ -16,13 +20,8 @@ export function useAuth() {
   const signInMutation = useMutation({
     mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
     onSuccess: (data) => {
-      dispatch(
-        setCredentials({
-          user: data.user,
-          token: data.token,
-          isAuthenticated: data.success,
-        })
-      );
+      dispatch(setCredentials({ token: data.token }));
+      dispatch(setUser(data.user));
       localStorage.setItem("access_token", data.token);
       router.push("/");
     },
@@ -32,13 +31,9 @@ export function useAuth() {
   const signUpMutation = useMutation({
     mutationFn: (data: FormData) => authApi.signUp(data),
     onSuccess: (data) => {
-      dispatch(
-        setCredentials({
-          user: data.user,
-          token: data.token,
-          isAuthenticated: data.success,
-        })
-      );
+      dispatch(setCredentials({ token: data.token }));
+      dispatch(setUser(data.user));
+      localStorage.setItem("access_token", data.token);
       router.push("/");
     },
   });
@@ -56,6 +51,11 @@ export function useAuth() {
     router.push("/auth/signin");
   };
 
+  // Protect auth routes
+  const protectAuth = () => {
+    router.push("/");
+  };
+
   return {
     user,
     token,
@@ -64,6 +64,7 @@ export function useAuth() {
     signUp: signUpMutation.mutate,
     logout,
     protect,
+    protectAuth,
     isSigningIn: signInMutation.isPending,
     isSigningUp: signUpMutation.isPending,
     signInError: signInMutation.error,

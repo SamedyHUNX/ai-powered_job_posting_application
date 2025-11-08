@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { authApi } from "@/lib/auth-api";
-import { setCredentials, logout } from "@/store/auth-slice";
+import { logout } from "@/store/auth-slice";
 import { useEffect } from "react";
 
 export function useProfile() {
