@@ -11,16 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  ChevronsUpDown,
-  LogOutIcon,
-  SettingsIcon,
-  UserIcon,
-} from "lucide-react";
+import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { SignedOut } from "../../../services/auth/components/SignedOut";
-import { SignedIn } from "../../../services/auth/components/SignedIn";
 import { useAuth } from "@/hooks/use-auth";
+import { SignOutButton } from "../../../services/auth/components/AuthButtons";
 
 type User = {
   name: string;
@@ -65,9 +59,7 @@ export function SidebarUserButtonClient(user: User) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => logout()}>
-            <LogOutIcon className="mr-1" /> Sign Out
-          </DropdownMenuItem>
+          <SignOutButton />
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenu>
