@@ -10,7 +10,7 @@ export function SidebarUserButton() {
   );
 }
 
-async function SidebarUserSuspense() {
+function SidebarUserSuspense() {
   const { profile, isLoading, error } = useProfile();
 
   return (

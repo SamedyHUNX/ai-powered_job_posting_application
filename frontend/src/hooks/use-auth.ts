@@ -46,16 +46,6 @@ export function useAuth() {
     router.push("/auth/signin");
   };
 
-  // Protect
-  const protect = () => {
-    router.push("/auth/signin");
-  };
-
-  // Protect auth routes
-  const protectAuth = () => {
-    router.push("/");
-  };
-
   return {
     user,
     token,
@@ -63,8 +53,6 @@ export function useAuth() {
     signIn: signInMutation.mutate,
     signUp: signUpMutation.mutate,
     logout,
-    protect,
-    protectAuth,
     isSigningIn: signInMutation.isPending,
     isSigningUp: signUpMutation.isPending,
     signInError: signInMutation.error,
