@@ -37,6 +37,7 @@
     "bcrypt": "^6.0.0",
     "class-validator": "^0.14.2",
     "drizzle-orm": "^0.44.6",
+    "inngest": "^3.45.0",
     "multer": "^2.0.2",
     "nest-winston": "^1.10.2",
     "passport": "^0.7.0",
