@@ -9,8 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
@@ -23,7 +26,7 @@ type User = {
 };
 
 export function SidebarUserButtonClient(user: User) {
-  const isMobile = useIsMobile();
+  const { isMobile, setOpenMobile } = useSidebar();
   const { logout } = useAuth();
 
   return (
@@ -48,7 +51,12 @@ export function SidebarUserButtonClient(user: User) {
             <UserInfo {...user} />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openUserProfile()}>
+          <DropdownMenuItem
+            onClick={() => {
+              openUserProfile();
+              setOpenMobile(false);
+            }}
+          >
             <UserIcon className="mr-1" /> Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />

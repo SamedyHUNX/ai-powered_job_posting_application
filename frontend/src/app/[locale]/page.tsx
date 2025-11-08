@@ -19,6 +19,7 @@ import Link from "next/link";
 import { LogInIcon } from "lucide-react";
 import { SignedOut } from "../../../services/auth/components/SignedOut";
 import { SidebarUserButton } from "../../../features/users/components/SidebarUserButton";
+import { SignedIn } from "../../../services/auth/components/SignedIn";
 
 export default function HomePage() {
   const t = useTranslations("homePage");
@@ -30,7 +31,7 @@ export default function HomePage() {
           <Sidebar collapsible="icon" className="overflow-hidden">
             <SidebarHeader className="flex-row">
               <SidebarTrigger />
-              <span>SamedyX Jobs</span>
+              <span className="mt-1">SamedyX</span>
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
@@ -46,15 +47,17 @@ export default function HomePage() {
                 </SignedOut>
               </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarUserButton />
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarFooter>
+            <SignedIn>
+              <SidebarFooter>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarUserButton />
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarFooter>
+            </SignedIn>
           </Sidebar>
-          <main className="flex-1">jfljdjsflks</main>
+          <main className="flex-1">Homepage</main>
         </AppSidebarClient>
       </SidebarProvider>
     </PrivateRoute>
