@@ -13,6 +13,7 @@ import { eq } from 'drizzle-orm';
 import { S3Service } from '../s3/s3.service';
 import { AppService } from 'src/app.service';
 import { File } from 'winston/lib/winston/transports';
+import { inngest } from '../inngest/inngest.client';
 
 @Injectable()
 export class AuthService {
@@ -86,12 +87,24 @@ export class AuthService {
       })
       .returning();
 
-    console.log('JWT_SECRET:', process.env.JWT_SECRET);
-
     // Generate token
     const token = this.generateToken(user.id, user.email);
 
     this.logger.log(`User with email ${email} created an account successfully`);
+
+    // TRIGGER INNGEST EVENT (after user is created)
+    await inngest.send({
+      name: 'job-posting/user.created',
+      data: {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        imageUrl: user.imageUrl,
+      },
+    });
+
     return {
       success: true,
       user: {
