@@ -4,6 +4,8 @@ import { relations } from 'drizzle-orm';
 import { UserNotificationSettingsTable } from './user-notification-settings';
 import { UserResumeTable } from './user-resume';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
+import { timestamp } from 'drizzle-orm/pg-core';
+import { integer } from 'drizzle-orm/pg-core';
 
 export const UserTable = pgTable('users', {
   id,
@@ -14,6 +16,9 @@ export const UserTable = pgTable('users', {
   firstName: varchar().notNull(),
   lastName: varchar().notNull(),
   fullName: varchar(),
+  resetPasswordToken: varchar('reset_password_token'),
+  resetPasswordExpires: timestamp('reset_password_expires'),
+  tokenVersion: integer('token_version').notNull().default(0),
   createdAt,
   updatedAt,
 });

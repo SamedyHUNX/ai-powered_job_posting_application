@@ -8,12 +8,14 @@ import { JwtService } from '@nestjs/jwt';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { DrizzleService } from './../drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { UserTable } from './../drizzle/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq, gt } from 'drizzle-orm';
 import { S3Service } from '../s3/s3.service';
 import { AppService } from 'src/app.service';
 import { File } from 'winston/lib/winston/transports';
 import { inngest } from '../inngest/inngest.client';
+import { hashPassword } from './../drizzle/utils/password.utils';
 
 @Injectable()
 export class AuthService {
@@ -69,9 +71,7 @@ export class AuthService {
     const imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
 
     // Hash password
-    const saltRounds = Number(process.env.SALT);
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(dto.password, salt);
+    const hashedPassword = await hashPassword(password);
 
     // Create user
     const [user] = await this.dbService.db
@@ -86,9 +86,6 @@ export class AuthService {
         imageUrl,
       })
       .returning();
-
-    // Generate token
-    const token = this.generateToken(user.id, user.email);
 
     this.logger.log(`User with email ${email} created an account successfully`);
 
@@ -116,7 +113,6 @@ export class AuthService {
         lastName: user.lastName,
         fullName: user.fullName,
       },
-      token,
     };
   }
 
@@ -150,8 +146,14 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      tokenVersion: user.tokenVersion,
+    };
+
     // Generate token
-    const token = this.generateToken(user.id, user.email);
+    const token = this.generateToken(payload);
 
     return {
       success: true,
@@ -165,29 +167,143 @@ export class AuthService {
     };
   }
 
-  async validateUser(userId: string) {
-    const result = await this.dbService.db
+  async validateUser(payload: any) {
+    const [user] = await this.dbService.db
       .select()
       .from(UserTable)
-      .where(eq(UserTable.id, userId))
+      .where(eq(UserTable.id, payload.sub))
       .limit(1);
 
-    const user = result[0];
-
     if (!user) {
-      this.logger.error(`User with ID ${userId} not found during validation`);
+      this.logger.error(
+        `User with ID ${payload.sub} not found during validation`,
+      );
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    // Check if tokenVersion matches
+    if (payload.tokenVersion !== user.tokenVersion) {
+      this.logger.error(
+        `Token version mismatch for user ID ${user.id}. Token invalidated.`,
+      );
+      throw new UnauthorizedException('Token has been invalidated');
+    }
+
+    return user;
+  }
+
+  async requestPasswordReset(email: string) {
+    const db = this.dbService.db;
+
+    // Find user by email
+    const [user] = await db
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.email, email))
+      .limit(1);
+
+    if (!user) {
+      this.logger.warn(
+        `Password reset requested for non-existent email: ${email}`,
+      );
+      return {
+        success: true,
+        message: 'If an account exists, a reset link has been sent',
+      };
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    // Set token and expiration (1 hour)
+    const expiresAt = new Date(Date.now() + 3600000);
+
+    await db
+      .update(UserTable)
+      .set({
+        resetPasswordToken: hashedToken,
+        resetPasswordExpires: expiresAt,
+      })
+      .where(eq(UserTable.id, user.id));
+
+    // Send email with reset link
+    const resetUrl = `${process.env.FRONTEND_URL}/en/auth/reset-password?token=${resetToken}`;
+
+    this.logger.log(
+      `Password reset requested for email: ${email}. Reset URL: ${resetUrl}`,
+    );
+    this.logger.log(`Reset token (for testing purposes only): ${resetToken}`);
+
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      imageUrl: user.imageUrl,
+      success: true,
+      message: 'If an account exists, a reset link has been sent',
     };
   }
 
-  private generateToken(userId: string, email: string) {
-    return this.jwtService.sign({ sub: userId, email });
+  async resetPassword(token: string, newPassword: string) {
+    const db = this.dbService.db;
+
+    // Hash the token from URL to compare with stored hash
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user by reset token and check expiration
+    const [user] = await db
+      .select()
+      .from(UserTable)
+      .where(
+        and(
+          eq(UserTable.resetPasswordToken, hashedToken),
+          gt(UserTable.resetPasswordExpires, new Date()),
+        ),
+      )
+      .limit(1);
+
+    if (!user) {
+      this.logger.error('Invalid or expired password reset token used');
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+
+    // Hash new password
+    const hashedPassword = await hashPassword(newPassword);
+
+    // Update user's password and clear reset token fields
+    await db
+      .update(UserTable)
+      .set({
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+        tokenVersion: user.tokenVersion + 1,
+      })
+      .where(eq(UserTable.id, user.id));
+
+    this.logger.log(`Password successfully reset for user ID: ${user.id}`);
+    return { success: true, message: 'Password has been reset successfully' };
+  }
+
+  async validateResetToken(token: string) {
+    const db = this.dbService.db;
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const [user] = await db
+      .select()
+      .from(UserTable)
+      .where(
+        and(
+          eq(UserTable.resetPasswordToken, hashedToken),
+          gt(UserTable.resetPasswordExpires, new Date()),
+        ),
+      )
+      .limit(1);
+
+    return !!user;
+  }
+
+  private generateToken(payload: any) {
+    return this.jwtService.sign(payload);
   }
 }

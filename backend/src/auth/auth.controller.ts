@@ -6,9 +6,17 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  HttpCode,
+  HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignUpDto, SignInDto } from './dtos/auth.dto';
+import {
+  SignUpDto,
+  SignInDto,
+  RequestPasswordResetDto,
+  ResetPasswordDto,
+} from './dtos/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -42,5 +50,23 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   getMe(@CurrentUser() user: any) {
     return user;
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
+    return this.authService.requestPasswordReset(dto.email);
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto.token, dto.newPassword);
+  }
+
+  @Get('validate-reset-token')
+  async validateResetToken(@Query('token') token: string) {
+    const isValid = await this.authService.validateResetToken(token);
+    return { valid: isValid };
   }
 }
