@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "../../../../../routes/PublicRoute";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -105,6 +106,12 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
+                <div className="w-full h-[12px]">
+                  <span>
+                    Don't have an account?{" "}
+                    <Link href={"/auth/signup"}>Sign Up</Link>
+                  </span>
+                </div>
               </div>
 
               <Button type="submit" disabled={isSigningIn} className="w-full">
