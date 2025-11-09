@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 type SignInForm = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+export default function SigninPage() {
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
 

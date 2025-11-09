@@ -28,14 +28,15 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white max-w-lg">
-            <h3 className="text-5xl font-bold mb-6">Welcome to Our Platform</h3>
+            <h3 className="text-5xl font-bold mb-6">Welcome to JobPosting</h3>
+            <h5 className="text-md mb-6">by samedyhunx</h5>
             <p className="text-xl opacity-90 leading-relaxed">
-              Join thousands of users and start your journey with us today
+              Join thousands of job-seekers and start your journey with us today
             </p>
             {/* Optional: Add decorative elements */}
             <div className="mt-12 flex justify-center gap-8">
               <div className="text-center">
-                <div className="text-4xl font-bold">10K+</div>
+                <div className="text-4xl font-bold">1K+</div>
                 <div className="text-sm opacity-75 mt-1">Active Users</div>
               </div>
               <div className="text-center">

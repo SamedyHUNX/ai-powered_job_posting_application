@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
 import PublicRoute from "../../../../../routes/PublicRoute";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -32,6 +33,7 @@ const formSchema = z.object({
 type SignUpFormData = z.infer<typeof formSchema>;
 
 export default function SignUpPage() {
+  const t = useTranslations("signUp");
   const { signUp, isSigningUp, signUpError } = useAuth();
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -84,11 +86,9 @@ export default function SignUpPage() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            Create Account
+            {t("title")}
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Join us today and get started
-          </p>
+          <p className="mt-2 text-sm text-gray-400">{t("titleDesc")}</p>
         </div>
 
         {/* Form */}
@@ -102,7 +102,7 @@ export default function SignUpPage() {
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      Profile Photo
+                      {t("profile")}
                     </FormLabel>
                     <FormControl>
                       <div className="flex flex-col items-center gap-4">

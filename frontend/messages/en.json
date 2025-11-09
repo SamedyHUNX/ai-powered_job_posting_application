@@ -11,5 +11,10 @@
     "passwordPlaceholder": "Enter your password",
     "buttonText": "Sign In",
     "loadingText": "Signing in..."
+  },
+  "signUp": {
+    "title": "Create an Account",
+    "titleDesc": "Join us today and get started",
+    "profile": "Profile Photo"
   }
 }

@@ -11,5 +11,10 @@
     "passwordPlaceholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
     "buttonText": "ចូល",
     "loadingText": "កំពុងចូល..."
+  },
+  "signUp": {
+    "title": "បង្កើតគណនី",
+    "titleDesc": "ចូលរួមជាមួយយើងនៅថ្ងៃនេះ",
+    "profile": "រូបថត"
   }
 }

@@ -11,5 +11,10 @@
     "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
     "buttonText": "Anmelden",
     "loadingText": "Anmeldung läuft..."
+  },
+  "signUp": {
+    "title": "JobPosting-Konto erstellen",
+    "titleDesc": "Schließen Sie sich uns noch heute an und legen Sie los",
+    "profile": "Profilfoto"
   }
 }
