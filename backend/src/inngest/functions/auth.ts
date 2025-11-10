@@ -2,8 +2,8 @@ import { inngest } from '../inngest.client';
 import { EmailService } from './../../email/email.service';
 
 export const createUser = inngest.createFunction(
-  { id: 'job-posting/create-db-user', name: 'JobPosting - Create DB User' },
-  { event: 'job-posting/user.created' },
+  { id: 'jobxhub/create-db-user', name: 'JobXHub - Create DB User' },
+  { event: 'jobxhub/user.created' },
   async ({ event, step }) => {
     const { userId, email, name, lastName } = event.data;
     const emailService = new EmailService();
@@ -23,6 +23,29 @@ export const createUser = inngest.createFunction(
     return {
       success: true,
       userId,
+    };
+  },
+);
+
+export const handlePasswordResetRequest = inngest.createFunction(
+  {
+    id: 'jobxhub/user.reset_password_requested',
+    name: 'JobXHub - Handle Password Reset Request',
+  },
+  { event: 'jobxhub/user.reset_password_requested' },
+  async ({ event, step }) => {
+    const { email, resetUrl } = event.data;
+    const emailService = new EmailService();
+
+    await step.run('send-password-reset-email', async () => {
+      await emailService.sendPasswordResetEmail(email, resetUrl);
+
+      return { emailSent: true };
+    });
+
+    return {
+      success: true,
+      email,
     };
   },
 );

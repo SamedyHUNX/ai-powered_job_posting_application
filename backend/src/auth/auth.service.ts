@@ -101,7 +101,7 @@ export class AuthService {
 
     // TRIGGER INNGEST EVENT (after user is created)
     await inngest.send({
-      name: 'job-posting/user.created',
+      name: 'jobxhub/user.created',
       data: {
         userId: user.id,
         email: user.email,
@@ -248,6 +248,15 @@ export class AuthService {
       `Password reset requested for email: ${email}. Reset URL: ${resetUrl}`,
     );
     this.logger.log(`Reset token (for testing purposes only): ${resetToken}`);
+
+    // TRIGGER INNGEST EVENT
+    await inngest.send({
+      name: 'jobxhub/user.reset_password_requested',
+      data: {
+        email,
+        resetUrl,
+      },
+    });
 
     return {
       success: true,

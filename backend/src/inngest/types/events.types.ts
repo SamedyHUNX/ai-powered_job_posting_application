@@ -21,14 +21,22 @@ export type JobPostedData = {
   salary?: number;
 };
 
+export type ResetPasswordRequestData = {
+  email: string;
+  resetUrl: string;
+};
+
 export type Events = {
-  'job-posting/user.created': {
+  'jobxhub/user.created': {
     data: UserCreatedData;
   };
-  'job-posting/user.updated': {
+  'jobxhub/user.updated': {
     data: UserUpdatedData;
   };
-  'job-posting/job.posted': {
+  'jobxhub/user.reset_password_requested': {
+    data: ResetPasswordRequestData;
+  };
+  'jobxhub/job.posted': {
     data: JobPostedData;
   };
 };
