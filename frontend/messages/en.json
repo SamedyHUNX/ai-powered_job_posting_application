@@ -16,5 +16,6 @@
     "title": "Create an account",
     "titleDesc": "Join us today and get started",
     "profile": "Profile Photo"
-  }
+  },
+  "forgotPassword": {}
 }

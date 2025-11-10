@@ -24,7 +24,6 @@ export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
   const {
     requestPasswordReset,
-    requestPasswordResetError,
     isRequestingPasswordReset,
   } = useAuth();
 
