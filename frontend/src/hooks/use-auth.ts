@@ -5,7 +5,7 @@ import {
   logout as logoutAction,
   setUser,
 } from "@/store/auth-slice";
-import { authApi, SignInRequest } from "@/lib/auth-api";
+import { authApi, SignInRequest, ForgotPasswordResponse } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 
 export function useAuth() {
@@ -38,6 +38,28 @@ export function useAuth() {
     },
   });
 
+  // Request password reset
+  const requestPasswordResetMutation = useMutation({
+    mutationFn: (email: string) => authApi.requestPasswordReset(email),
+    onSuccess: (data: ForgotPasswordResponse) => {
+      router.push("/auth/reset-password");
+    },
+  });
+
+  // Reset password
+  const resetPasswordMutation = useMutation({
+    mutationFn: ({
+      token,
+      newPassword,
+    }: {
+      token: string;
+      newPassword: string;
+    }) => authApi.resetPassword(token, newPassword),
+    onSuccess: () => {
+      router.push("/auth/signin");
+    },
+  });
+
   // Logout
   const logout = () => {
     dispatch(logoutAction());
@@ -54,8 +76,14 @@ export function useAuth() {
     signUp: signUpMutation.mutate,
     logout,
     isSigningIn: signInMutation.isPending,
-    isSigningUp: signUpMutation.isPending,
+    isSigningUp: signInMutation.isPending,
     signInError: signInMutation.error,
     signUpError: signUpMutation.error,
+    requestPasswordReset: requestPasswordResetMutation.mutate,
+    isRequestingPasswordReset: requestPasswordResetMutation.isPending,
+    requestPasswordResetError: requestPasswordResetMutation.error,
+    resetPassword: resetPasswordMutation.mutate,
+    isResettingPassword: resetPasswordMutation.isPending,
+    resetPasswordError: resetPasswordMutation.error,
   };
 }

@@ -195,6 +195,8 @@ export class AuthService {
   async requestPasswordReset(email: string) {
     const db = this.dbService.db;
 
+    this.logger.log(`Password reset requested for email: ${email}`);
+
     // Find user by email
     const [user] = await db
       .select()
@@ -239,7 +241,8 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'If an account exists, a reset link has been sent',
+      email,
+      message: 'A reset link has been sent',
     };
   }
 

@@ -1,0 +1,225 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import PublicRoute from "../../../../../routes/PublicRoute";
+
+export default function ForgotPasswordPage() {
+  const t = useTranslations("forgotPassword");
+  const {
+    requestPasswordReset,
+    requestPasswordResetError,
+    isRequestingPasswordReset,
+  } = useAuth();
+
+  const formSchema = z.object({
+    email: z.string().email("Invalid email address"),
+  });
+
+  type ForgotPasswordForm = z.infer<typeof formSchema>;
+
+  const form = useForm<ForgotPasswordForm>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const [emailSent, setEmailSent] = useState(false);
+
+  const onSubmit = (data: ForgotPasswordForm) => {
+    requestPasswordReset(data.email, {
+      onSuccess: () => {
+        setEmailSent(true);
+        toast.success("Password reset link sent to your email");
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || "Failed to send reset link");
+      },
+    });
+  };
+
+  if (emailSent) {
+    return (
+      <PublicRoute>
+        <div className="space-y-8">
+          {/* Success State */}
+          <div className="text-center">
+            <div className="mx-auto w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+              <svg
+                className="w-8 h-8 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight text-white">
+              Check Your Email
+            </h2>
+            <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
+              We've sent a password reset link to your email address. Please
+              check your inbox and follow the instructions to reset your
+              password.
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                </div>
+                <p className="text-sm text-gray-300">
+                  The link will expire in 1 hour for security purposes
+                </p>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                </div>
+                <p className="text-sm text-gray-300">
+                  Didn't receive the email? Check your spam folder
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-gray-800">
+              <p className="text-sm text-gray-400 text-center">
+                Remember your password?{" "}
+                <Link
+                  href="/auth/signin"
+                  className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                >
+                  Back to Sign In
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </PublicRoute>
+    );
+  }
+
+  return (
+    <PublicRoute>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-white">
+            Reset Your Password
+          </h2>
+          <p className="mt-3 text-base text-gray-400 max-w-md mx-auto">
+            Enter your email address and we'll send you a link to reset your
+            password
+          </p>
+        </div>
+
+        {/* Form */}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-6 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-300 font-medium">
+                      Email Address
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter your email"
+                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
+              />
+
+              <div className="pt-2 border-t border-gray-800">
+                <p className="text-sm text-gray-400">
+                  Remember your password?{" "}
+                  <Link
+                    href="/auth/signin"
+                    className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                  >
+                    Back to Sign In
+                  </Link>
+                </p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Don't have an account?{" "}
+                  <Link
+                    href="/auth/signup"
+                    className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isRequestingPasswordReset}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20"
+            >
+              {isRequestingPasswordReset ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sending...
+                </span>
+              ) : (
+                "Send Reset Link"
+              )}
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </PublicRoute>
+  );
+}

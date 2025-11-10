@@ -1,7 +1,15 @@
+import axios from "axios";
 import { env } from "@/data/env/client";
 import { ApiError } from "./api-error";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export interface SignInRequest {
   email: string;
@@ -29,48 +37,89 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface ForgotPasswordResponse {
+  success: boolean;
+  message: string;
+}
+
 export const authApi = {
   signIn: async (credentials: SignInRequest): Promise<AuthResponse> => {
-    const res = await fetch(`${API_URL}/auth/signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-
-    if (!res.ok) {
-      throw new Error("Invalid credentials");
+    try {
+      const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error("Invalid credentials");
+      }
+      throw error;
     }
-
-    return res.json();
   },
 
   signUp: async (formData: FormData): Promise<AuthResponse> => {
-    const res = await fetch(`${API_URL}/auth/signup`, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => null);
-      const message = errorData?.message || "Signup failed";
-      throw new ApiError(res.status, message);
+    try {
+      const { data } = await api.post<AuthResponse>("/auth/signup", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "Signup failed";
+        throw new ApiError(error.response?.status || 500, message);
+      }
+      throw error;
     }
-
-    return res.json();
   },
+
   getProfile: async (token: string) => {
-    const res = await fetch(`${API_URL}/auth/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch profile");
+    try {
+      const { data } = await api.get("/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error("Failed to fetch profile");
+      }
+      throw error;
     }
+  },
 
-    return res.json();
+  requestPasswordReset: async (email: string): Promise<ForgotPasswordResponse> => {
+    try {
+      const { data } = await api.post<ForgotPasswordResponse>(
+        "/auth/forgot-password",
+        { email }
+      );
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "Password reset request failed";
+        throw new ApiError(error.response?.status || 500, message);
+      }
+      throw error;
+    }
+  },
+
+  resetPassword: async (
+    token: string,
+    newPassword: string
+  ): Promise<ForgotPasswordResponse> => {
+    try {
+      const { data } = await api.post<ForgotPasswordResponse>(
+        "/auth/reset-password",
+        { token, newPassword }
+      );
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "Password reset failed";
+        throw new ApiError(error.response?.status || 500, message);
+      }
+      throw error;
+    }
   },
 };
