@@ -13,10 +13,9 @@ import { UserTable } from './../drizzle/schema';
 import { and, eq, gt } from 'drizzle-orm';
 import { S3Service } from '../s3/s3.service';
 import { AppService } from 'src/app.service';
-import { File } from 'winston/lib/winston/transports';
 import { inngest } from '../inngest/inngest.client';
 import { hashPassword } from './../drizzle/utils/password.utils';
-import { capitalizeString } from 'src/utils/utils';
+import { capitalizeString } from './../utils/utils';
 
 @Injectable()
 export class AuthService {
