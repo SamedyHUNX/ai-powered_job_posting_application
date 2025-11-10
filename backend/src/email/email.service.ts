@@ -17,6 +17,23 @@ export class EmailService {
     });
   }
 
+  async sendWelcomeEmail(to: string, name: string) {
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to,
+      subject: 'Welcome to Our Platform!',
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #333;">Welcome, ${name}!</h1>
+        <p>We're thrilled to have you join us. Let us know if you need anything.</p>
+        <p style="color: #666;">Cheers,<br>The Team</p>
+      </div>
+    `,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
+
   async sendPasswordResetEmail(to: string, resetUrl: string) {
     const mailOptions = {
       from: process.env.EMAIL_FROM,

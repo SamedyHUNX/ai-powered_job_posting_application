@@ -30,7 +30,7 @@ export class AuthService {
     const { name, password, email, firstName, lastName } = dto;
 
     // Validate required fields from DTO
-    const requiredFields = { name, password, email, firstName, lastName, File };
+    const requiredFields = { name, password, email, firstName, lastName, file };
 
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) {
@@ -61,6 +61,11 @@ export class AuthService {
     if (existingUsername) {
       this.logger.error(`Username ${name} is already taken`);
       throw new ConflictException('Username is already taken');
+    }
+
+    if (!file || !file.originalname) {
+      this.logger.error('File is missing or invalid');
+      throw new ConflictException('Profile image is required');
     }
 
     // Upload image to S3
