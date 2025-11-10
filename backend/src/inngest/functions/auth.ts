@@ -5,7 +5,7 @@ export const createUser = inngest.createFunction(
   { id: 'job-posting/create-db-user', name: 'JobPosting - Create DB User' },
   { event: 'job-posting/user.created' },
   async ({ event, step }) => {
-    const { userId, email, name, firstName, lastName, imageUrl } = event.data;
+    const { userId, email, name, lastName } = event.data;
     const emailService = new EmailService();
 
     await step.run('send-welcome-email', async () => {

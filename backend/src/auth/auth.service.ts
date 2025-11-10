@@ -16,6 +16,7 @@ import { AppService } from 'src/app.service';
 import { File } from 'winston/lib/winston/transports';
 import { inngest } from '../inngest/inngest.client';
 import { hashPassword } from './../drizzle/utils/password.utils';
+import { capitalizeString } from 'src/utils/utils';
 
 @Injectable()
 export class AuthService {
@@ -78,14 +79,19 @@ export class AuthService {
     // Hash password
     const hashedPassword = await hashPassword(password);
 
+    // Make sure names are capitalized before placing in DB
+    const capitalizedFirstName = capitalizeString(firstName);
+    const capitalizedLastName = capitalizeString(lastName);
+    const capitalizedName = capitalizeString(name);
+
     // Create user
     const [user] = await this.dbService.db
       .insert(UserTable)
       .values({
-        name,
+        name: capitalizedName,
         email,
-        firstName,
-        lastName,
+        firstName: capitalizedFirstName,
+        lastName: capitalizedLastName,
         fullName: `${firstName} ${lastName}`,
         password: hashedPassword,
         imageUrl,
