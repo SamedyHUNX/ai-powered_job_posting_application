@@ -25,6 +25,7 @@
     "rememberPassword": "Remember your password?",
     "signIn": "Sign In",
     "buttonText": "Send reset link",
-    "invalidEmail": "Invalid email address"
+    "invalidEmail": "Invalid email address",
+    "sending": "Sending..."
   }
 }

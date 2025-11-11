@@ -150,8 +150,7 @@ export default function ResetPasswordPage() {
               Password Reset Successful
             </h2>
             <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
-              Your password has been successfully reset. You can now sign in
-              with your new password.
+              Your password has been successfully reset.
             </p>
           </div>
 

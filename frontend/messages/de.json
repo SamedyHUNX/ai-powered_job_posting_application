@@ -25,6 +25,7 @@
     "rememberPassword": "Merken Sie sich Ihr Passwort?",
     "signIn": "Anmelden",
     "buttonText": "Reset-Link senden",
-    "invalidEmail": "Ungültige E-Mail"
+    "invalidEmail": "Ungültige E-Mail",
+    "sending": "Senden..."
   }
 }

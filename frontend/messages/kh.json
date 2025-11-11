@@ -25,6 +25,7 @@
     "rememberPassword": "ចងចាំពាក្យសម្ងាត់របស់អ្នក?",
     "signIn": "ចូល",
     "buttonText": "ផ្ញើតំណ",
-    "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ"
+    "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
+    "sending": "កំពុងផ្ញើ..."
   }
 }
