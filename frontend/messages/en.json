@@ -17,5 +17,14 @@
     "titleDesc": "Join us today and get started",
     "profile": "Profile Photo"
   },
-  "forgotPassword": {}
+  "forgotPassword": {
+    "title": "Forgot Your Password?",
+    "titleDesc": "Enter your email address and we'll send you a link to reset your password",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "rememberPassword": "Remember your password?",
+    "signIn": "Sign In",
+    "buttonText": "Send reset link",
+    "invalidEmail": "Invalid email address"
+  }
 }

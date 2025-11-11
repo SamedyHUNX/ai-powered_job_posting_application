@@ -17,5 +17,14 @@
     "titleDesc": "Schließen Sie sich uns noch heute an und legen Sie los",
     "profile": "Profilfoto"
   },
-  "forgotPassword": {}
+  "forgotPassword": {
+    "title": "Passwort vergessen?",
+    "titleDesc": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "rememberPassword": "Merken Sie sich Ihr Passwort?",
+    "signIn": "Anmelden",
+    "buttonText": "Reset-Link senden",
+    "invalidEmail": "Ungültige E-Mail"
+  }
 }

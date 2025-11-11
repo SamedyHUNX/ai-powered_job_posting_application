@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
   const { requestPasswordReset, isRequestingPasswordReset } = useAuth();
 
   const formSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    email: z.string().email(t("invalidEmail")),
   });
 
   type ForgotPasswordForm = z.infer<typeof formSchema>;
@@ -139,11 +139,10 @@ export default function ForgotPasswordPage() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            Reset Your Password
+            {t("title")}
           </h2>
           <p className="mt-3 text-base text-gray-400 max-w-md mx-auto">
-            Enter your email address and we'll send you a link to reset your
-            password
+            {t("titleDesc")}
           </p>
         </div>
 
@@ -157,13 +156,13 @@ export default function ForgotPasswordPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300 font-medium">
-                      Email Address
+                      {t("emailLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={t("emailPlaceholder")}
                         className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11"
                       />
                     </FormControl>
@@ -174,21 +173,12 @@ export default function ForgotPasswordPage() {
 
               <div className="pt-2 border-t border-gray-800">
                 <p className="text-sm text-gray-400">
-                  Remember your password?{" "}
+                  {t("rememberPassword")}{" "}
                   <Link
                     href="/auth/signin"
                     className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
                   >
-                    Back to Sign In
-                  </Link>
-                </p>
-                <p className="text-sm text-gray-400 mt-2">
-                  Don't have an account?{" "}
-                  <Link
-                    href="/auth/signup"
-                    className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
-                  >
-                    Sign Up
+                    {t("signIn")}
                   </Link>
                 </p>
               </div>
@@ -224,7 +214,7 @@ export default function ForgotPasswordPage() {
                   Sending...
                 </span>
               ) : (
-                "Send Reset Link"
+                t("buttonText")
               )}
             </Button>
           </form>
