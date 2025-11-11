@@ -20,16 +20,16 @@ import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "../../../../../routes/PublicRoute";
 import Link from "next/link";
 
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type SignInForm = z.infer<typeof formSchema>;
-
 export default function SigninPage() {
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
+
+  const formSchema = z.object({
+    email: z.string().email(t("invalidEmail")),
+    password: z.string().min(1, t("passwordRequired")),
+  });
+
+  type SignInForm = z.infer<typeof formSchema>;
 
   const form = useForm<SignInForm>({
     resolver: zodResolver(formSchema),
@@ -57,9 +57,7 @@ export default function SigninPage() {
           <h2 className="text-3xl font-bold tracking-tight text-white">
             {t("title")}
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Welcome back! Please sign in to your account
-          </p>
+          <p className="mt-2 text-sm text-gray-400">{t("titleDesc")}</p>
         </div>
 
         {/* Form */}
@@ -113,7 +111,7 @@ export default function SigninPage() {
                   href="/auth/forgot-password"
                   className="text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
                 >
-                  Forgot password?
+                  {t("forgotPassword")}
                 </Link>
               </div>
             </div>
@@ -128,12 +126,12 @@ export default function SigninPage() {
 
             <div className="text-center">
               <p className="text-sm text-gray-400">
-                Don't have an account?{" "}
+                {t("dontHaveAnAccount")}{" "}
                 <Link
                   href="/auth/signup"
                   className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
                 >
-                  Sign Up
+                  {t("signUp")}
                 </Link>
               </p>
             </div>

@@ -13,12 +13,18 @@
   },
   "signIn": {
     "title": "Sign in to your account",
+    "titleDesc": "Welcome back!",
     "emailLabel": "Email",
     "emailPlaceholder": "Enter your email",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
     "buttonText": "Sign In",
-    "loadingText": "Signing in..."
+    "loadingText": "Signing in...",
+    "forgotPassword": "Forgot your password?",
+    "dontHaveAnAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "invalidEmail": "Invalid email address",
+    "passwordRequired": "Password is required"
   },
   "signUp": {
     "title": "Create an account",

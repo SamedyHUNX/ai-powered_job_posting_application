@@ -13,12 +13,18 @@
   },
   "signIn": {
     "title": "ចូលគណនីរបស់អ្នក",
+    "titleDesc": "ស្វាគមន៍មកវិញ!",
     "emailLabel": "អ៊ីមែល",
     "emailPlaceholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
     "passwordLabel": "ពាក្យសម្ងាត់",
     "passwordPlaceholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
     "buttonText": "ចូល",
-    "loadingText": "កំពុងចូល..."
+    "loadingText": "កំពុងចូល...",
+    "forgotPassword": "ភ្លេចពាក្យសម្ងាត់របស់អ្នក?",
+    "dontHaveAnAccount": "មិនទាន់មានគណនីទេ?",
+    "signUp": "បង្កើតគណនី",
+    "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
+    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់"
   },
   "signUp": {
     "title": "បង្កើតគណនី",

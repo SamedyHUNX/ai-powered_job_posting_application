@@ -13,12 +13,18 @@
   },
   "signIn": {
     "title": "Melden Sie sich bei Ihrem Konto an",
+    "titleDesc": "Willkommen zurück!",
     "emailLabel": "E-Mail",
     "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
     "passwordLabel": "Passwort",
     "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
     "buttonText": "Anmelden",
-    "loadingText": "Anmeldung läuft..."
+    "loadingText": "Anmeldung läuft...",
+    "forgotPassword": "Passwort vergessen?",
+    "dontHaveAnAccount": "Kein Konto?",
+    "signUp": "Anmelden",
+    "invalidEmail": "Ungültige E-Mail",
+    "passwordRequired": "Passwort ist erforderlich"
   },
   "signUp": {
     "title": "JobPosting-Konto erstellen",
