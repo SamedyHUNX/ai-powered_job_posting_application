@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import PublicRoute from "../../../../../routes/PublicRoute";
+import PrivateRoute from "../../../../../routes/PrivateRoute";
 
 export default function ResetPasswordPage() {
   const t = useTranslations("resetPassword");
@@ -84,91 +85,8 @@ export default function ResetPasswordPage() {
     );
   };
 
-  if (!token) {
-    return (
-      <PublicRoute>
-        <div className="space-y-8">
-          <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
-              <svg
-                className="w-8 h-8 text-red-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
-              Invalid Reset Link
-            </h2>
-            <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
-              This password reset link is invalid or has expired. Please request
-              a new one.
-            </p>
-            <div className="mt-8">
-              <Link
-                href="/auth/forgot-password"
-                className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-blue-500/20"
-              >
-                Request New Link
-              </Link>
-            </div>
-          </div>
-        </div>
-      </PublicRoute>
-    );
-  }
-
-  if (isSuccess) {
-    return (
-      <PublicRoute>
-        <div className="space-y-8">
-          {/* Success State */}
-          <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
-              <svg
-                className="w-8 h-8 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
-              Password Reset Successful
-            </h2>
-            <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
-              Your password has been successfully reset.
-            </p>
-          </div>
-
-          <div className="rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800 text-center">
-            <Link
-              href="/auth/signin"
-              className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-blue-500/20"
-            >
-              Go to Sign In
-            </Link>
-          </div>
-        </div>
-      </PublicRoute>
-    );
-  }
-
   return (
-    <PublicRoute>
+    <PrivateRoute>
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -315,6 +233,6 @@ export default function ResetPasswordPage() {
           </form>
         </Form>
       </div>
-    </PublicRoute>
+    </PrivateRoute>
   );
 }

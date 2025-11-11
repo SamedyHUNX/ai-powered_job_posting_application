@@ -1,16 +1,16 @@
-// app/auth/layout.tsx
+"use client";
+
+import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
-interface AuthLayoutProps {
-  children: ReactNode;
-}
+export default function AuthLayout({ children }: { children: ReactNode }) {
+  const t = useTranslations("authLayout");
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="flex min-h-screen bg-gray-950">
       {/* Left side - Form Content */}
-      <div className="flex flex-1 items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <div className="w-full max-w-md">{children}</div>
+      <div className="flex flex-1 items-center justify-center px-2 sm:px-4 lg:px-2 py-12">
+        <div className="w-full max-w-lg">{children}</div>
       </div>
 
       {/* Right side - Image/Branding */}
@@ -28,24 +28,26 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white max-w-xl">
-            <h3 className="text-5xl font-bold mb-6">Welcome to JobXHub</h3>
-            <h5 className="text-md mb-6">by samedyhunx</h5>
+            <h3 className="text-5xl font-bold mb-6">{t("title")}</h3>
+            <h5 className="text-md mb-6">{t("by")}</h5>
             <p className="text-xl opacity-90 leading-relaxed">
-              Join thousands of job-seekers and find your dream job today
+              {t("description")}
             </p>
             {/* Optional: Add decorative elements */}
             <div className="mt-12 flex justify-center gap-8">
               <div className="text-center">
                 <div className="text-4xl font-bold">1K+</div>
-                <div className="text-sm opacity-75 mt-1">Active Users</div>
+                <div className="text-sm opacity-75 mt-1">
+                  {t("activeUsers")}
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold">50+</div>
-                <div className="text-sm opacity-75 mt-1">Countries</div>
+                <div className="text-sm opacity-75 mt-1">{t("countries")}</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold">4.9★</div>
-                <div className="text-sm opacity-75 mt-1">User Rating</div>
+                <div className="text-sm opacity-75 mt-1">{t("userRating")}</div>
               </div>
             </div>
           </div>

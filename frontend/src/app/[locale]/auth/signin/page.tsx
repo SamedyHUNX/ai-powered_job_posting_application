@@ -51,7 +51,7 @@ export default function SigninPage() {
 
   return (
     <PublicRoute>
-      <div className="space-y-8">
+      <div className="mx-auto max-w-lg space-y-8">
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
@@ -65,7 +65,7 @@ export default function SigninPage() {
         {/* Form */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+            <div className="space-y-5 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
               <FormField
                 control={form.control}
                 name="email"
@@ -108,25 +108,13 @@ export default function SigninPage() {
                 )}
               />
 
-              <div className="pt-2">
-                <p className="text-sm text-gray-400">
-                  Don't have an account?{" "}
-                  <Link
-                    href="/auth/signup"
-                    className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
-                  >
-                    Sign Up
-                  </Link>
-                </p>
-                <p className="text-sm text-gray-400">
-                  Forgot your password?{" "}
-                  <Link
-                    href="/auth/forgot-password"
-                    className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
-                  >
-                    Reset Password
-                  </Link>
-                </p>
+              <div className="flex items-center justify-between pt-1">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                >
+                  Forgot password?
+                </Link>
               </div>
             </div>
 
@@ -137,6 +125,18 @@ export default function SigninPage() {
             >
               {isSigningIn ? t("loadingText") : t("buttonText")}
             </Button>
+
+            <div className="text-center">
+              <p className="text-sm text-gray-400">
+                Don't have an account?{" "}
+                <Link
+                  href="/auth/signup"
+                  className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </p>
+            </div>
           </form>
         </Form>
       </div>

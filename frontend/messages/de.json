@@ -1,4 +1,12 @@
 {
+  "authLayout": {
+    "title": "Willkommen bei JobXHub",
+    "by": "von samedyhunx",
+    "description": "Schließen Sie sich Tausenden von Jobsuchenden an und finden Sie noch heute Ihren Traumjob",
+    "activeUsers": "Aktive Benutzer",
+    "countries": "Länder",
+    "userRating": "Bewertung"
+  },
   "homePage": {
     "title": "Welcome",
     "description": "This is the home page"
