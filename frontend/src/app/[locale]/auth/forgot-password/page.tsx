@@ -22,10 +22,7 @@ import PublicRoute from "../../../../../routes/PublicRoute";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
-  const {
-    requestPasswordReset,
-    isRequestingPasswordReset,
-  } = useAuth();
+  const { requestPasswordReset, isRequestingPasswordReset } = useAuth();
 
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -79,9 +76,9 @@ export default function ForgotPasswordPage() {
               Check Your Email
             </h2>
             <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
-              We've sent a password reset link to your email address. Please
-              check your inbox and follow the instructions to reset your
-              password.
+              We've sent a password reset link to{" "}
+              <strong className="text-white">{form.getValues("email")}</strong>.
+              Please check your inbox and click the link to reset your password.
             </p>
           </div>
 
@@ -103,9 +100,23 @@ export default function ForgotPasswordPage() {
                   Didn't receive the email? Check your spam folder
                 </p>
               </div>
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                </div>
+                <p className="text-sm text-gray-300">
+                  Click the link in the email to complete your password reset
+                </p>
+              </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-gray-800">
+            <div className="mt-8 pt-6 border-t border-gray-800 space-y-3">
+              <button
+                onClick={() => setEmailSent(false)}
+                className="w-full text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
+              >
+                Didn't receive the email? Resend
+              </button>
               <p className="text-sm text-gray-400 text-center">
                 Remember your password?{" "}
                 <Link

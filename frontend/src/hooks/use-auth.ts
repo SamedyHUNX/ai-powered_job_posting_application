@@ -42,7 +42,7 @@ export function useAuth() {
   const requestPasswordResetMutation = useMutation({
     mutationFn: (email: string) => authApi.requestPasswordReset(email),
     onSuccess: (data: ForgotPasswordResponse) => {
-      router.push("/auth/reset-password");
+      // Do nothing
     },
   });
 

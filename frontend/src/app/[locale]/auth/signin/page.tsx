@@ -121,7 +121,7 @@ export default function SigninPage() {
                 <p className="text-sm text-gray-400">
                   Forgot your password?{" "}
                   <Link
-                    href="/auth/reset-password"
+                    href="/auth/forgot-password"
                     className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
                   >
                     Reset Password
