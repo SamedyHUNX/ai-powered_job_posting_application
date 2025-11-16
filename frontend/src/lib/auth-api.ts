@@ -78,11 +78,12 @@ export const authApi = {
 
   resetPassword: async (
     token: string,
-    newPassword: string
+    newPassword: string,
+    confirmPassword: string
   ): Promise<ForgotPasswordResponse> => {
     const { data } = await api.post<ForgotPasswordResponse>(
       "/auth/reset-password",
-      { token, newPassword }
+      { token, newPassword, confirmPassword }
     );
     return data;
   },

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,24 +17,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
-import PublicRoute from "../../../../../routes/PublicRoute";
+import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
-import { useErrorHandler } from "../../../../../utils/errorHandler";
+import { useErrorHandler } from "@/utils/errorHandler";
+import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
   const { getErrorMessage } = useErrorHandler();
 
-  const formSchema = z.object({
-    email: z.string().email(t("invalidEmail")),
-    password: z.string().min(1, t("passwordRequired")),
-  });
+  const signInFormSchema = useMemo(() => createSignInSchema(t), [t]);
 
-  type SignInForm = z.infer<typeof formSchema>;
-
-  const form = useForm<SignInForm>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -48,7 +44,7 @@ export default function SigninPage() {
     }
   }, [signInError, getErrorMessage]);
 
-  const onSubmit = (data: SignInForm) => {
+  const onSubmit = (data: SignInFormData) => {
     signIn(data);
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,8 +20,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
-import PublicRoute from "../../../../../routes/PublicRoute";
-import PrivateRoute from "../../../../../routes/PrivateRoute";
+import PrivateRoute from "@/routes/PrivateRoute";
+import {
+  createResetPasswordSchema,
+  ResetPasswordFormData,
+} from "@/schemas/resetPasswordSchema";
 
 export default function ResetPasswordPage() {
   const t = useTranslations("resetPassword");
@@ -34,25 +37,13 @@ export default function ResetPasswordPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const formSchema = z
-    .object({
-      newPassword: z
-        .string()
-        .min(8, "Password must be at least 8 characters")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-        .regex(/[0-9]/, "Password must contain at least one number"),
-      confirmPassword: z.string(),
-    })
-    .refine((data) => data.newPassword === data.confirmPassword, {
-      message: "Passwords don't match",
-      path: ["confirmPassword"],
-    });
+  const resetPasswordFormSchema = useMemo(
+    () => createResetPasswordSchema(t),
+    [t]
+  );
 
-  type ResetPasswordForm = z.infer<typeof formSchema>;
-
-  const form = useForm<ResetPasswordForm>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
+    resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       newPassword: "",
       confirmPassword: "",
@@ -65,24 +56,8 @@ export default function ResetPasswordPage() {
     }
   }, [token]);
 
-  const onSubmit = (data: ResetPasswordForm) => {
-    if (!token) {
-      toast.error("Invalid or missing reset token");
-      return;
-    }
-
-    resetPassword(
-      { token, newPassword: data.newPassword },
-      {
-        onSuccess: () => {
-          setIsSuccess(true);
-          toast.success("Password reset successful!");
-        },
-        onError: (error: Error) => {
-          toast.error(error.message || "Failed to reset password");
-        },
-      }
-    );
+  const onSubmit = (token: string, data: ResetPasswordFormData) => {
+    resetPassword(token, data);
   };
 
   return (

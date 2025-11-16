@@ -3,6 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
   Logger,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
@@ -287,7 +288,16 @@ export class AuthService {
     };
   }
 
-  async resetPassword(token: string, newPassword: string) {
+  async resetPassword(
+    token: string,
+    newPassword: string,
+    newConfirmPassword: string,
+  ) {
+    if (newPassword !== newConfirmPassword) {
+      this.logger.error(`User provided non-matching passwords`);
+      throw new BadRequestException('Passwords do not match');
+    }
+
     const db = this.dbService.db;
 
     // Hash the token from URL to compare with stored hash

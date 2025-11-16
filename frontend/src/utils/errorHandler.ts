@@ -9,8 +9,8 @@ export function useErrorHandler() {
 
     console.log(errorCode);
 
-    return t(`${namespace}.errors.${errorCode}`, {
-      defaultValue: error.message || t(`${namespace}.errors.UNKNOWN_ERROR`),
+    return t(`${namespace}.apiErrors.${errorCode}`, {
+      defaultValue: error.message || t(`${namespace}.apiErrors.UNKNOWN_ERROR`),
     });
   };
 

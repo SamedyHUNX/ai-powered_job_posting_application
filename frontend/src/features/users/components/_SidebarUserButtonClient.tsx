@@ -17,7 +17,7 @@ import {
 import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
-import { SignOutButton } from "../../../services/auth/components/AuthButtons";
+import { SignOutButton } from "@/services/auth/components/AuthButtons";
 
 type User = {
   name: string;

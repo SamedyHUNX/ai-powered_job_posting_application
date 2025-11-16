@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import PublicRoute from "../../../../../routes/PublicRoute";
+import PublicRoute from "@/routes/PublicRoute";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");

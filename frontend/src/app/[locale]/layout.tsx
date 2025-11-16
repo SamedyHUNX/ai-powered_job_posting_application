@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "../../i18n/routing";
+import { routing } from "@/i18n/routing";
 import "./globals.css";
 import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";

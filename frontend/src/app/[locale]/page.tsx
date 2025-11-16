@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/sidebar";
 import { useTranslations } from "next-intl";
 import { AppSidebarClient } from "./_AppSidebarClient";
-import PrivateRoute from "../../../routes/PrivateRoute";
+import PrivateRoute from "@/routes/PrivateRoute";
 import Link from "next/link";
 import { LogInIcon } from "lucide-react";
-import { SignedOut } from "../../../services/auth/components/SignedOut";
-import { SidebarUserButton } from "../../../features/users/components/SidebarUserButton";
-import { SignedIn } from "../../../services/auth/components/SignedIn";
+import { SignedOut } from "@/services/auth/components/SignedOut";
+import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
+import { SignedIn } from "@/services/auth/components/SignedIn";
 
 export default function HomePage() {
   const t = useTranslations("homePage");

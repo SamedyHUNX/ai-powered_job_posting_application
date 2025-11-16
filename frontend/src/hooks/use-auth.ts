@@ -7,6 +7,7 @@ import {
 } from "@/store/auth-slice";
 import { authApi, SignInRequest } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
+import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -48,10 +49,9 @@ export function useAuth() {
     mutationFn: ({
       token,
       newPassword,
-    }: {
-      token: string;
-      newPassword: string;
-    }) => authApi.resetPassword(token, newPassword),
+      confirmPassword,
+    }: { token: string } & ResetPasswordFormData) =>
+      authApi.resetPassword(token, newPassword, confirmPassword),
     onSuccess: () => {
       router.push("/auth/signin");
     },

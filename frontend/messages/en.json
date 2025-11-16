@@ -25,10 +25,11 @@
     "signUp": "Sign Up",
     "invalidEmail": "Invalid email address",
     "passwordRequired": "Password is required",
-    "errors": {
+    "apiErrors": {
       "MISSING_FIELDS": "Please fill in all required fields",
       "INVALID_CREDENTIALS": "Invalid email or password",
-      "UNKNOWN_ERROR": "An error occurred. Please try again."
+      "UNKNOWN_ERROR": "An error occurred. Please try again.",
+      "nameRequired": "Missing username"
     }
   },
   "signUp": {
@@ -48,12 +49,19 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "buttonLoading": "Creating account...",
-    "errors": {
+    "apiErrors": {
       "MISSING_FIELDS": "Please fill in all required fields",
       "EXISTING_EMAIL": "User with this email already exists",
       "EXISTING_USERNAME": "Username is already taken",
       "MISSING_PHOTO": "Profile image is required",
       "UNKNOWN_ERROR": "An error occurred. Please try again."
+    },
+    "clientErrors": {
+      "imageRequired": "Missing profile photo",
+      "nameRequired": "Missing username",
+      "firstNameRequired": "Missing firstname",
+      "invalidEmail": "Missing email",
+      "passwordMinLength": "Password must be at least 8 characters"
     }
   },
   "forgotPassword": {

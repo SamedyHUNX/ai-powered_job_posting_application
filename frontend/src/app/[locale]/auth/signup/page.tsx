@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -17,21 +17,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
-import PublicRoute from "../../../../../routes/PublicRoute";
+import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useErrorHandler } from "../../../../../utils/errorHandler";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  image: z.any().refine((file) => file instanceof File, "Image is required"),
-});
-
-type SignUpFormData = z.infer<typeof formSchema>;
+import { useErrorHandler } from "@/utils/errorHandler";
+import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
 
 export default function SignUpPage() {
   const t = useTranslations("signUp");
@@ -39,8 +29,10 @@ export default function SignUpPage() {
   const { getErrorMessage } = useErrorHandler();
   const [preview, setPreview] = useState<string | null>(null);
 
-  const form = useForm<SignUpFormData>({
-    resolver: zodResolver(formSchema),
+  const signUpFormSchema = useMemo(() => createSignUpSchema(t), [t]);
+
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       name: "",
       firstName: "",
