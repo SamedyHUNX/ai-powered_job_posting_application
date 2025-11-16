@@ -24,12 +24,16 @@ import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
 
 export default function SignUpPage() {
-  const t = useTranslations("signUp");
+  const signUpT = useTranslations("signUp");
+  const validationT = useTranslations("validations");
   const { signUp, isSigningUp, signUpError } = useAuth();
   const { getErrorMessage } = useErrorHandler();
   const [preview, setPreview] = useState<string | null>(null);
 
-  const signUpFormSchema = useMemo(() => createSignUpSchema(t), [t]);
+  const signUpFormSchema = useMemo(
+    () => createSignUpSchema(validationT),
+    [validationT]
+  );
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -86,9 +90,9 @@ export default function SignUpPage() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            {t("title")}
+            {signUpT("title")}
           </h2>
-          <p className="mt-2 text-sm text-gray-400">{t("titleDesc")}</p>
+          <p className="mt-2 text-sm text-gray-400">{signUpT("titleDesc")}</p>
         </div>
 
         {/* Form */}
@@ -102,7 +106,7 @@ export default function SignUpPage() {
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("profile")}
+                      {signUpT("profile")}
                     </FormLabel>
                     <FormControl>
                       <div className="flex flex-col items-center gap-4">
@@ -119,7 +123,9 @@ export default function SignUpPage() {
                           <div className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg hover:border-blue-500 transition-colors">
                             <Upload className="w-5 h-5 text-gray-400" />
                             <span className="text-gray-300">
-                              {preview ? t("changePhoto") : t("uploadPhoto")}
+                              {preview
+                                ? signUpT("changePhoto")
+                                : signUpT("uploadPhoto")}
                             </span>
                           </div>
                           <Input
@@ -144,13 +150,13 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("username")}
+                      {signUpT("username")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder={t("username")}
+                        placeholder={signUpT("username")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -166,13 +172,13 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("firstName")}
+                      {signUpT("firstName")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder={t("firstName")}
+                        placeholder={signUpT("firstName")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -188,13 +194,13 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("lastName")}
+                      {signUpT("lastName")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder={t("lastName")}
+                        placeholder={signUpT("lastName")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -210,13 +216,13 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("emailLabel")}
+                      {signUpT("emailLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="email"
-                        placeholder={t("emailPlaceholder")}
+                        placeholder={signUpT("emailPlaceholder")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -232,13 +238,13 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
-                      {t("passwordLabel")}
+                      {signUpT("passwordLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="password"
-                        placeholder={t("passwordPlaceholder")}
+                        placeholder={signUpT("passwordPlaceholder")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -250,12 +256,12 @@ export default function SignUpPage() {
               {/* Sign In Link */}
               <div className="pt-2">
                 <p className="text-sm text-gray-400">
-                  {t("alreadyHaveAnAccount")}{" "}
+                  {signUpT("alreadyHaveAnAccount")}{" "}
                   <Link
                     href="/auth/signin"
                     className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
                   >
-                    {t("signIn")}
+                    {signUpT("signIn")}
                   </Link>
                 </p>
               </div>
@@ -266,7 +272,7 @@ export default function SignUpPage() {
               disabled={isSigningUp}
               className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
             >
-              {isSigningUp ? t("buttonLoading") : t("signUp")}
+              {isSigningUp ? signUpT("buttonLoading") : signUpT("signUp")}
             </Button>
           </form>
         </Form>

@@ -1,4 +1,12 @@
 {
+  "validations": {
+    "imageRequired": "សូមបង្ហោះរូបថត",
+    "nameRequired": "សូមបំពេញឈ្មោះអ្នកប្រើប្រាស់",
+    "firstNameRequired": "សូមបំពេញឈ្មោះ",
+    "lastNameRequired": "សូមបំពេញនាមត្រកូល",
+    "invalidEmail": "សូមបំពេញអ៊ីមែល",
+    "passwordMinLength": "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ"
+  },
   "authLayout": {
     "title": "សូមស្វាគមន៍មកកាន់ JobXHub",
     "by": "ដោយ samedyhunx",
@@ -24,12 +32,7 @@
     "dontHaveAnAccount": "មិនទាន់មានគណនីទេ?",
     "signUp": "បង្កើតគណនី",
     "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
-    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់",
-    "apiErrors": {
-      "MISSING_FIELDS": "សូមបំពេញប្រអប់ទាំងអស់",
-      "INVALID_CREDENTIALS": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
-      "UNKNOWN_ERROR": "កំហុសបានកើតឡើង សូមព្យាយាមម្តងទៀត"
-    }
+    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់"
   },
   "signUp": {
     "title": "បង្កើតគណនី",
@@ -47,22 +50,7 @@
     "alreadyHaveAnAccount": "មានគណនីរួចហើយ?",
     "signIn": "ចូលគណនី",
     "signUp": "បង្កើតគណនី",
-    "buttonLoading": "កំពុងបង្កើតគណនី...",
-    "apiErrors": {
-      "MISSING_FIELDS": "សូមបំពេញប្រអប់ទាំងអស់",
-      "EXISTING_EMAIL": "អ្នកប្រើប្រាស់ដែលមានអ៊ីមែលនេះមានរួចហើយ",
-      "EXISTING_USERNAME": "ឈ្មោះអ្នកប្រើត្រូវបានយករួចហើយ",
-      "MISSING_PHOTO": "បាត់រូបថត",
-      "UNKNOWN_ERROR": "កំហុសមិនស្គាល់បានកើតឡើង សូមព្យាយាមម្តងទៀត"
-    },
-    "clientErrors": {
-      "imageRequired": "សូមបង្ហោះរូបថត",
-      "nameRequired": "សូមបំពេញឈ្មោះអ្នកប្រើប្រាស់",
-      "firstNameRequired": "សូមបំពេញឈ្មោះ",
-      "lastNameRequired": "សូមបំពេញនាមត្រកូល",
-      "invalidEmail": "សូមបំពេញអ៊ីមែល",
-      "passwordMinLength": "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ"
-    }
+    "buttonLoading": "កំពុងបង្កើតគណនី..."
   },
   "forgotPassword": {
     "title": "ភ្លេចពាក្យសម្ងាត់របស់អ្នក?",
@@ -74,5 +62,13 @@
     "buttonText": "ផ្ញើតំណ",
     "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
     "sending": "កំពុងផ្ញើ..."
+  },
+  "apiErrors": {
+    "MISSING_FIELDS": "សូមបំពេញប្រអប់ទាំងអស់",
+    "INVALID_CREDENTIALS": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
+    "EXISTING_EMAIL": "អ្នកប្រើប្រាស់ដែលមានអ៊ីមែលនេះមានរួចហើយ",
+    "EXISTING_USERNAME": "ឈ្មោះអ្នកប្រើត្រូវបានយករួចហើយ",
+    "MISSING_PHOTO": "បាត់រូបថត",
+    "UNKNOWN_ERROR": "កំហុសមិនស្គាល់បានកើតឡើង សូមព្យាយាមម្តងទៀត"
   }
 }

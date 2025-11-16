@@ -1,4 +1,12 @@
 {
+  "validations": {
+    "imageRequired": "Bitte laden Sie Ihr Profilfoto hoch",
+    "nameRequired": "Bitte geben Sie den Benutzernamen ein",
+    "firstNameRequired": "Bitte geben Sie den Namen ein",
+    "lastNameRequired": "Bitte geben Sie den Nachnamen ein",
+    "invalidEmail": "Bitte geben Sie die korrekte E-Mail-Adresse ein",
+    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein"
+  },
   "authLayout": {
     "title": "Willkommen bei JobXHub",
     "by": "von samedyhunx",
@@ -24,12 +32,7 @@
     "dontHaveAnAccount": "Kein Konto?",
     "signUp": "Anmelden",
     "invalidEmail": "Ungültige E-Mail",
-    "passwordRequired": "Passwort ist erforderlich",
-    "errors": {
-      "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
-      "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
-      "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
-    }
+    "passwordRequired": "Passwort ist erforderlich"
   },
   "signUp": {
     "title": "JobPosting-Konto erstellen",
@@ -47,22 +50,7 @@
     "alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
     "signIn": "Anmelden",
     "signUp": "Anmelden",
-    "buttonLoading": "Erstellen...",
-    "apiErrors": {
-      "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
-      "EXISTING_EMAIL": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
-      "EXISTING_USERNAME": "Benutzername ist bereits vergeben",
-      "MISSING_PHOTO": "Profilbild ist erforderlich",
-      "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
-    },
-    "clientErrors": {
-      "imageRequired": "Bitte laden Sie Ihr Profilfoto hoch",
-      "nameRequired": "Bitte geben Sie den Benutzernamen ein",
-      "firstNameRequired": "Bitte geben Sie den Namen ein",
-      "lastNameRequired": "Bitte geben Sie den Nachnamen ein",
-      "invalidEmail": "Bitte geben Sie die korrekte E-Mail-Adresse ein",
-      "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein"
-    }
+    "buttonLoading": "Erstellen..."
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",
@@ -74,5 +62,13 @@
     "buttonText": "Reset-Link senden",
     "invalidEmail": "Ungültige E-Mail",
     "sending": "Senden..."
+  },
+  "apiErrors": {
+    "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
+    "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
+    "EXISTING_EMAIL": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
+    "EXISTING_USERNAME": "Benutzername ist bereits vergeben",
+    "MISSING_PHOTO": "Profilbild ist erforderlich",
+    "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
   }
 }

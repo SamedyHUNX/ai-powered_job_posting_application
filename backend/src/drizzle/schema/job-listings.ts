@@ -24,11 +24,11 @@ export const jobListingTypes = [
   'full-time',
 ] as const;
 
-type WageInterval = (typeof wageIntervals)[number];
-type LocationRequirement = (typeof locationRequirements)[number];
-type ExperienceLevel = (typeof experienceLevels)[number];
-type JobListingStatus = (typeof jobListingStatuses)[number];
-type JobListingType = (typeof jobListingTypes)[number];
+// type WageInterval = (typeof wageIntervals)[number];
+// type LocationRequirement = (typeof locationRequirements)[number];
+// type ExperienceLevel = (typeof experienceLevels)[number];
+// type JobListingStatus = (typeof jobListingStatuses)[number];
+// type JobListingType = (typeof jobListingTypes)[number];
 
 export const wageIntervalEnum = pgEnum(
   'job_listings_wage_interval',

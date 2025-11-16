@@ -1,4 +1,3 @@
-// src/inngest/types/events.types.ts
 export type UserCreatedData = {
   userId: string;
   email: string;

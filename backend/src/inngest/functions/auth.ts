@@ -1,5 +1,5 @@
 import { inngest } from '../inngest.client';
-import { EmailService } from './../../email/email.service';
+import { EmailService } from '@/email/email.service';
 
 export const createUser = inngest.createFunction(
   { id: 'jobxhub/create-db-user', name: 'JobXHub - Create DB User' },

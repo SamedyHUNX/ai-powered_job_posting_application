@@ -3,14 +3,14 @@ import { useTranslations } from "next-intl";
 export function useErrorHandler() {
   const t = useTranslations();
 
-  const getErrorMessage = (error: any, namespace: string = "common") => {
+  const getErrorMessage = (error: any) => {
     const errorCode =
       error.response?.data?.code || error.code || "UNKNOWN_ERROR";
 
     console.log(errorCode);
 
-    return t(`${namespace}.apiErrors.${errorCode}`, {
-      defaultValue: error.message || t(`${namespace}.apiErrors.UNKNOWN_ERROR`),
+    return t(`apiErrors.${errorCode}`, {
+      defaultValue: error.message || t(`apiErrors.UNKNOWN_ERROR`),
     });
   };
 

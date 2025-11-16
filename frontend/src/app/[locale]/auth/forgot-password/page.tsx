@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -19,19 +19,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PublicRoute from "@/routes/PublicRoute";
+import {
+  forgotPasswordSchema,
+  ForgotPasswordSchemaData,
+} from "@/schemas/forgotPasswordSchema";
+import { useErrorHandler } from "@/utils/errorHandler";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
-  const { requestPasswordReset, isRequestingPasswordReset } = useAuth();
+  const { forgotPassword, isRequestingForgotPassword, forgotPasswordError } =
+    useAuth();
+  const { getErrorMessage } = useErrorHandler();
 
-  const formSchema = z.object({
-    email: z.string().email(t("invalidEmail")),
-  });
+  const forgotPasswordFormSchema = useMemo(() => forgotPasswordSchema(t), [t]);
 
-  type ForgotPasswordForm = z.infer<typeof formSchema>;
-
-  const form = useForm<ForgotPasswordForm>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
+    resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {
       email: "",
     },
@@ -39,16 +42,18 @@ export default function ForgotPasswordPage() {
 
   const [emailSent, setEmailSent] = useState(false);
 
-  const onSubmit = (data: ForgotPasswordForm) => {
-    requestPasswordReset(data.email, {
-      onSuccess: () => {
-        setEmailSent(true);
-        toast.success("Password reset link sent to your email");
-      },
-      onError: (error: Error) => {
-        toast.error(error.message || "Failed to send reset link");
-      },
-    });
+  useEffect(() => {
+    if (forgotPasswordError) {
+      const errorMessage = getErrorMessage(
+        forgotPasswordError,
+        "forgotPassword"
+      );
+      toast.error(errorMessage);
+    }
+  }, [forgotPasswordError, getErrorMessage]);
+
+  const onSubmit = ({ email }: ForgotPasswordSchemaData) => {
+    forgotPassword(email);
   };
 
   if (emailSent) {
@@ -186,10 +191,10 @@ export default function ForgotPasswordPage() {
 
             <Button
               type="submit"
-              disabled={isRequestingPasswordReset}
+              disabled={isRequestingForgotPassword}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20"
             >
-              {isRequestingPasswordReset ? (
+              {isRequestingForgotPassword ? (
                 <span className="flex items-center justify-center">
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

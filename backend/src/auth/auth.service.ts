@@ -6,17 +6,17 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SignInDto, SignUpDto } from './dtos/auth.dto';
-import { DrizzleService } from './../drizzle/drizzle.service';
+import { DrizzleService } from '@/drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { UserTable } from './../drizzle/schema';
+import { UserTable } from '@/drizzle/schema';
 import { and, eq, gt } from 'drizzle-orm';
-import { S3Service } from '../s3/s3.service';
-import { AppService } from 'src/app.service';
-import { inngest } from '../inngest/inngest.client';
-import { hashPassword } from './../drizzle/utils/password.utils';
-import { capitalizeString } from './../utils/utils';
+import { S3Service } from '@/s3/s3.service';
+import { AppService } from '@/app.service';
+import { inngest } from '@/inngest/inngest.client';
+import { hashPassword } from '@/drizzle/utils/password.utils';
+import { capitalizeString } from '@/utils/utils';
+import { SignInDto, SignUpDto } from './dtos/auth.dto';
 
 @Injectable()
 export class AuthService {

@@ -1,4 +1,11 @@
 {
+  "validations": {
+    "imageRequired": "Missing profile photo",
+    "nameRequired": "Missing username",
+    "firstNameRequired": "Missing firstname",
+    "invalidEmail": "Missing email",
+    "passwordMinLength": "Password must be at least 8 characters"
+  },
   "authLayout": {
     "title": "Welcome to JobXHub",
     "by": "by samedyhunx",
@@ -24,13 +31,7 @@
     "dontHaveAnAccount": "Don't have an account?",
     "signUp": "Sign Up",
     "invalidEmail": "Invalid email address",
-    "passwordRequired": "Password is required",
-    "apiErrors": {
-      "MISSING_FIELDS": "Please fill in all required fields",
-      "INVALID_CREDENTIALS": "Invalid email or password",
-      "UNKNOWN_ERROR": "An error occurred. Please try again.",
-      "nameRequired": "Missing username"
-    }
+    "passwordRequired": "Password is required"
   },
   "signUp": {
     "title": "Create an account",
@@ -48,21 +49,7 @@
     "alreadyHaveAnAccount": "Already have an account?",
     "signIn": "Sign In",
     "signUp": "Sign Up",
-    "buttonLoading": "Creating account...",
-    "apiErrors": {
-      "MISSING_FIELDS": "Please fill in all required fields",
-      "EXISTING_EMAIL": "User with this email already exists",
-      "EXISTING_USERNAME": "Username is already taken",
-      "MISSING_PHOTO": "Profile image is required",
-      "UNKNOWN_ERROR": "An error occurred. Please try again."
-    },
-    "clientErrors": {
-      "imageRequired": "Missing profile photo",
-      "nameRequired": "Missing username",
-      "firstNameRequired": "Missing firstname",
-      "invalidEmail": "Missing email",
-      "passwordMinLength": "Password must be at least 8 characters"
-    }
+    "buttonLoading": "Creating account..."
   },
   "forgotPassword": {
     "title": "Forgot Your Password?",
@@ -74,5 +61,13 @@
     "buttonText": "Send reset link",
     "invalidEmail": "Invalid email address",
     "sending": "Sending..."
+  },
+  "apiErrors": {
+    "MISSING_FIELDS": "Please fill in all required fields",
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "EXISTING_EMAIL": "User with this email already exists",
+    "EXISTING_USERNAME": "Username is already taken",
+    "MISSING_PHOTO": "Profile image is required",
+    "UNKNOWN_ERROR": "An error occurred. Please try again."
   }
 }

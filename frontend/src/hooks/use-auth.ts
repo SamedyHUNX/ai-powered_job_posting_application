@@ -37,8 +37,8 @@ export function useAuth() {
   });
 
   // Request password reset
-  const requestPasswordResetMutation = useMutation({
-    mutationFn: (email: string) => authApi.requestPasswordReset(email),
+  const forgotPasswordMutation = useMutation({
+    mutationFn: (email: string) => authApi.forgotPassword(email),
     onSuccess: () => {
       // Do nothing
     },
@@ -76,9 +76,9 @@ export function useAuth() {
     isSigningUp: signInMutation.isPending,
     signInError: signInMutation.error,
     signUpError: signUpMutation.error,
-    requestPasswordReset: requestPasswordResetMutation.mutate,
-    isRequestingPasswordReset: requestPasswordResetMutation.isPending,
-    requestPasswordResetError: requestPasswordResetMutation.error,
+    forgotPassword: forgotPasswordMutation.mutate,
+    isRequestingForgotPassword: forgotPasswordMutation.isPending,
+    forgotPasswordError: forgotPasswordMutation.error,
     resetPassword: resetPasswordMutation.mutate,
     isResettingPassword: resetPasswordMutation.isPending,
     resetPasswordError: resetPasswordMutation.error,
