@@ -27,7 +27,7 @@ import { useErrorHandler } from "@/utils/errorHandler";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
-  const validationT = useTranslations("validation");
+  const validationT = useTranslations("validations");
   const locale = useLocale();
   const { forgotPassword, isRequestingForgotPassword, forgotPasswordError } =
     useAuth();

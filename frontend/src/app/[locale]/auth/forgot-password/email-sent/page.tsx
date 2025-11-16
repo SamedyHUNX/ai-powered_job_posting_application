@@ -1,10 +1,12 @@
 "use client";
 
 import PublicRoute from "@/routes/PublicRoute";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function EmailSentPage() {
+  const t = useTranslations("emailSent");
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
@@ -31,12 +33,11 @@ export default function EmailSentPage() {
             </svg>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            Check Your Email
+            {t("title")}
           </h2>
           <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
-            We've sent a password reset link to{" "}
-            <strong className="text-white">{decodedEmail}</strong>. Please check
-            your inbox and click the link to reset your password.
+            {t("description1")} <h5 className="text-white">{decodedEmail}</h5>
+            {t("description2")}
           </p>
         </div>
 
@@ -46,25 +47,19 @@ export default function EmailSentPage() {
               <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
                 <div className="w-2 h-2 rounded-full bg-blue-500" />
               </div>
-              <p className="text-sm text-gray-300">
-                The link will expire in 1 hour for security purposes
-              </p>
+              <p className="text-sm text-gray-300">{t("warning1")}</p>
             </div>
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
                 <div className="w-2 h-2 rounded-full bg-blue-500" />
               </div>
-              <p className="text-sm text-gray-300">
-                Didn't receive the email? Check your spam folder
-              </p>
+              <p className="text-sm text-gray-300">{t("warning2")}</p>
             </div>
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5">
                 <div className="w-2 h-2 rounded-full bg-blue-500" />
               </div>
-              <p className="text-sm text-gray-300">
-                Click the link in the email to complete your password reset
-              </p>
+              <p className="text-sm text-gray-300">{t("warning3")}</p>
             </div>
           </div>
 
@@ -73,15 +68,15 @@ export default function EmailSentPage() {
               onClick={() => router.push("/auth/forgot-password")}
               className="w-full text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
             >
-              Didn't receive the email? Resend
+              {t("resend")}
             </button>
             <p className="text-sm text-gray-400 text-center">
-              Remember your password?{" "}
+              {t("rememberPassword")}{" "}
               <Link
                 href="/auth/signin"
                 className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
               >
-                Back to Sign In
+                {t("signIn")}
               </Link>
             </p>
           </div>
