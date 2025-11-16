@@ -131,7 +131,10 @@ export class AuthService {
 
     if (!email || !password) {
       this.logger.error('User trying to signin with missing fields');
-      throw new ConflictException('Missing required fields');
+      throw new ConflictException({
+        code: 'MISSING_FIELDS',
+        message: 'Missing required fields',
+      });
     }
 
     // Find user
@@ -143,7 +146,10 @@ export class AuthService {
 
     if (!user) {
       this.logger.error('User trying to signin with invalid credentials');
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException({
+        code: 'INVALID_CREDENTIALS',
+        message: 'Invalid credentials',
+      });
     }
 
     // Verify password
@@ -153,7 +159,10 @@ export class AuthService {
       this.logger.error(
         `User with ${email} trying to signin with invalid password`,
       );
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException({
+        code: 'INVALID_CREDENTIALS',
+        message: 'Invalid credentials',
+      });
     }
 
     const payload = {

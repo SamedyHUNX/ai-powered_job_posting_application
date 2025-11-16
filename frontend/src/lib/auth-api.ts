@@ -44,15 +44,8 @@ export interface ForgotPasswordResponse {
 
 export const authApi = {
   signIn: async (credentials: SignInRequest): Promise<AuthResponse> => {
-    try {
-      const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error("Invalid credentials");
-      }
-      throw error;
-    }
+    const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
+    return data;
   },
 
   signUp: async (formData: FormData): Promise<AuthResponse> => {
@@ -88,7 +81,9 @@ export const authApi = {
     }
   },
 
-  requestPasswordReset: async (email: string): Promise<ForgotPasswordResponse> => {
+  requestPasswordReset: async (
+    email: string
+  ): Promise<ForgotPasswordResponse> => {
     try {
       const { data } = await api.post<ForgotPasswordResponse>(
         "/auth/forgot-password",
@@ -97,7 +92,8 @@ export const authApi = {
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || "Password reset request failed";
+        const message =
+          error.response?.data?.message || "Password reset request failed";
         throw new ApiError(error.response?.status || 500, message);
       }
       throw error;
@@ -116,7 +112,8 @@ export const authApi = {
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || "Password reset failed";
+        const message =
+          error.response?.data?.message || "Password reset failed";
         throw new ApiError(error.response?.status || 500, message);
       }
       throw error;

@@ -19,10 +19,12 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "../../../../../routes/PublicRoute";
 import Link from "next/link";
+import { useErrorHandler } from "../../../../../utils/errorHandler";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
+  const { getErrorMessage } = useErrorHandler();
 
   const formSchema = z.object({
     email: z.string().email(t("invalidEmail")),
@@ -41,9 +43,10 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (signInError) {
-      toast.error(signInError.message);
+      const errorMessage = getErrorMessage(signInError, "signIn");
+      toast.error(errorMessage);
     }
-  }, [signInError]);
+  }, [signInError, getErrorMessage]);
 
   const onSubmit = (data: SignInForm) => {
     signIn(data);

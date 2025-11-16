@@ -24,7 +24,12 @@
     "dontHaveAnAccount": "Don't have an account?",
     "signUp": "Sign Up",
     "invalidEmail": "Invalid email address",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "errors": {
+      "MISSING_FIELDS": "Please fill in all required fields",
+      "INVALID_CREDENTIALS": "Invalid email or password",
+      "UNKNOWN_ERROR": "An error occurred. Please try again."
+    }
   },
   "signUp": {
     "title": "Create an account",

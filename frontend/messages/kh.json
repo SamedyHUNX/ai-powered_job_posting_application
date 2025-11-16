@@ -24,7 +24,12 @@
     "dontHaveAnAccount": "មិនទាន់មានគណនីទេ?",
     "signUp": "បង្កើតគណនី",
     "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
-    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់"
+    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់",
+    "errors": {
+      "MISSING_FIELDS": "សូមបំពេញប្រអប់ទាំងអស់",
+      "INVALID_CREDENTIALS": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
+      "UNKNOWN_ERROR": "កំហុសមិនស្គាល់បានកើតឡើង សូមព្យាយាមម្តងទៀត"
+    }
   },
   "signUp": {
     "title": "បង្កើតគណនី",
@@ -37,7 +42,7 @@
     "emailLabel": "អ៊ីមែល",
     "emailPlaceholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
     "rememberPassword": "ចងចាំពាក្យសម្ងាត់របស់អ្នក?",
-    "signIn": "ចូល",
+    "signIn": "ចូលគណនី",
     "buttonText": "ផ្ញើតំណ",
     "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
     "sending": "កំពុងផ្ញើ..."

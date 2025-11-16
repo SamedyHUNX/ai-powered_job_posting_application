@@ -24,7 +24,12 @@
     "dontHaveAnAccount": "Kein Konto?",
     "signUp": "Anmelden",
     "invalidEmail": "Ungültige E-Mail",
-    "passwordRequired": "Passwort ist erforderlich"
+    "passwordRequired": "Passwort ist erforderlich",
+    "errors": {
+      "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
+      "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
+      "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
+    }
   },
   "signUp": {
     "title": "JobPosting-Konto erstellen",
