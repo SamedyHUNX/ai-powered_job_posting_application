@@ -29,7 +29,7 @@ export class AuthController {
   @UseInterceptors(
     FileInterceptor('image', {
       limits: { fileSize: 5 * 1024 * 1024 },
-      fileFilter: (req, file, cb) => {
+      fileFilter: (_, file, cb) => {
         if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
           return cb(new Error('Only image files are allowed!'), false);
         }

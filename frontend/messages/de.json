@@ -34,7 +34,27 @@
   "signUp": {
     "title": "JobPosting-Konto erstellen",
     "titleDesc": "Schließen Sie sich uns noch heute an und legen Sie los",
-    "profile": "Profilfoto"
+    "profile": "Profilfoto",
+    "changePhoto": "Foto ändern",
+    "uploadPhoto": "Foto hochladen",
+    "username": "Benutzername",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "passwordLabel": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
+    "signIn": "Anmelden",
+    "signUp": "Anmelden",
+    "buttonLoading": "Erstellen...",
+    "errors": {
+      "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
+      "EXISTING_EMAIL": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
+      "EXISTING_USERNAME": "Benutzername ist bereits vergeben",
+      "MISSING_PHOTO": "Profilbild ist erforderlich",
+      "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
+    }
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",

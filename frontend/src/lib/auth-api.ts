@@ -49,74 +49,41 @@ export const authApi = {
   },
 
   signUp: async (formData: FormData): Promise<AuthResponse> => {
-    try {
-      const { data } = await api.post<AuthResponse>("/auth/signup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || "Signup failed";
-        throw new ApiError(error.response?.status || 500, message);
-      }
-      throw error;
-    }
+    const { data } = await api.post<AuthResponse>("/auth/signup", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
   },
 
   getProfile: async (token: string) => {
-    try {
-      const { data } = await api.get("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error("Failed to fetch profile");
-      }
-      throw error;
-    }
+    const { data } = await api.get("/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
   },
 
   requestPasswordReset: async (
     email: string
   ): Promise<ForgotPasswordResponse> => {
-    try {
-      const { data } = await api.post<ForgotPasswordResponse>(
-        "/auth/forgot-password",
-        { email }
-      );
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message =
-          error.response?.data?.message || "Password reset request failed";
-        throw new ApiError(error.response?.status || 500, message);
-      }
-      throw error;
-    }
+    const { data } = await api.post<ForgotPasswordResponse>(
+      "/auth/forgot-password",
+      { email }
+    );
+    return data;
   },
 
   resetPassword: async (
     token: string,
     newPassword: string
   ): Promise<ForgotPasswordResponse> => {
-    try {
-      const { data } = await api.post<ForgotPasswordResponse>(
-        "/auth/reset-password",
-        { token, newPassword }
-      );
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message =
-          error.response?.data?.message || "Password reset failed";
-        throw new ApiError(error.response?.status || 500, message);
-      }
-      throw error;
-    }
+    const { data } = await api.post<ForgotPasswordResponse>(
+      "/auth/reset-password",
+      { token, newPassword }
+    );
+    return data;
   },
 };

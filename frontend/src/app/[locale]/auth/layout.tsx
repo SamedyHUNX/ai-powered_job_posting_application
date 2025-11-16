@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { ReactNode } from "react";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
@@ -14,16 +15,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Right side - Image/Branding */}
-      <div className="hidden lg:flex lg:flex-1 relative">
+      <div className="hidden lg:flex lg:flex-1 relative h-screen">
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 opacity-90" />
-
-        {/* Background Image */}
-        <img
-          src="/auth-background.jpg"
-          alt="Authentication"
-          className="object-cover w-full h-full"
-        />
 
         {/* Content Overlay */}
         <div className="absolute inset-0 flex items-center justify-center p-12">

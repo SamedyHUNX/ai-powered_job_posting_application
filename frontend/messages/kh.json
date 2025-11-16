@@ -34,7 +34,27 @@
   "signUp": {
     "title": "បង្កើតគណនី",
     "titleDesc": "ចូលរួមជាមួយយើងនៅថ្ងៃនេះ",
-    "profile": "រូបថត"
+    "profile": "រូបថត",
+    "changePhoto": "ផ្លាស់ប្តូររូបថត",
+    "uploadPhoto": "បង្ហោះរូបថត",
+    "username": "ឈ្មោះអ្នកប្រើប្រាស់",
+    "firstName": "ឈ្មោះ",
+    "lastName": "នាមត្រកូល",
+    "emailLabel": "អ៊ីមែល",
+    "emailPlaceholder": "បញ្ចូលអ៊ីមែលរបស់អ្នក",
+    "passwordLabel": "ពាក្យសម្ងាត់",
+    "passwordPlaceholder": "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
+    "alreadyHaveAnAccount": "មានគណនីរួចហើយ?",
+    "signIn": "ចូលគណនី",
+    "signUp": "បង្កើតគណនី",
+    "buttonLoading": "កំពុងបង្កើតគណនី...",
+    "errors": {
+      "MISSING_FIELDS": "សូមបំពេញប្រអប់ទាំងអស់",
+      "EXISTING_EMAIL": "អ្នកប្រើប្រាស់ដែលមានអ៊ីមែលនេះមានរួចហើយ",
+      "EXISTING_USERNAME": "ឈ្មោះអ្នកប្រើត្រូវបានយករួចហើយ",
+      "MISSING_PHOTO": "បាត់រូបថត",
+      "UNKNOWN_ERROR": "កំហុសមិនស្គាល់បានកើតឡើង សូមព្យាយាមម្តងទៀត"
+    }
   },
   "forgotPassword": {
     "title": "ភ្លេចពាក្យសម្ងាត់របស់អ្នក?",

@@ -20,6 +20,7 @@ import { Upload } from "lucide-react";
 import PublicRoute from "../../../../../routes/PublicRoute";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useErrorHandler } from "../../../../../utils/errorHandler";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -27,7 +28,7 @@ const formSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  photo: z.any().refine((file) => file instanceof File, "Photo is required"),
+  image: z.any().refine((file) => file instanceof File, "Image is required"),
 });
 
 type SignUpFormData = z.infer<typeof formSchema>;
@@ -35,6 +36,7 @@ type SignUpFormData = z.infer<typeof formSchema>;
 export default function SignUpPage() {
   const t = useTranslations("signUp");
   const { signUp, isSigningUp, signUpError } = useAuth();
+  const { getErrorMessage } = useErrorHandler();
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<SignUpFormData>({
@@ -45,20 +47,21 @@ export default function SignUpPage() {
       lastName: "",
       email: "",
       password: "",
-      photo: undefined,
+      image: undefined,
     },
   });
 
   useEffect(() => {
     if (signUpError) {
-      toast.error(signUpError.message);
+      const errorMessage = getErrorMessage(signUpError, "signUp");
+      toast.error(errorMessage);
     }
-  }, [signUpError]);
+  }, [signUpError, getErrorMessage]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      form.setValue("photo", file);
+      form.setValue("image", file);
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -69,13 +72,18 @@ export default function SignUpPage() {
   };
 
   const onSubmit = (data: SignUpFormData) => {
+    if (!data.image) {
+      toast.error("Please upload a profile photo");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
     formData.append("password", data.password);
-    formData.append("image", data.photo);
+    formData.append("image", data.image);
 
     signUp(formData);
   };
@@ -98,7 +106,7 @@ export default function SignUpPage() {
               {/* Photo Upload */}
               <FormField
                 control={form.control}
-                name="photo"
+                name="image"
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300">
@@ -119,7 +127,7 @@ export default function SignUpPage() {
                           <div className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 border-2 border-dashed border-gray-700 rounded-lg hover:border-blue-500 transition-colors">
                             <Upload className="w-5 h-5 text-gray-400" />
                             <span className="text-gray-300">
-                              {preview ? "Change Photo" : "Upload Photo"}
+                              {preview ? t("changePhoto") : t("uploadPhoto")}
                             </span>
                           </div>
                           <Input
@@ -143,12 +151,14 @@ export default function SignUpPage() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">Username</FormLabel>
+                    <FormLabel className="text-gray-300">
+                      {t("username")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder="Username"
+                        placeholder={t("username")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -163,12 +173,14 @@ export default function SignUpPage() {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">First Name</FormLabel>
+                    <FormLabel className="text-gray-300">
+                      {t("firstName")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder="First Name"
+                        placeholder={t("firstName")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -183,12 +195,14 @@ export default function SignUpPage() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">Last Name</FormLabel>
+                    <FormLabel className="text-gray-300">
+                      {t("lastName")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="text"
-                        placeholder="Last Name"
+                        placeholder={t("lastName")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -203,12 +217,14 @@ export default function SignUpPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">Email</FormLabel>
+                    <FormLabel className="text-gray-300">
+                      {t("emailLabel")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="email"
-                        placeholder="Email"
+                        placeholder={t("emailPlaceholder")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -223,12 +239,14 @@ export default function SignUpPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">Password</FormLabel>
+                    <FormLabel className="text-gray-300">
+                      {t("passwordLabel")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="password"
-                        placeholder="Password"
+                        placeholder={t("passwordPlaceholder")}
                         className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -240,12 +258,12 @@ export default function SignUpPage() {
               {/* Sign In Link */}
               <div className="pt-2">
                 <p className="text-sm text-gray-400">
-                  Already have an account?{" "}
+                  {t("alreadyHaveAnAccount")}{" "}
                   <Link
                     href="/auth/signin"
                     className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
                   >
-                    Sign In
+                    {t("signIn")}
                   </Link>
                 </p>
               </div>
@@ -254,9 +272,9 @@ export default function SignUpPage() {
             <Button
               type="submit"
               disabled={isSigningUp}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
+              className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
             >
-              {isSigningUp ? "Creating account..." : "Sign Up"}
+              {isSigningUp ? t("buttonLoading") : t("signUp")}
             </Button>
           </form>
         </Form>

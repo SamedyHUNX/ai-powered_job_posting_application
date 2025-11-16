@@ -34,7 +34,27 @@
   "signUp": {
     "title": "Create an account",
     "titleDesc": "Join us today and get started",
-    "profile": "Profile Photo"
+    "profile": "Profile Photo",
+    "changePhoto": "Change Photo",
+    "uploadPhoto": "Upload Photo",
+    "username": "Username",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "buttonLoading": "Creating account...",
+    "errors": {
+      "MISSING_FIELDS": "Please fill in all required fields",
+      "EXISTING_EMAIL": "User with this email already exists",
+      "EXISTING_USERNAME": "Username is already taken",
+      "MISSING_PHOTO": "Profile image is required",
+      "UNKNOWN_ERROR": "An error occurred. Please try again."
+    }
   },
   "forgotPassword": {
     "title": "Forgot Your Password?",

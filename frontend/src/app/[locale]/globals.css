@@ -44,6 +44,11 @@
 }
 
 :root {
+  /* --sonner-bg: #ffffff;
+  --sonner-success-bg: #22c55e;
+  --sonner-error-bg: #ef4444;
+  --sonner-warning-bg: #f59e0b;
+  --sonner-info-bg: #3b82f6; */
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -110,6 +115,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* --sonner-bg: #ffffff;
+  --sonner-success-bg: #22c55e;
+  --sonner-error-bg: #ef4444;
+  --sonner-warning-bg: #f59e0b;
+  --sonner-info-bg: #3b82f6; */
 }
 
 @layer base {

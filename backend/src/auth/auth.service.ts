@@ -36,7 +36,11 @@ export class AuthService {
       if (!value) {
         const message = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
         this.logger.error(`Missing ${key}`);
-        throw new ConflictException(message);
+        throw new ConflictException({
+          code: 'MISSING_FIELDS',
+          message,
+          field: key,
+        });
       }
     }
 
@@ -49,7 +53,10 @@ export class AuthService {
 
     if (existingEmail) {
       this.logger.error(`User with email ${email} already exists`);
-      throw new ConflictException('User with this email already exists');
+      throw new ConflictException({
+        code: 'EXISTING_EMAIL',
+        message: 'User with this email already exists',
+      });
     }
 
     const [existingUsername] = await this.dbService.db
@@ -60,12 +67,18 @@ export class AuthService {
 
     if (existingUsername) {
       this.logger.error(`Username ${name} is already taken`);
-      throw new ConflictException('Username is already taken');
+      throw new ConflictException({
+        code: 'EXISTING_USERNAME',
+        message: 'Username is already taken',
+      });
     }
 
     if (!file || !file.originalname) {
       this.logger.error('File is missing or invalid');
-      throw new ConflictException('Profile image is required');
+      throw new ConflictException({
+        code: 'MISSING_PHOTO',
+        message: 'Profile image is required',
+      });
     }
 
     // Upload image to S3

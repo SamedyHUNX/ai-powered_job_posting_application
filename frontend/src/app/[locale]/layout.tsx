@@ -31,8 +31,8 @@ export default async function LocaleLayout({
       <body className="dark">
         <NextIntlClientProvider messages={messages}>
           <Providers>
+            <Toaster richColors theme="light" />
             {children}
-            <Toaster />
           </Providers>
         </NextIntlClientProvider>
       </body>

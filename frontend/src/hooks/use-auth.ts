@@ -5,7 +5,7 @@ import {
   logout as logoutAction,
   setUser,
 } from "@/store/auth-slice";
-import { authApi, SignInRequest, ForgotPasswordResponse } from "@/lib/auth-api";
+import { authApi, SignInRequest } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 
 export function useAuth() {
@@ -30,18 +30,15 @@ export function useAuth() {
   // Sign up mutation
   const signUpMutation = useMutation({
     mutationFn: (data: FormData) => authApi.signUp(data),
-    onSuccess: (data) => {
-      dispatch(setCredentials({ token: data.token }));
-      dispatch(setUser(data.user));
-      localStorage.setItem("access_token", data.token);
-      router.push("/");
+    onSuccess: () => {
+      router.push("/auth/signin");
     },
   });
 
   // Request password reset
   const requestPasswordResetMutation = useMutation({
     mutationFn: (email: string) => authApi.requestPasswordReset(email),
-    onSuccess: (data: ForgotPasswordResponse) => {
+    onSuccess: () => {
       // Do nothing
     },
   });
