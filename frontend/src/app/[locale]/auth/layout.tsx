@@ -1,5 +1,6 @@
 "use client";
 
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
@@ -15,6 +16,11 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
       {/* Right side - Image/Branding */}
       <div className="hidden lg:flex lg:flex-1 relative h-screen">
+        {/* Language Switcher - Positioned at top right */}
+        <div className="absolute top-6 right-6 z-10">
+          <LanguageSwitcher />
+        </div>
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 opacity-90" />
 

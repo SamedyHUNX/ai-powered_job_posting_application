@@ -56,8 +56,16 @@ export default function ResetPasswordPage() {
     }
   }, [token]);
 
-  const onSubmit = (token: string, data: ResetPasswordFormData) => {
-    resetPassword(token, data);
+  const onSubmit = (values: z.infer<typeof resetPasswordFormSchema>) => {
+    if (!token) {
+      toast.error("Invalid or missing reset token");
+      return;
+    }
+    resetPassword({
+      token,
+      newPassword: values.newPassword,
+      confirmPassword: values.confirmPassword,
+    });
   };
 
   return (

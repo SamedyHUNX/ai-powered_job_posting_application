@@ -17,16 +17,47 @@ export class EmailService {
     });
   }
 
-  async sendWelcomeEmail(to: string, name: string) {
+  async sendWelcomeEmail(to: string, name: string, acceptLanguage: string) {
+    console.log('diddy', acceptLanguage);
+    // Email translations
+    const translations = {
+      en: {
+        subject: 'Welcome to JobXHub!',
+        greeting: 'Welcome',
+        message:
+          "We're thrilled to have you join us. Let us know if you need anything.",
+        signOff: 'Cheers,<br>The Team',
+      },
+      kh: {
+        subject: 'សូមស្វាគមន៍មកកាន់ JobXHub!',
+        greeting: 'សូមស្វាគមន៍',
+        message:
+          'យើងរីករាយណាស់ដែលបានស្វាគមន៍អ្នក។ សូមប្រាប់យើងប្រសិនបើអ្នកត្រូវការអ្វីមួយ។',
+        signOff: 'សូមគោរព,<br>ក្រុមការងារ',
+      },
+      de: {
+        subject: 'Willkommen bei JobXHub!',
+        greeting: 'Willkommen',
+        message:
+          'Wir freuen uns sehr, dass Sie bei uns sind. Lassen Sie uns wissen, wenn Sie etwas benötigen.',
+        signOff: 'Mit freundlichen Grüßen,<br>Das Team',
+      },
+    };
+
+    // Default to English if locale not found
+    const content =
+      translations[acceptLanguage as keyof typeof translations] ||
+      translations.en;
+
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to,
-      subject: 'Welcome to JobXHub!',
+      subject: content.subject,
       html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #333;">Welcome, ${name}!</h1>
-        <p>We're thrilled to have you join us. Let us know if you need anything.</p>
-        <p style="color: #666;">Cheers,<br>The Team</p>
+        <h1 style="color: #333;">${content.greeting}, ${name}!</h1>
+        <p>${content.message}</p>
+        <p style="color: #666;">${content.signOff}</p>
       </div>
     `,
     };

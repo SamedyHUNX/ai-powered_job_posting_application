@@ -5,11 +5,15 @@ export const createUser = inngest.createFunction(
   { id: 'jobxhub/create-db-user', name: 'JobXHub - Create DB User' },
   { event: 'jobxhub/user.created' },
   async ({ event, step }) => {
-    const { userId, email, name, lastName } = event.data;
+    const { userId, email, name, lastName, acceptLanguage } = event.data;
     const emailService = new EmailService();
 
     await step.run('send-welcome-email', async () => {
-      await emailService.sendWelcomeEmail(email, lastName || name);
+      await emailService.sendWelcomeEmail(
+        email,
+        lastName || name,
+        acceptLanguage,
+      );
 
       return { emailSent: true };
     });
@@ -27,7 +31,7 @@ export const createUser = inngest.createFunction(
   },
 );
 
-export const handlePasswordResetRequest = inngest.createFunction(
+export const forgotPassword = inngest.createFunction(
   {
     id: 'jobxhub/user.reset_password_requested',
     name: 'JobXHub - Handle Password Reset Request',

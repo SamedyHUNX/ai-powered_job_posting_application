@@ -1,6 +1,5 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import { ApiError } from "./api-error";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -43,14 +42,17 @@ export interface ForgotPasswordResponse {
 }
 
 export const authApi = {
+  // Signin
   signIn: async (credentials: SignInRequest): Promise<AuthResponse> => {
     const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
     return data;
   },
 
-  signUp: async (formData: FormData): Promise<AuthResponse> => {
+  // Signup
+  signUp: async (formData: FormData, locale: string): Promise<AuthResponse> => {
     const { data } = await api.post<AuthResponse>("/auth/signup", formData, {
       headers: {
+        "Accept-Language": locale,
         "Content-Type": "multipart/form-data",
       },
     });

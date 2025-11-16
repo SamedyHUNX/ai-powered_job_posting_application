@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
@@ -23,6 +23,7 @@ import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 
 export default function SigninPage() {
+  const locale = useLocale();
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
   const { getErrorMessage } = useErrorHandler();

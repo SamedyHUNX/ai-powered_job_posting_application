@@ -2,7 +2,7 @@ import { All, Controller, Req, Res } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { serve } from 'inngest/express';
 import { inngest } from './inngest.client';
-import { createUser, handlePasswordResetRequest } from './functions/auth';
+import { createUser, forgotPassword } from './functions/auth';
 
 @Controller('api/inngest')
 export class InngestController {
@@ -12,7 +12,7 @@ export class InngestController {
       client: inngest,
       functions: [
         createUser,
-        handlePasswordResetRequest,
+        forgotPassword,
         // more functions
       ],
     });

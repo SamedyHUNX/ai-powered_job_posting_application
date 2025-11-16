@@ -4,13 +4,14 @@ import {
   UnauthorizedException,
   Logger,
   BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DrizzleService } from '@/drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { UserTable } from '@/drizzle/schema';
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq, gt, or } from 'drizzle-orm';
 import { S3Service } from '@/s3/s3.service';
 import { AppService } from '@/app.service';
 import { inngest } from '@/inngest/inngest.client';
@@ -27,8 +28,31 @@ export class AuthService {
     private s3Service: S3Service,
   ) {}
 
-  async signUp(dto: SignUpDto, file: Express.Multer.File) {
+  private get db() {
+    if (!this.dbService.db) {
+      this.logger.error(
+        `Database connection not established at ${new Date().toISOString()}`,
+      );
+      throw new InternalServerErrorException({
+        code: 'SERVICE_UNAVAILABLE',
+        message: 'Service temporarily unavailable. Please try again later.',
+      });
+    }
+    return this.dbService.db;
+  }
+
+  private generateToken(payload: any) {
+    return this.jwtService.sign(payload);
+  }
+
+  async signUp(
+    dto: SignUpDto,
+    file: Express.Multer.File,
+    acceptLanguage: string,
+  ) {
     const { name, password, email, firstName, lastName } = dto;
+
+    console.log('diddy', acceptLanguage);
 
     // Validate required fields from DTO
     const requiredFields = { name, password, email, firstName, lastName, file };
@@ -46,36 +70,31 @@ export class AuthService {
     }
 
     // Check if email or username already exists
-    const [existingEmail] = await this.dbService.db
+    const existingUser = await this.db
       .select()
       .from(UserTable)
-      .where(eq(UserTable.email, email))
+      .where(or(eq(UserTable.email, email), eq(UserTable.name, name)))
       .limit(1);
 
-    if (existingEmail) {
-      this.logger.error(`User with email ${email} already exists`);
-      throw new ConflictException({
-        code: 'EXISTING_EMAIL',
-        message: 'User with this email already exists',
-      });
-    }
-
-    const [existingUsername] = await this.dbService.db
-      .select()
-      .from(UserTable)
-      .where(eq(UserTable.name, name))
-      .limit(1);
-
-    if (existingUsername) {
-      this.logger.error(`Username ${name} is already taken`);
-      throw new ConflictException({
-        code: 'EXISTING_USERNAME',
-        message: 'Username is already taken',
-      });
+    if (existingUser.length > 0) {
+      if (existingUser[0].email === email) {
+        this.logger.error(
+          `User with email ${email} trying to create an account using existing email`,
+        );
+        throw new ConflictException({
+          code: 'EXISTING_EMAIL',
+          message: 'User with this email already exists',
+        });
+      }
+      if (existingUser[0].name === name) {
+        throw new ConflictException({
+          code: 'EXISTING_USERNAME',
+          message: 'Username is already taken',
+        });
+      }
     }
 
     if (!file || !file.originalname) {
-      this.logger.error('File is missing or invalid');
       throw new ConflictException({
         code: 'MISSING_PHOTO',
         message: 'Profile image is required',
@@ -98,7 +117,7 @@ export class AuthService {
     const capitalizedName = capitalizeString(name);
 
     // Create user
-    const [user] = await this.dbService.db
+    const [user] = await this.db
       .insert(UserTable)
       .values({
         name: capitalizedName,
@@ -123,6 +142,7 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         imageUrl: user.imageUrl,
+        acceptLanguage: acceptLanguage || 'en',
       },
     });
 
@@ -140,11 +160,12 @@ export class AuthService {
     };
   }
 
+  // SignIn function
   async signIn(dto: SignInDto) {
     const { email, password } = dto;
 
     if (!email || !password) {
-      this.logger.error('User trying to signin with missing fields');
+      this.logger.error(`User with email ${email} missing required fields`);
       throw new ConflictException({
         code: 'MISSING_FIELDS',
         message: 'Missing required fields',
@@ -152,14 +173,16 @@ export class AuthService {
     }
 
     // Find user
-    const [user] = await this.dbService.db
+    const [user] = await this.db
       .select()
       .from(UserTable)
       .where(eq(UserTable.email, dto.email))
       .limit(1);
 
     if (!user) {
-      this.logger.error('User trying to signin with invalid credentials');
+      this.logger.error(
+        `User with ${email} trying to signin with invalid credentials`,
+      );
       throw new UnauthorizedException({
         code: 'INVALID_CREDENTIALS',
         message: 'Invalid credentials',
@@ -167,7 +190,7 @@ export class AuthService {
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       this.logger.error(
@@ -201,7 +224,7 @@ export class AuthService {
   }
 
   async validateUser(payload: any) {
-    const [user] = await this.dbService.db
+    const [user] = await this.db
       .select()
       .from(UserTable)
       .where(eq(UserTable.id, payload.sub))
@@ -225,13 +248,11 @@ export class AuthService {
     return user;
   }
 
-  async requestPasswordReset(email: string) {
-    const db = this.dbService.db;
-
+  async forgotPassword(email: string) {
     this.logger.log(`Password reset requested for email: ${email}`);
 
     // Find user by email
-    const [user] = await db
+    const [user] = await this.db
       .select()
       .from(UserTable)
       .where(eq(UserTable.email, email))
@@ -256,7 +277,7 @@ export class AuthService {
     // Set token and expiration (1 hour)
     const expiresAt = new Date(Date.now() + 3600000);
 
-    await db
+    await this.db
       .update(UserTable)
       .set({
         resetPasswordToken: hashedToken,
@@ -298,13 +319,11 @@ export class AuthService {
       throw new BadRequestException('Passwords do not match');
     }
 
-    const db = this.dbService.db;
-
     // Hash the token from URL to compare with stored hash
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     // Find user by reset token and check expiration
-    const [user] = await db
+    const [user] = await this.db
       .select()
       .from(UserTable)
       .where(
@@ -324,7 +343,7 @@ export class AuthService {
     const hashedPassword = await hashPassword(newPassword);
 
     // Update user's password and clear reset token fields
-    await db
+    await this.db
       .update(UserTable)
       .set({
         password: hashedPassword,
@@ -339,11 +358,9 @@ export class AuthService {
   }
 
   async validateResetToken(token: string) {
-    const db = this.dbService.db;
-
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
-    const [user] = await db
+    const [user] = await this.db
       .select()
       .from(UserTable)
       .where(
@@ -355,9 +372,5 @@ export class AuthService {
       .limit(1);
 
     return !!user;
-  }
-
-  private generateToken(payload: any) {
-    return this.jwtService.sign(payload);
   }
 }

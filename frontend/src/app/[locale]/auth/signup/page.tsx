@@ -19,11 +19,12 @@ import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
 import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
 
 export default function SignUpPage() {
+  const locale = useLocale();
   const signUpT = useTranslations("signUp");
   const validationT = useTranslations("validations");
   const { signUp, isSigningUp, signUpError } = useAuth();
@@ -49,7 +50,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (signUpError) {
-      const errorMessage = getErrorMessage(signUpError, "signUp");
+      const errorMessage = getErrorMessage(signUpError);
       toast.error(errorMessage);
     }
   }, [signUpError, getErrorMessage]);
@@ -81,7 +82,7 @@ export default function SignUpPage() {
     formData.append("password", data.password);
     formData.append("image", data.image);
 
-    signUp(formData);
+    signUp({ formData, locale });
   };
 
   return (

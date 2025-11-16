@@ -30,17 +30,23 @@ export function useAuth() {
 
   // Sign up mutation
   const signUpMutation = useMutation({
-    mutationFn: (data: FormData) => authApi.signUp(data),
+    mutationFn: ({
+      formData,
+      locale,
+    }: {
+      formData: FormData;
+      locale: string;
+    }) => authApi.signUp(formData, locale),
     onSuccess: () => {
       router.push("/auth/signin");
     },
   });
 
-  // Request password reset
+  // Forgot password reset
   const forgotPasswordMutation = useMutation({
     mutationFn: (email: string) => authApi.forgotPassword(email),
-    onSuccess: () => {
-      // Do nothing
+    onSuccess: (data) => {
+      router.push(`/auth/email-sent/${encodeURIComponent(data.email)}`);
     },
   });
 

@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -37,8 +38,12 @@ export class AuthController {
       },
     }),
   )
-  signUp(@Body() dto: SignUpDto, @UploadedFile() file: Express.Multer.File) {
-    return this.authService.signUp(dto, file);
+  signUp(
+    @Body() dto: SignUpDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Headers('accept-language') acceptLanguage: string,
+  ) {
+    return this.authService.signUp(dto, file, acceptLanguage);
   }
 
   @Post('signin')
@@ -55,13 +60,17 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
-    return this.authService.requestPasswordReset(dto.email);
+    return this.authService.forgotPassword(dto.email);
   }
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   async resetPassword(@Body() dto: ResetPasswordDto) {
-    return this.authService.resetPassword(dto.token, dto.newPassword, dto.newConfirmPassword);
+    return this.authService.resetPassword(
+      dto.token,
+      dto.newPassword,
+      dto.newConfirmPassword,
+    );
   }
 
   @Get('validate-reset-token')

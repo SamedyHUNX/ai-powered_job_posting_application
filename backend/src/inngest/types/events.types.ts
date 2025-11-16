@@ -5,6 +5,7 @@ export type UserCreatedData = {
   firstName: string;
   lastName: string;
   imageUrl: string;
+  acceptLanguage: string;
 };
 
 export type UserUpdatedData = {
