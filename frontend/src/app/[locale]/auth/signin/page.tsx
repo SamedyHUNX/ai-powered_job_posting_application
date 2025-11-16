@@ -39,7 +39,7 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (signInError) {
-      const errorMessage = getErrorMessage(signInError, "signIn");
+      const errorMessage = getErrorMessage(signInError);
       toast.error(errorMessage);
     }
   }, [signInError, getErrorMessage]);

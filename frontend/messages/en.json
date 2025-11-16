@@ -3,6 +3,7 @@
     "imageRequired": "Missing profile photo",
     "nameRequired": "Missing username",
     "firstNameRequired": "Missing firstname",
+    "lastNameRequired": "Missing lastname",
     "invalidEmail": "Missing email",
     "passwordMinLength": "Password must be at least 8 characters"
   },

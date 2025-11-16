@@ -20,6 +20,7 @@ import { LogInIcon } from "lucide-react";
 import { SignedOut } from "@/services/auth/components/SignedOut";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SignedIn } from "@/services/auth/components/SignedIn";
+import Greeting from "@/components/ui/Greeting";
 
 export default function HomePage() {
   const t = useTranslations("homePage");
@@ -31,7 +32,7 @@ export default function HomePage() {
           <Sidebar collapsible="icon" className="overflow-hidden">
             <SidebarHeader className="flex-row">
               <SidebarTrigger />
-              <span className="mt-1">SamedyX</span>
+              <span className="mt-1">JobXHub</span>
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
@@ -57,7 +58,9 @@ export default function HomePage() {
               </SidebarFooter>
             </SignedIn>
           </Sidebar>
-          <main className="flex-1">Homepage</main>
+          <main className="flex-1">
+            <Greeting userName="Samedyhun" />
+          </main>
         </AppSidebarClient>
       </SidebarProvider>
     </PrivateRoute>
