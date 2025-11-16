@@ -23,7 +23,6 @@ import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 
 export default function SigninPage() {
-  const locale = useLocale();
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError } = useAuth();
   const { getErrorMessage } = useErrorHandler();

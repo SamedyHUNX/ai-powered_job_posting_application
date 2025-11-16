@@ -38,11 +38,15 @@ export const forgotPassword = inngest.createFunction(
   },
   { event: 'jobxhub/user.reset_password_requested' },
   async ({ event, step }) => {
-    const { email, resetUrl } = event.data;
+    const { email, resetUrl, acceptLanguage } = event.data;
     const emailService = new EmailService();
 
     await step.run('send-password-reset-email', async () => {
-      await emailService.sendPasswordResetEmail(email, resetUrl);
+      await emailService.sendPasswordResetEmail(
+        email,
+        resetUrl,
+        acceptLanguage,
+      );
 
       return { emailSent: true };
     });

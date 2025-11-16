@@ -248,7 +248,7 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(email: string) {
+  async forgotPassword(email: string, acceptLanguage: string) {
     this.logger.log(`Password reset requested for email: ${email}`);
 
     // Find user by email
@@ -286,7 +286,7 @@ export class AuthService {
       .where(eq(UserTable.id, user.id));
 
     // Send email with reset link
-    const resetUrl = `${process.env.FRONTEND_URL}/en/auth/reset-password?token=${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL}/${acceptLanguage}/auth/reset-password?token=${resetToken}`;
 
     this.logger.log(
       `Password reset requested for email: ${email}. Reset URL: ${resetUrl}`,
@@ -299,6 +299,7 @@ export class AuthService {
       data: {
         email,
         resetUrl,
+        acceptLanguage,
       },
     });
 

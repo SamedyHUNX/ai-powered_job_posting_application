@@ -24,6 +24,7 @@ export type JobPostedData = {
 export type ResetPasswordRequestData = {
   email: string;
   resetUrl: string;
+  acceptLanguage: string;
 };
 
 export type Events = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { LanguageSwitcher } from "@/components/customs/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 

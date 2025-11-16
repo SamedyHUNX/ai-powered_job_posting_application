@@ -65,27 +65,70 @@ export class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
-  async sendPasswordResetEmail(to: string, resetUrl: string) {
+  async sendPasswordResetEmail(
+    to: string,
+    resetUrl: string,
+    acceptLanguage: string,
+  ) {
+    const translations = {
+      en: {
+        subject: 'Password Reset Request',
+        title: 'Password Reset Request',
+        message:
+          'You requested a password reset. Click the button below to reset your password:',
+        button: 'Reset Password',
+        expiry: 'This link will expire in 1 hour.',
+        ignore: "If you didn't request this, please ignore this email.",
+        fallback:
+          "If the button doesn't work, copy and paste this link into your browser:",
+      },
+      kh: {
+        subject: 'ការស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ',
+        title: 'ការស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ',
+        message:
+          'អ្នកបានស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ។ សូមចុចប៊ូតុងខាងក្រោមដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ៖',
+        button: 'កំណត់ពាក្យសម្ងាត់ឡើងវិញ',
+        expiry: 'តំណនេះនឹងផុតកំណត់ក្នុងរយៈពេល 1 ម៉ោង។',
+        ignore: 'ប្រសិនបើអ្នកមិនបានស្នើសុំនេះទេ សូមអើពើអ៊ីមែលនេះ។',
+        fallback:
+          'ប្រសិនបើប៊ូតុងមិនដំណើរការទេ សូមចម្លងនិងដាក់តំណនេះទៅក្នុងកម្មវិធីរុករករបស់អ្នក៖',
+      },
+      de: {
+        subject: 'Anfrage zum Zurücksetzen des Passworts',
+        title: 'Anfrage zum Zurücksetzen des Passworts',
+        message:
+          'Sie haben das Zurücksetzen Ihres Passworts angefordert. Klicken Sie auf die Schaltfläche unten, um Ihr Passwort zurückzusetzen:',
+        button: 'Passwort zurücksetzen',
+        expiry: 'Dieser Link läuft in 1 Stunde ab.',
+        ignore:
+          'Wenn Sie dies nicht angefordert haben, ignorieren Sie bitte diese E-Mail.',
+        fallback:
+          'Wenn die Schaltfläche nicht funktioniert, kopieren Sie diesen Link und fügen Sie ihn in Ihren Browser ein:',
+      },
+    };
+
+    const lang = translations[acceptLanguage] || translations.en;
+
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to,
-      subject: 'Password Reset Request',
+      subject: lang.subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #333;">Password Reset Request</h1>
-          <p>You requested a password reset. Click the button below to reset your password:</p>
+          <h1 style="color: #333;">${lang.title}</h1>
+          <p>${lang.message}</p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${resetUrl}" 
                style="background-color: #4CAF50; color: white; padding: 14px 28px; 
                       text-decoration: none; border-radius: 4px; display: inline-block;">
-              Reset Password
+              ${lang.button}
             </a>
           </div>
-          <p style="color: #666;">This link will expire in 1 hour.</p>
-          <p style="color: #666;">If you didn't request this, please ignore this email.</p>
+          <p style="color: #666;">${lang.expiry}</p>
+          <p style="color: #666;">${lang.ignore}</p>
           <hr style="border: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            If the button doesn't work, copy and paste this link into your browser:<br>
+            ${lang.fallback}<br>
             <a href="${resetUrl}">${resetUrl}</a>
           </p>
         </div>

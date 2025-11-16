@@ -59,17 +59,22 @@ export class AuthController {
 
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
-  async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
-    return this.authService.forgotPassword(dto.email);
+  async requestPasswordReset(
+    @Body() { email }: RequestPasswordResetDto,
+    @Headers('accept-language') acceptLanguage: string,
+  ) {
+    return this.authService.forgotPassword(email, acceptLanguage);
   }
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  async resetPassword(@Body() dto: ResetPasswordDto) {
+  async resetPassword(
+    @Body() { token, newPassword, newConfirmPassword }: ResetPasswordDto,
+  ) {
     return this.authService.resetPassword(
-      dto.token,
-      dto.newPassword,
-      dto.newConfirmPassword,
+      token,
+      newPassword,
+      newConfirmPassword,
     );
   }
 

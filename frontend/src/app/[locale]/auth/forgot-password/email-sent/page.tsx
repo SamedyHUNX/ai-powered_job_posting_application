@@ -1,10 +1,15 @@
+"use client";
+
 import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function EmailSentPage() {
   const router = useRouter();
-  const { email } = router.query;
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const decodedEmail = email ? decodeURIComponent(email) : "";
+
   return (
     <PublicRoute>
       <div className="space-y-8">
@@ -30,8 +35,8 @@ export default function EmailSentPage() {
           </h2>
           <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
             We've sent a password reset link to{" "}
-            <strong className="text-white">{email}</strong>. Please check your
-            inbox and click the link to reset your password.
+            <strong className="text-white">{decodedEmail}</strong>. Please check
+            your inbox and click the link to reset your password.
           </p>
         </div>
 
@@ -65,7 +70,7 @@ export default function EmailSentPage() {
 
           <div className="mt-8 pt-6 border-t border-gray-800 space-y-3">
             <button
-              onClick={() => setEmailSent(false)}
+              onClick={() => router.push("/auth/forgot-password")}
               className="w-full text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
             >
               Didn't receive the email? Resend

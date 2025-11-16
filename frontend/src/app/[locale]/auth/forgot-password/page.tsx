@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import {
   Form,
@@ -24,16 +24,19 @@ import {
   ForgotPasswordSchemaData,
 } from "@/schemas/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
-import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
-  const router = useRouter();
+  const validationT = useTranslations("validation");
+  const locale = useLocale();
   const { forgotPassword, isRequestingForgotPassword, forgotPasswordError } =
     useAuth();
   const { getErrorMessage } = useErrorHandler();
 
-  const forgotPasswordFormSchema = useMemo(() => forgotPasswordSchema(t), [t]);
+  const forgotPasswordFormSchema = useMemo(
+    () => forgotPasswordSchema(validationT),
+    [validationT]
+  );
 
   const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
     resolver: zodResolver(forgotPasswordFormSchema),
@@ -50,7 +53,7 @@ export default function ForgotPasswordPage() {
   }, [forgotPasswordError, getErrorMessage]);
 
   const onSubmit = async ({ email }: ForgotPasswordSchemaData) => {
-    forgotPassword(email);
+    forgotPassword({ email, locale });
   };
 
   return (

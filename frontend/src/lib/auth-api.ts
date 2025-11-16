@@ -1,5 +1,11 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
+import { SignInRequest } from "@/types/request.auth.type";
+import {
+  AuthResponse,
+  ForgotPasswordResponse,
+  ResetPasswordResponse,
+} from "@/types/response.auth.type";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -9,37 +15,6 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-export interface SignInRequest {
-  email: string;
-  password: string;
-}
-
-export interface SignUpRequest {
-  name: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  success: boolean;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
-  };
-  token: string;
-}
-
-export interface ForgotPasswordResponse {
-  success: boolean;
-  message: string;
-}
 
 export const authApi = {
   // Signin
@@ -68,10 +43,18 @@ export const authApi = {
     return data;
   },
 
-  forgotPassword: async (email: string): Promise<ForgotPasswordResponse> => {
+  forgotPassword: async (
+    email: string,
+    locale: string
+  ): Promise<ForgotPasswordResponse> => {
     const { data } = await api.post<ForgotPasswordResponse>(
       "/auth/forgot-password",
-      { email }
+      { email },
+      {
+        headers: {
+          "Accept-Language": locale,
+        },
+      }
     );
     return data;
   },
@@ -80,8 +63,8 @@ export const authApi = {
     token: string,
     newPassword: string,
     confirmPassword: string
-  ): Promise<ForgotPasswordResponse> => {
-    const { data } = await api.post<ForgotPasswordResponse>(
+  ): Promise<ResetPasswordResponse> => {
+    const { data } = await api.post<ResetPasswordResponse>(
       "/auth/reset-password",
       { token, newPassword, confirmPassword }
     );

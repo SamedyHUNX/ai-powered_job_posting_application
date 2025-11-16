@@ -20,7 +20,7 @@ import { LogInIcon } from "lucide-react";
 import { SignedOut } from "@/services/auth/components/SignedOut";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SignedIn } from "@/services/auth/components/SignedIn";
-import Greeting from "@/components/ui/Greeting";
+import Greeting from "@/components/customs/Greeting";
 
 export default function HomePage() {
   const t = useTranslations("homePage");

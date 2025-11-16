@@ -5,9 +5,10 @@ import {
   logout as logoutAction,
   setUser,
 } from "@/store/auth-slice";
-import { authApi, SignInRequest } from "@/lib/auth-api";
+import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
+import { SignInRequest } from "@/types/request.auth.type";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -44,9 +45,14 @@ export function useAuth() {
 
   // Forgot password reset
   const forgotPasswordMutation = useMutation({
-    mutationFn: (email: string) => authApi.forgotPassword(email),
+    mutationFn: ({ email, locale }: { email: string; locale: string }) =>
+      authApi.forgotPassword(email, locale),
     onSuccess: (data) => {
-      router.push(`/auth/email-sent/${encodeURIComponent(data.email)}`);
+      router.push(
+        `/auth/forgot-password/email-sent?email=${encodeURIComponent(
+          data.email
+        )}`
+      );
     },
   });
 
