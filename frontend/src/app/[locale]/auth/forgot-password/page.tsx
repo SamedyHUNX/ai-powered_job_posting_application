@@ -107,7 +107,7 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
 
-            <Button
+            <button
               type="submit"
               disabled={isRequestingForgotPassword}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20"
@@ -139,7 +139,7 @@ export default function ForgotPasswordPage() {
               ) : (
                 t("buttonText")
               )}
-            </Button>
+            </button>
           </form>
         </Form>
       </div>
