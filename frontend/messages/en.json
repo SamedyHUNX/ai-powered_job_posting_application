@@ -5,7 +5,12 @@
     "firstNameRequired": "Missing firstname",
     "lastNameRequired": "Missing lastname",
     "invalidEmail": "Missing email",
-    "passwordMinLength": "Password must be at least 8 characters"
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordLowercase": "Password must have at least 1 lowercase character",
+    "passwordUppercase": "Password must have at least 1 uppercase character",
+    "passwordNumber": "Password must have at least 1 number",
+    "confirmPasswordRequired": "Confirm password is required",
+    "passwordsMustMatch": "Passwords must match"
   },
   "authLayout": {
     "title": "Welcome to JobXHub",
@@ -73,6 +78,20 @@
     "rememberPassword": "Remember your password?",
     "resend": "Didn't receive the email? Resend",
     "signIn": "Sign In"
+  },
+  "resetPassword": {
+    "title": "Create New Password",
+    "titleDesc": "Enter your new password below",
+    "newPasswordLabel": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "buttonText": "Reset Password",
+    "resettingText": "Resetting password...",
+    "rememberPassword": "Remember your password?",
+    "signIn": "Sign In",
+    "resetSuccess": "Your password has been reset successfully. You can now sign in with your new password.",
+    "resetError": "An error occurred while resetting your password. Please try again."
   },
   "apiErrors": {
     "MISSING_FIELDS": "Please fill in all required fields",

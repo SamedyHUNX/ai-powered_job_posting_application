@@ -5,7 +5,12 @@
     "firstNameRequired": "Bitte geben Sie den Namen ein",
     "lastNameRequired": "Bitte geben Sie den Nachnamen ein",
     "invalidEmail": "Bitte geben Sie die korrekte E-Mail-Adresse ein",
-    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein"
+    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "passwordLowercase": "Das Passwort muss mindestens 1 Kleinbuchstaben enthalten",
+    "passwordUppercase": "Das Passwort muss mindestens 1 Großbuchstaben enthalten",
+    "passwordNumber": "Das Passwort muss mindestens 1 Zahl enthalten",
+    "confirmPasswordRequired": "Bestätigung des Passworts ist erforderlich",
+    "passwordsMustMatch": "Die Passwörter müssen übereinstimmen"
   },
   "authLayout": {
     "title": "Willkommen bei JobXHub",
@@ -73,6 +78,20 @@
     "rememberPassword": "Merken Sie sich Ihr Passwort?",
     "resend": "E-Mail nicht erhalten? Erneut senden",
     "signIn": "Eintragen"
+  },
+  "resetPassword": {
+    "title": "Neues Passwort erstellen",
+    "titleDesc": "Geben Sie unten Ihr neues Passwort ein",
+    "newPasswordLabel": "Neues Passwort",
+    "newPasswordPlaceholder": "Geben Sie Ihr neues Passwort ein",
+    "confirmPasswordLabel": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Bestätigen Sie Ihr neues Passwort",
+    "buttonText": "Passwort zurücksetzen",
+    "resettingText": "Passwort wird zurückgesetzt...",
+    "rememberPassword": "Merken Sie sich Ihr Passwort?",
+    "signIn": "Eintragen",
+    "resetSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt mit Ihrem neuen Passwort anmelden.",
+    "resetError": "Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   },
   "apiErrors": {
     "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",

@@ -28,18 +28,18 @@ import {
 
 export default function ResetPasswordPage() {
   const t = useTranslations("resetPassword");
+  const validationT = useTranslations("validations");
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const { resetPassword, isResettingPassword } = useAuth();
+  const { resetPassword, isResettingPassword, resetPasswordError } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const resetPasswordFormSchema = useMemo(
-    () => createResetPasswordSchema(t),
-    [t]
+    () => createResetPasswordSchema(validationT),
+    [validationT]
   );
 
   const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
@@ -56,15 +56,18 @@ export default function ResetPasswordPage() {
     }
   }, [token]);
 
-  const onSubmit = (values: z.infer<typeof resetPasswordFormSchema>) => {
+  const onSubmit = ({
+    newPassword,
+    confirmPassword,
+  }: z.infer<typeof resetPasswordFormSchema>) => {
     if (!token) {
       toast.error("Invalid or missing reset token");
       return;
     }
     resetPassword({
       token,
-      newPassword: values.newPassword,
-      confirmPassword: values.confirmPassword,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
     });
   };
 
@@ -74,10 +77,10 @@ export default function ResetPasswordPage() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
-            Create New Password
+            {t("title")}
           </h2>
           <p className="mt-3 text-base text-gray-400 max-w-md mx-auto">
-            Enter your new password below
+            {t("titleDesc")}
           </p>
         </div>
 
@@ -91,14 +94,14 @@ export default function ResetPasswordPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300 font-medium">
-                      New Password
+                      {t("newPasswordLabel")}
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           {...field}
                           type={showPassword ? "text" : "password"}
-                          placeholder="Enter new password"
+                          placeholder={t("newPasswordPlaceholder")}
                           className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                         />
                         <button
@@ -125,14 +128,14 @@ export default function ResetPasswordPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-300 font-medium">
-                      Confirm Password
+                      {t("confirmPasswordLabel")}
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           {...field}
                           type={showConfirmPassword ? "text" : "password"}
-                          placeholder="Confirm new password"
+                          placeholder={t("confirmPasswordPlaceholder")}
                           className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                         />
                         <button
@@ -197,20 +200,20 @@ export default function ResetPasswordPage() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Resetting Password...
+                  {t("resettingText")}
                 </span>
               ) : (
-                "Reset Password"
+                t("buttonText")
               )}
             </Button>
 
             <p className="text-sm text-gray-400 text-center">
-              Remember your password?{" "}
+              {t("rememberPassword")}{" "}
               <Link
                 href="/auth/signin"
                 className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
               >
-                Back to Sign In
+                {t("signIn")}
               </Link>
             </p>
           </form>

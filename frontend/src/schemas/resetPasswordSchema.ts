@@ -5,14 +5,14 @@ export const createResetPasswordSchema = (t: (key: string) => string) => {
     .object({
       newPassword: z
         .string()
-        .min(8, t("errors.passwordMinLength"))
-        .regex(/[A-Z]/, t("errors.passwordUppercase"))
-        .regex(/[a-z]/, t("errors.passwordLowercase"))
-        .regex(/[0-9]/, t("errors.passwordNumber")),
-      confirmPassword: z.string().min(1, t("errors.confirmPasswordRequired")),
+        .min(8, t("passwordMinLength"))
+        .regex(/[A-Z]/, t("passwordUppercase"))
+        .regex(/[a-z]/, t("passwordLowercase"))
+        .regex(/[0-9]/, t("passwordNumber")),
+      confirmPassword: z.string().min(1, t("confirmPasswordRequired")),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
-      message: t("errors.passwordsDontMatch"),
+      message: t("passwordsMustMatch"),
       path: ["confirmPassword"],
     });
 };

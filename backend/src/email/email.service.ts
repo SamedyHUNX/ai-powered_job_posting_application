@@ -77,7 +77,7 @@ export class EmailService {
         message:
           'You requested a password reset. Click the button below to reset your password:',
         button: 'Reset Password',
-        expiry: 'This link will expire in 1 hour.',
+        expiry: 'This link will expire in 15 minutes',
         ignore: "If you didn't request this, please ignore this email.",
         fallback:
           "If the button doesn't work, copy and paste this link into your browser:",
@@ -85,10 +85,9 @@ export class EmailService {
       kh: {
         subject: 'ការស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ',
         title: 'ការស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ',
-        message:
-          'អ្នកបានស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ។ សូមចុចប៊ូតុងខាងក្រោមដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ៖',
+        message: `អ្នកបានស្នើសុំកំណត់ពាក្យសម្ងាត់ឡើងវិញ។ សូមចុចប៊ូតុងខាងក្រោមដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ៖ ${resetUrl}`,
         button: 'កំណត់ពាក្យសម្ងាត់ឡើងវិញ',
-        expiry: 'តំណនេះនឹងផុតកំណត់ក្នុងរយៈពេល 1 ម៉ោង។',
+        expiry: 'តំណនេះនឹងផុតកំណត់ក្នុងរយៈពេល 15 នាទី',
         ignore: 'ប្រសិនបើអ្នកមិនបានស្នើសុំនេះទេ សូមអើពើអ៊ីមែលនេះ។',
         fallback:
           'ប្រសិនបើប៊ូតុងមិនដំណើរការទេ សូមចម្លងនិងដាក់តំណនេះទៅក្នុងកម្មវិធីរុករករបស់អ្នក៖',
@@ -99,7 +98,7 @@ export class EmailService {
         message:
           'Sie haben das Zurücksetzen Ihres Passworts angefordert. Klicken Sie auf die Schaltfläche unten, um Ihr Passwort zurückzusetzen:',
         button: 'Passwort zurücksetzen',
-        expiry: 'Dieser Link läuft in 1 Stunde ab.',
+        expiry: 'Dieser Link läuft in 15 Minuten ab.',
         ignore:
           'Wenn Sie dies nicht angefordert haben, ignorieren Sie bitte diese E-Mail.',
         fallback:
