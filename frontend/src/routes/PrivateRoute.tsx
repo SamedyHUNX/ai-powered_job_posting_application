@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-
 import { ReactNode, useEffect } from "react";
 
 export default function PrivateRoute({ children }: { children: ReactNode }) {
