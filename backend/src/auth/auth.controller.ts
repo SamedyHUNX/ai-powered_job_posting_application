@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Query,
   Headers,
+  Ip,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -62,8 +63,9 @@ export class AuthController {
   async requestPasswordReset(
     @Body() { email }: RequestPasswordResetDto,
     @Headers('accept-language') acceptLanguage: string,
+    @Ip() ipAddress: string,
   ) {
-    return this.authService.forgotPassword(email, acceptLanguage);
+    return this.authService.forgotPassword(email, acceptLanguage, ipAddress);
   }
 
   @Post('reset-password')

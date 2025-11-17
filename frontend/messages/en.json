@@ -67,7 +67,7 @@
     "title": "Check Your Email",
     "description1": "We've sent a password reset link to",
     "description2": "Please check your email and click the link to reset your password",
-    "warning1": "The link will expire in 1 hour for security purposes",
+    "warning1": "The link will expire in 15 minutes for security purposes",
     "warning2": "Didn't receive the email? Check your spam folder",
     "warning3": "Click the link in the email to complete your password reset",
     "rememberPassword": "Remember your password?",

@@ -67,7 +67,7 @@
     "title": "Überprüfen Sie Ihre E-Mails",
     "description1": "Wir haben einen Link zum Zurücksetzen des Passworts an folgende Adresse gesendet: ",
     "description2": "Bitte überprüfen Sie Ihre E-Mails und klicken Sie auf den Link, um Ihr Passwort zurückzusetzen",
-    "warning1": "Aus Sicherheitsgründen ist der Link nur eine Stunde gültig",
+    "warning1": "Aus Sicherheitsgründen ist der Link nur 15 Minuten gültig",
     "warning2": "Sie haben die E-Mail nicht erhalten? Überprüfen Sie Ihren Spam-Ordner",
     "warning3": "Klicken Sie auf den Link in der E-Mail, um Ihre Passwortzurücksetzung abzuschließen",
     "rememberPassword": "Merken Sie sich Ihr Passwort?",

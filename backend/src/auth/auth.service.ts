@@ -5,6 +5,7 @@ import {
   Logger,
   BadRequestException,
   InternalServerErrorException,
+  Inject,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DrizzleService } from '@/drizzle/drizzle.service';
@@ -18,11 +19,15 @@ import { inngest } from '@/inngest/inngest.client';
 import { hashPassword } from '@/drizzle/utils/password.utils';
 import { capitalizeString } from '@/utils/utils';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
+import { Redis } from 'ioredis';
+import { REDIS_CLIENT } from '../redis/redis.module';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AppService.name);
   constructor(
+    @Inject(REDIS_CLIENT)
+    private readonly redis: Redis,
     private jwtService: JwtService,
     private dbService: DrizzleService,
     private s3Service: S3Service,
@@ -248,8 +253,43 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(email: string, acceptLanguage: string) {
+  async forgotPassword(
+    email: string,
+    acceptLanguage: string,
+    ipAddress: string,
+  ) {
     this.logger.log(`Password reset requested for email: ${email}`);
+
+    // 1. Rate limit by IP (global)
+    const ipRateLimitKey = `pwd_reset_ip:${ipAddress}`;
+    const ipAttempts = await this.redis.incr(ipRateLimitKey);
+    if (ipAttempts === 1) {
+      await this.redis.expire(ipRateLimitKey, 3600);
+    }
+    if (ipAttempts > 10) {
+      this.logger.warn(
+        `Too many password reset requests from IP: ${ipAddress}`,
+      );
+      throw new BadRequestException({
+        code: 'TOO_MANY_REQUESTS',
+        message: 'Too many requests from this IP',
+      });
+    }
+
+    // 2. Rate limit by email
+    const emailRateLimitKey = `pwd_reset_email:${email}`;
+    const emailAttempts = await this.redis.incr(emailRateLimitKey);
+    if (emailAttempts === 1) {
+      await this.redis.expire(emailRateLimitKey, 3600);
+    }
+    if (emailAttempts > 3) {
+      this.logger.warn(`Rate limit exceeded for email: ${email}`);
+      // Still return success to prevent enumeration
+      return {
+        success: true,
+        message: 'If an account exists, a reset link has been sent',
+      };
+    }
 
     // Find user by email
     const [user] = await this.db
@@ -260,8 +300,19 @@ export class AuthService {
 
     if (!user) {
       this.logger.warn(
-        `Password reset requested for non-existent email: ${email}`,
+        `Password reset requested for non-existent email: ${email}!`,
       );
+      return {
+        success: true,
+        message: 'If an account exists, a reset link has been sent',
+      };
+    }
+
+    // 3. Check for recent token
+    if (
+      user.resetPasswordExpires &&
+      user.resetPasswordExpires > new Date(Date.now() - 300000)
+    ) {
       return {
         success: true,
         message: 'If an account exists, a reset link has been sent',
@@ -275,7 +326,7 @@ export class AuthService {
       .digest('hex');
 
     // Set token and expiration (1 hour)
-    const expiresAt = new Date(Date.now() + 3600000);
+    const expiresAt = new Date(Date.now() + 900000); // 15 minutes
 
     await this.db
       .update(UserTable)
@@ -287,11 +338,6 @@ export class AuthService {
 
     // Send email with reset link
     const resetUrl = `${process.env.FRONTEND_URL}/${acceptLanguage}/auth/reset-password?token=${resetToken}`;
-
-    this.logger.log(
-      `Password reset requested for email: ${email}. Reset URL: ${resetUrl}`,
-    );
-    this.logger.log(`Reset token (for testing purposes only): ${resetToken}`);
 
     // TRIGGER INNGEST EVENT
     await inngest.send({

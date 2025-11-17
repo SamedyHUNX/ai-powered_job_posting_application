@@ -7,10 +7,12 @@ import { UploadController } from './s3/upload.controller';
 import { WinstonModule } from 'nest-winston';
 import { createWinstonConfig } from './logger/winston.config';
 import { InngestModule } from './inngest/inngest.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     WinstonModule.forRoot(createWinstonConfig()),
+    RedisModule,
     AuthModule,
     S3Module,
     InngestModule,
