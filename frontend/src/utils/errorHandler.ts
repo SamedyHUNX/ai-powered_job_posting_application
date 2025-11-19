@@ -7,8 +7,6 @@ export function useErrorHandler() {
     const errorCode =
       error.response?.data?.code || error.code || "UNKNOWN_ERROR";
 
-    console.log(errorCode);
-
     return t(`apiErrors.${errorCode}`, {
       defaultValue: error.message || t(`apiErrors.UNKNOWN_ERROR`),
     });
