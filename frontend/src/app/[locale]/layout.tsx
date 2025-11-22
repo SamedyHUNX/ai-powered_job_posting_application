@@ -6,6 +6,7 @@ import "./globals.css";
 import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { ReactNode } from "react";
+import { ThemeProvider } from "@/components/customs/ThemeProvider";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,10 +31,17 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className="dark">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Providers>
-            <Toaster richColors theme="light" />
-            {children}
-          </Providers>
+          <ThemeProvider
+            attribute={"class"}
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Providers>
+              <Toaster richColors theme="light" />
+              {children}
+            </Providers>
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
