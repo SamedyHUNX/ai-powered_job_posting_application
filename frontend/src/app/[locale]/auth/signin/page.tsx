@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
@@ -53,22 +53,24 @@ export default function SigninPage() {
       <div className="mx-auto max-w-lg space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             {t("title")}
           </h2>
-          <p className="mt-2 text-sm text-gray-400">{t("titleDesc")}</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            {t("titleDesc")}
+          </p>
         </div>
 
         {/* Form */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-5 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+            <div className="space-y-5 rounded-lg bg-white dark:bg-gray-900 p-8 shadow-xl border border-gray-200 dark:border-gray-800">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">
+                    <FormLabel className="text-gray-700 dark:text-gray-300">
                       {t("emailLabel")}
                     </FormLabel>
                     <FormControl>
@@ -76,10 +78,10 @@ export default function SigninPage() {
                         {...field}
                         type="email"
                         placeholder={t("emailPlaceholder")}
-                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
-                    <FormMessage className="text-red-400" />
+                    <FormMessage className="text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -89,7 +91,7 @@ export default function SigninPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300">
+                    <FormLabel className="text-gray-700 dark:text-gray-300">
                       {t("passwordLabel")}
                     </FormLabel>
                     <FormControl>
@@ -97,10 +99,10 @@ export default function SigninPage() {
                         {...field}
                         type="password"
                         placeholder={t("passwordPlaceholder")}
-                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
-                    <FormMessage className="text-red-400" />
+                    <FormMessage className="text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -108,7 +110,7 @@ export default function SigninPage() {
               <div className="flex items-center justify-between pt-1">
                 <Link
                   href="/auth/forgot-password"
-                  className="text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
                 >
                   {t("forgotPassword")}
                 </Link>
@@ -118,17 +120,17 @@ export default function SigninPage() {
             <Button
               type="submit"
               disabled={isSigningIn}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 transition-colors"
+              className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2.5 transition-colors"
             >
               {isSigningIn ? t("loadingText") : t("buttonText")}
             </Button>
 
             <div className="text-center">
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {t("dontHaveAnAccount")}{" "}
                 <Link
                   href="/auth/signup"
-                  className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
+                  className="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
                 >
                   {t("signUp")}
                 </Link>

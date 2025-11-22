@@ -1,6 +1,7 @@
 "use client";
 
 import { LanguageSwitcher } from "@/components/customs/LanguageSwitcher";
+import { ThemeToggle } from "@/components/customs/ThemeToggle";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
@@ -8,7 +9,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
   const t = useTranslations("authLayout");
 
   return (
-    <div className="flex min-h-screen bg-gray-950">
+    <div className="flex min-h-screen bg-background">
       {/* Left side - Form Content */}
       <div className="flex flex-1 items-center justify-center px-2 sm:px-4 lg:px-2 py-12">
         <div className="w-full max-w-lg">{children}</div>
@@ -16,8 +17,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
       {/* Right side - Image/Branding */}
       <div className="hidden lg:flex lg:flex-1 relative h-screen">
-        {/* Language Switcher - Positioned at top right */}
-        <div className="absolute top-6 right-6 z-10">
+        {/* Top right controls - Language Switcher and Theme Toggle */}
+        <div className="absolute top-6 right-6 z-10 flex items-center gap-3">
+          <ThemeToggle />
           <LanguageSwitcher />
         </div>
 
