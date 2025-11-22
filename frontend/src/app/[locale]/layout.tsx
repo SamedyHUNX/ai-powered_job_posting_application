@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import "./globals.css";
 import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
+import { ReactNode } from "react";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -14,7 +15,7 @@ export default async function LocaleLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { locale: string };
 }) {
   const { locale } = await params;
