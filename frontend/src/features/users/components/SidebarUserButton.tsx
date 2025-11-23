@@ -13,13 +13,27 @@ export function SidebarUserButton() {
 function SidebarUserSuspense() {
   const { profile, isLoading, error } = useProfile();
 
-  console.log(profile);
+  // Handle loading state
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
+  // Handle error state
+  if (error) {
+    return <div>Error loading profile</div>;
+  }
+
+  // Handle undefined profile (no token or failed to load)
+  if (!profile) {
+    return null;
+  }
+
+  // Now profile is guaranteed to exist
   return (
     <SidebarUserButtonClient
-      email="samedy@gmail.com"
-      name="samedy"
-      imageUrl=""
+      email={profile.email}
+      name={profile.name}
+      imageUrl={profile.imageUrl}
     />
   );
 }
