@@ -11,6 +11,7 @@ import {
   Query,
   Headers,
   Ip,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -22,6 +23,8 @@ import {
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { plainToClass } from 'class-transformer';
+import { UserResponseDto } from '@/users/dtos/user-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -54,8 +57,9 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   getMe(@CurrentUser() user: any) {
-    return user;
+    return plainToClass(UserResponseDto, user);
   }
 
   @Post('forgot-password')

@@ -1,11 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { ReactNode, Suspense } from "react";
 
-interface SignedInProps {
-  children: ReactNode;
-}
-
-export function SignedIn({ children }: SignedInProps) {
+export function SignedIn({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) return null;

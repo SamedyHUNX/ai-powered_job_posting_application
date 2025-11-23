@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function Greeting({ userName = "there" }) {
+export const Greeting = ({ userName = "there" }) => {
   const [greeting, setGreeting] = useState("Hello");
 
   useEffect(() => {
@@ -24,4 +24,4 @@ export default function Greeting({ userName = "there" }) {
       {greeting}, {userName}! 👋
     </h1>
   );
-}
+};

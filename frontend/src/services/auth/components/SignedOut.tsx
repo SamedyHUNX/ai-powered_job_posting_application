@@ -1,11 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { ReactNode, Suspense } from "react";
 
-interface SignedOutProps {
-  children: ReactNode;
-}
-
-export function SignedOut({ children }: SignedOutProps) {
+export function SignedOut({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) return null;

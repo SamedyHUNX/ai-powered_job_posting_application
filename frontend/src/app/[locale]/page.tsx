@@ -17,10 +17,11 @@ import { AppSidebarClient } from "./_AppSidebarClient";
 import PrivateRoute from "@/routes/PrivateRoute";
 import Link from "next/link";
 import { LogInIcon } from "lucide-react";
-import { SignedOut } from "@/services/auth/components/SignedOut";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SignedIn } from "@/services/auth/components/SignedIn";
-import Greeting from "@/components/customs/Greeting";
+import { Greeting } from "@/components/customs/Greeting";
+import { Suspense } from "react";
+import { SignedOut } from "@/components/customs/SignInStatus";
 
 export default function HomePage() {
   const t = useTranslations("homePage");
@@ -36,16 +37,18 @@ export default function HomePage() {
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
-                <SignedOut>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href={"/auth/signin"}>
-                        <LogInIcon />
-                        <span>Sign In</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SignedOut>
+                <SidebarMenu>
+                  <SignedOut>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild>
+                        <Link href={"/auth/signin"}>
+                          <LogInIcon />
+                          <span>Sign In</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SignedOut>
+                </SidebarMenu>
               </SidebarGroup>
             </SidebarContent>
             <SignedIn>

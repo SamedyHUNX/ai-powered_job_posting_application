@@ -13,6 +13,8 @@ export function SidebarUserButton() {
 function SidebarUserSuspense() {
   const { profile, isLoading, error } = useProfile();
 
+  console.log(profile);
+
   return (
     <SidebarUserButtonClient
       email="samedy@gmail.com"
