@@ -20,7 +20,6 @@ import { LogInIcon } from "lucide-react";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SignedIn } from "@/services/auth/components/SignedIn";
 import { Greeting } from "@/components/customs/Greeting";
-import { Suspense } from "react";
 import { SignedOut } from "@/components/customs/SignInStatus";
 
 export default function HomePage() {

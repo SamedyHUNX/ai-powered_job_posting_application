@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/sidebar";
 import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
 import { SignOutButton } from "@/services/auth/components/AuthButtons";
+import { useRouter } from "next/navigation";
 
 type User = {
   name: string;
@@ -27,7 +27,11 @@ type User = {
 
 export function SidebarUserButtonClient(user: User) {
   const { isMobile, setOpenMobile } = useSidebar();
-  const { logout } = useAuth();
+  const router = useRouter();
+  const openUserProfile = () => {
+    setOpenMobile(false);
+    router.push("/user-profile");
+  };
 
   return (
     <SidebarMenu>
@@ -51,12 +55,7 @@ export function SidebarUserButtonClient(user: User) {
             <UserInfo {...user} />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              openUserProfile();
-              setOpenMobile(false);
-            }}
-          >
+          <DropdownMenuItem onClick={openUserProfile}>
             <UserIcon className="mr-1" /> Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />

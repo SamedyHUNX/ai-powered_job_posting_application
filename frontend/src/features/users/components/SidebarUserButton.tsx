@@ -1,17 +1,17 @@
-import { useProfile } from "@/hooks/use-profile";
 import { Suspense } from "react";
+import { useProfile } from "@/hooks/use-profile";
 import { SidebarUserButtonClient } from "./_SidebarUserButtonClient";
 
-export function SidebarUserButton() {
+export const SidebarUserButton = () => {
   return (
     <Suspense>
       <SidebarUserSuspense />
     </Suspense>
   );
-}
+};
 
 function SidebarUserSuspense() {
-  const { profile, isLoading, error } = useProfile();
+  const { user, isLoading, error } = useProfile();
 
   // Handle loading state
   if (isLoading) {
@@ -24,16 +24,15 @@ function SidebarUserSuspense() {
   }
 
   // Handle undefined profile (no token or failed to load)
-  if (!profile) {
+  if (!user) {
     return null;
   }
 
-  // Now profile is guaranteed to exist
   return (
     <SidebarUserButtonClient
-      email={profile.email}
-      name={profile.name}
-      imageUrl={profile.imageUrl}
+      email={user.email}
+      name={user.name}
+      imageUrl={user.imageUrl}
     />
   );
 }

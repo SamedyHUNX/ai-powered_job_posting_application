@@ -23,7 +23,7 @@ export function useProfile() {
   }, [error, dispatch]);
 
   return {
-    profile: data,
+    user: data,
     isLoading,
     error,
   };
