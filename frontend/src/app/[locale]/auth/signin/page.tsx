@@ -24,7 +24,7 @@ import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
-  const { signIn, isSigningIn, signInError } = useAuth();
+  const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();
 
   const signInFormSchema = useMemo(() => createSignInSchema(t), [t]);
@@ -43,6 +43,12 @@ export default function SigninPage() {
       toast.error(errorMessage);
     }
   }, [signInError, getErrorMessage]);
+
+  useEffect(() => {
+    if (signInSuccess) {
+      toast.success(t("signInSuccess"));
+    }
+  }, [signInSuccess, t]);
 
   const onSubmit = (data: SignInFormData) => {
     signIn(data);

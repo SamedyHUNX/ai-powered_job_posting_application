@@ -88,6 +88,8 @@ export function useAuth() {
     signIn: signInMutation.mutate,
     signUp: signUpMutation.mutate,
     logout,
+    signInSuccess: signInMutation.isSuccess,
+    signUpSuccess: signUpMutation.isSuccess,
     isSigningIn: signInMutation.isPending,
     isSigningUp: signInMutation.isPending,
     signInError: signInMutation.error,

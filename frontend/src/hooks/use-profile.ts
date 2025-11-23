@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { authApi } from "@/lib/auth-api";
 import { logout } from "@/store/auth-slice";
