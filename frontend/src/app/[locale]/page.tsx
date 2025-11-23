@@ -21,9 +21,20 @@ import { SidebarUserButton } from "@/features/users/components/SidebarUserButton
 import { SignedIn } from "@/services/auth/components/SignedIn";
 import { Greeting } from "@/components/customs/Greeting";
 import { SignedOut } from "@/components/customs/SignInStatus";
+import { useProfile } from "@/hooks/use-profile";
+import Loading from "@/components/customs/Loading";
 
 export default function HomePage() {
   const t = useTranslations("homePage");
+  const { user, isLoading, error } = useProfile();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <PrivateRoute>

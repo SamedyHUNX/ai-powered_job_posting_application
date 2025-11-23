@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
+import Loading from "@/components/customs/Loading";
 
 export default function SignUpPage() {
   const locale = useLocale();
@@ -60,6 +61,10 @@ export default function SignUpPage() {
       toast.success(signUpT("success"));
     }
   }, [signUpSuccess, signUpT]);
+
+  if (isSigningUp) {
+    return <Loading />;
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

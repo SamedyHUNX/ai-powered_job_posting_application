@@ -24,6 +24,7 @@ import {
   ResetPasswordFormData,
 } from "@/schemas/resetPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
+import Loading from "@/components/customs/Loading";
 
 export default function ResetPasswordPage() {
   const t = useTranslations("resetPassword");
@@ -67,6 +68,10 @@ export default function ResetPasswordPage() {
       toast.success(t("success"));
     }
   }, [resetPasswordSuccess, t]);
+
+  if (isResettingPassword) {
+    return <Loading />;
+  }
 
   if (!token) {
     return null;

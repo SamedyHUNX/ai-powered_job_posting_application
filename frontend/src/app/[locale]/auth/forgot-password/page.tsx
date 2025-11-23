@@ -23,6 +23,7 @@ import {
   ForgotPasswordSchemaData,
 } from "@/schemas/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
+import Loading from "@/components/customs/Loading";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
@@ -60,6 +61,10 @@ export default function ForgotPasswordPage() {
       toast.success(t("success"));
     }
   }, [forgotPasswordSuccess, t]);
+
+  if (isRequestingForgotPassword) {
+    return <Loading />;
+  }
 
   const onSubmit = async ({ email }: ForgotPasswordSchemaData) => {
     forgotPassword({ email, locale });

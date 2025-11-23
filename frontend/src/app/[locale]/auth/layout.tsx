@@ -1,9 +1,9 @@
 "use client";
 
+import { ReactNode } from "react";
 import { LanguageSwitcher } from "@/components/customs/LanguageSwitcher";
 import { ThemeToggle } from "@/components/customs/ThemeToggle";
 import { useTranslations } from "next-intl";
-import { ReactNode } from "react";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   const t = useTranslations("authLayout");

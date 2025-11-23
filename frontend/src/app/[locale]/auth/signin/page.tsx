@@ -21,6 +21,7 @@ import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
+import Loading from "@/components/customs/Loading";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
@@ -49,6 +50,10 @@ export default function SigninPage() {
       toast.success(t("success"));
     }
   }, [signInSuccess, t]);
+
+  if (isSigningIn) {
+    return <Loading />;
+  }
 
   const onSubmit = (data: SignInFormData) => {
     signIn(data);
