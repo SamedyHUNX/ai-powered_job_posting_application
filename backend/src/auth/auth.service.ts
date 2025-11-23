@@ -20,8 +20,7 @@ import { hashPassword } from '@/drizzle/utils/password.utils';
 import { capitalizeString } from '@/utils/utils';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { Redis } from 'ioredis';
-import { REDIS_CLIENT } from '../redis/redis.module';
-
+import { REDIS_CLIENT } from '@/redis/redis.module';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AppService.name);
@@ -46,6 +45,17 @@ export class AuthService {
     return this.dbService.db;
   }
 
+  private get redisServer() {
+    if (!this.redis) {
+      this.logger.error(`Redis server is down at ${new Date().toISOString()}`);
+      throw new InternalServerErrorException({
+        code: 'SERVICE_UNAVAILABLE',
+        message: 'Service temporarily unavailable. Please try again later.',
+      });
+    }
+    return this.redis;
+  }
+
   private generateToken(payload: any) {
     return this.jwtService.sign(payload);
   }
@@ -56,8 +66,6 @@ export class AuthService {
     acceptLanguage: string,
   ) {
     const { name, password, email, firstName, lastName } = dto;
-
-    console.log('diddy', acceptLanguage);
 
     // Validate required fields from DTO
     const requiredFields = { name, password, email, firstName, lastName, file };
@@ -177,21 +185,36 @@ export class AuthService {
       });
     }
 
-    // Find user
-    const [user] = await this.db
-      .select()
-      .from(UserTable)
-      .where(eq(UserTable.email, dto.email))
-      .limit(1);
+    // Try to get user from Redis cache
+    const cacheKey = `user:email:${email}`;
+    const cachedUser = await this.redis.get(cacheKey);
 
-    if (!user) {
-      this.logger.error(
-        `User with ${email} trying to signin with invalid credentials`,
-      );
-      throw new UnauthorizedException({
-        code: 'INVALID_CREDENTIALS',
-        message: 'Invalid credentials',
-      });
+    let user;
+
+    if (cachedUser) {
+      user = JSON.parse(cachedUser);
+    } else {
+      // Find user in database
+      const [dbUser] = await this.db
+        .select()
+        .from(UserTable)
+        .where(eq(UserTable.email, email))
+        .limit(1);
+
+      if (!dbUser) {
+        this.logger.error(
+          `User with ${email} trying to signin with invalid credentials`,
+        );
+        throw new UnauthorizedException({
+          code: 'INVALID_CREDENTIALS',
+          message: 'Invalid credentials',
+        });
+      }
+
+      user = dbUser;
+
+      // Cache for 15 minutes (900 seconds)
+      await this.cacheUser(user);
     }
 
     // Verify password
@@ -213,7 +236,6 @@ export class AuthService {
       tokenVersion: user.tokenVersion,
     };
 
-    // Generate token
     const token = this.generateToken(payload);
 
     return {
@@ -419,5 +441,28 @@ export class AuthService {
       .limit(1);
 
     return !!user;
+  }
+
+  private async getCachedUser(email: string) {
+    const cacheKey = `user:email:${email}`;
+    const cached = await this.redisServer.get(cacheKey);
+    return cached ? JSON.parse(cached) : null;
+  }
+
+  private async cacheUser(user: any, ttl: number = 900) {
+    const cacheKey = `user:email:${user.email}`;
+    await this.redisServer.setex(cacheKey, ttl, JSON.stringify(user));
+  }
+
+  private async invalidateUserCache(email: string) {
+    const cacheKey = `user:email:${email}`;
+    await this.redisServer.del(cacheKey);
+  }
+
+  private async cacheUserByEmailAndId(user: any, ttl: number = 900) {
+    const pipeline = this.redisServer.pipeline();
+    pipeline.setex(`user:email:${user.email}`, ttl, JSON.stringify(user));
+    pipeline.setex(`user:id:${user.id}`, ttl, JSON.stringify(user));
+    await pipeline.exec();
   }
 }
