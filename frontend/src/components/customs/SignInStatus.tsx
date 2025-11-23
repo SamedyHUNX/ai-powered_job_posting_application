@@ -10,7 +10,7 @@ export const SignedOut = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const SignedInD = ({ children }: { children: ReactNode }) => {
+export const SignedIn = ({ children }: { children: ReactNode }) => {
   return (
     <Suspense>
       <CustomSignedIn>{children}</CustomSignedIn>
