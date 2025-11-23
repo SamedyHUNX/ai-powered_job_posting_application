@@ -2,7 +2,6 @@
 
 import { ReactNode } from "react";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
-import { Greeting } from "@/components/customs/Greeting";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -35,7 +34,7 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
       }
       footerButton={<SidebarUserButton />}
     >
-      <Greeting />
+      {children}
     </AppSidebar>
   );
 }
