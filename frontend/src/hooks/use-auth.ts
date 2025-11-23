@@ -9,6 +9,7 @@ import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 import { SignInRequest } from "@/types/request.auth.type";
+import { useLocale } from "next-intl";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ export function useAuth() {
   );
   const queryClient = useQueryClient();
   const router = useRouter();
+  const locale = useLocale();
 
   // Sign in mutation
   const signInMutation = useMutation({
@@ -25,7 +27,8 @@ export function useAuth() {
       dispatch(setCredentials({ token: data.token }));
       dispatch(setUser(data.user));
       localStorage.setItem("access_token", data.token);
-      router.push("/");
+
+      router.push(`/${locale}/`);
     },
   });
 

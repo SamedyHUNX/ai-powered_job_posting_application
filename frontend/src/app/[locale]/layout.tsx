@@ -7,6 +7,7 @@ import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "./globals.css";
+import { SWRConfig } from "swr";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,19 +31,27 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider
-            attribute={"class"}
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Providers>
-              <Toaster richColors theme="light" />
-              {children}
-            </Providers>
-          </ThemeProvider>
-        </NextIntlClientProvider>
+        <SWRConfig
+          value={{
+            revalidateOnFocus: false,
+            shouldRetryOnError: false,
+            dedupingInterval: 5000,
+          }}
+        >
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <ThemeProvider
+              attribute={"class"}
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Providers>
+                <Toaster richColors theme="light" />
+                {children}
+              </Providers>
+            </ThemeProvider>
+          </NextIntlClientProvider>
+        </SWRConfig>
       </body>
     </html>
   );
