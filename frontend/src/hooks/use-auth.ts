@@ -12,7 +12,7 @@ import { SignInRequest } from "@/types/request.auth.type";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, token, isAuthenticated } = useAppSelector(
+  const { user, token, isAuthenticated, isInitialized } = useAppSelector(
     (state) => state.auth
   );
   const queryClient = useQueryClient();
@@ -81,6 +81,7 @@ export function useAuth() {
     user,
     token,
     isAuthenticated,
+    isInitialized,
     signIn: signInMutation.mutate,
     signUp: signUpMutation.mutate,
     logout,

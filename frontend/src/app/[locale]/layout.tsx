@@ -1,12 +1,12 @@
+import { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import "./globals.css";
 import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
-import { ReactNode } from "react";
-import { ThemeProvider } from "@/components/customs/ThemeProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import "./globals.css";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
