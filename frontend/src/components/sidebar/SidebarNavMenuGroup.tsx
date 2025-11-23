@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 import {
   SidebarGroup,
@@ -5,29 +7,48 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import { SignedOut } from "@/services/auth/components/SignedOut";
 import Link from "next/link";
-import { LogInIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { SignedIn, SignedOut } from "../customs/SignInStatus";
 
-export function SidebarNavMenuGroup({}: {
-  item: {
+export function SidebarNavMenuGroup({
+  items,
+  className,
+}: {
+  items: {
     href: string;
     icon: ReactNode;
     label: string;
-    authStatus: "signedOut" | "signedIn";
-  };
+    authStatus?: "signedOut" | "signedIn";
+  }[];
   className?: string;
 }) {
+  const pathname = usePathname();
   return (
-    <SidebarGroup>
+    <SidebarGroup className={className}>
       <SidebarMenu>
-        <SignedOut>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href={"/auth/signin"}></Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SignedOut>
+        {items.map((item) => {
+          const html = (
+            <SidebarMenuItem key={item.href}>
+              <SidebarMenuButton asChild isActive={pathname === item.href}>
+                <Link href={item.href}>
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+
+          if (item.authStatus === "signedOut") {
+            return <SignedOut key={item.href}>{html}</SignedOut>;
+          }
+
+          if (item.authStatus === "signedIn") {
+            return <SignedIn key={item.href}>{html}</SignedIn>;
+          }
+
+          return html;
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );
