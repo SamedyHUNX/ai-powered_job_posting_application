@@ -92,7 +92,7 @@ export class AuthService {
     if (existingUser.length > 0) {
       if (existingUser[0].email === email) {
         this.logger.error(
-          `User with email ${email} trying to create an account using existing email`,
+          `User with email ${email} trying to create an account using existing email!`,
         );
         throw new ConflictException({
           code: 'EXISTING_EMAIL',
@@ -422,6 +422,12 @@ export class AuthService {
       })
       .where(eq(UserTable.id, user.id));
 
+    // Invalidate all cached user data
+    await this.invalidateUserCache(user.email, user.id);
+
+    // Invalidate all active sessions for this user
+    await this.invalidateAllUserSessions(user.id);
+
     this.logger.log(`Password successfully reset for user ID: ${user.id}`);
     return { success: true, message: 'Password has been reset successfully' };
   }
@@ -454,9 +460,33 @@ export class AuthService {
     await this.redisServer.setex(cacheKey, ttl, JSON.stringify(user));
   }
 
-  private async invalidateUserCache(email: string) {
-    const cacheKey = `user:email:${email}`;
-    await this.redisServer.del(cacheKey);
+  // Helper method to invalidate user cache
+  private async invalidateUserCache(email: string, userId: string) {
+    const pipeline = this.redisServer.pipeline();
+
+    // Delete cache by email
+    pipeline.del(`user:email:${email}`);
+
+    // Delete cache by user ID (if you cache by ID)
+    pipeline.del(`user:id:${userId}`);
+
+    await pipeline.exec();
+
+    this.logger.log(`Cache invalidated for user: ${email}`);
+  }
+
+  // Invalidate all sessions (force re-login on all devices)
+  private async invalidateAllUserSessions(userId: string) {
+    // Delete session cache
+    await this.redis.del(`session:${userId}`);
+
+    // If you store multiple sessions per user, you can use pattern matching
+    const sessionKeys = await this.redis.keys(`session:${userId}:*`);
+    if (sessionKeys.length > 0) {
+      await this.redis.del(...sessionKeys);
+    }
+
+    this.logger.log(`All sessions invalidated for user ID: ${userId}`);
   }
 
   private async cacheUserByEmailAndId(user: any, ttl: number = 900) {
