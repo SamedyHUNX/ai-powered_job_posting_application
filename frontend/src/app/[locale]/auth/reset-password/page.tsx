@@ -32,7 +32,12 @@ export default function ResetPasswordPage() {
   const token = searchParams.get("token");
   const { getErrorMessage } = useErrorHandler();
 
-  const { resetPassword, isResettingPassword, resetPasswordError } = useAuth();
+  const {
+    resetPassword,
+    isResettingPassword,
+    resetPasswordError,
+    resetPasswordSuccess,
+  } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -57,6 +62,12 @@ export default function ResetPasswordPage() {
     }
   }, [resetPasswordError, getErrorMessage]);
 
+  useEffect(() => {
+    if (resetPasswordSuccess) {
+      toast.success(t("success"));
+    }
+  }, [resetPasswordSuccess, t]);
+
   if (!token) {
     return null;
   }
@@ -76,10 +87,10 @@ export default function ResetPasswordPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
           {t("title")}
         </h2>
-        <p className="mt-3 text-base text-gray-400 max-w-md mx-auto">
+        <p className="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
           {t("titleDesc")}
         </p>
       </div>
@@ -87,13 +98,13 @@ export default function ResetPasswordPage() {
       {/* Form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-6 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+          <div className="space-y-6 rounded-lg bg-gray-50 dark:bg-gray-900 p-8 shadow-xl border border-gray-200 dark:border-gray-800">
             <FormField
               control={form.control}
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-300 font-medium">
+                  <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
                     {t("newPasswordLabel")}
                   </FormLabel>
                   <FormControl>
@@ -102,12 +113,12 @@ export default function ResetPasswordPage() {
                         {...field}
                         type={showPassword ? "text" : "password"}
                         placeholder={t("newPasswordPlaceholder")}
-                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
+                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                       >
                         {showPassword ? (
                           <EyeOff className="h-5 w-5" />
@@ -117,7 +128,7 @@ export default function ResetPasswordPage() {
                       </button>
                     </div>
                   </FormControl>
-                  <FormMessage className="text-red-400" />
+                  <FormMessage className="text-red-500 dark:text-red-400" />
                 </FormItem>
               )}
             />
@@ -127,7 +138,7 @@ export default function ResetPasswordPage() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-300 font-medium">
+                  <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
                     {t("confirmPasswordLabel")}
                   </FormLabel>
                   <FormControl>
@@ -136,14 +147,14 @@ export default function ResetPasswordPage() {
                         {...field}
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder={t("confirmPasswordPlaceholder")}
-                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
+                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                       />
                       <button
                         type="button"
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                       >
                         {showConfirmPassword ? (
                           <EyeOff className="h-5 w-5" />
@@ -153,15 +164,17 @@ export default function ResetPasswordPage() {
                       </button>
                     </div>
                   </FormControl>
-                  <FormMessage className="text-red-400" />
+                  <FormMessage className="text-red-500 dark:text-red-400" />
                 </FormItem>
               )}
             />
 
-            <div className="pt-2 border-t border-gray-800">
+            <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
               <div className="space-y-2">
-                <p className="text-xs text-gray-400">Password must contain:</p>
-                <ul className="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Password must contain:
+                </p>
+                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
                   <li>At least 8 characters</li>
                   <li>One uppercase letter</li>
                   <li>One lowercase letter</li>
@@ -174,7 +187,7 @@ export default function ResetPasswordPage() {
           <Button
             type="submit"
             disabled={isResettingPassword}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isResettingPassword ? (
               <span className="flex items-center justify-center">
@@ -205,7 +218,7 @@ export default function ResetPasswordPage() {
             )}
           </Button>
 
-          <p className="text-sm text-gray-400 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
             {t("rememberPassword")}{" "}
             <Link
               href="/auth/signin"

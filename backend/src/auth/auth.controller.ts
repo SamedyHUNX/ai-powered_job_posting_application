@@ -75,12 +75,12 @@ export class AuthController {
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   async resetPassword(
-    @Body() { token, newPassword, newConfirmPassword }: ResetPasswordDto,
+    @Body() { token, newPassword, confirmPassword }: ResetPasswordDto,
   ) {
     return this.authService.resetPassword(
       token,
       newPassword,
-      newConfirmPassword,
+      confirmPassword,
     );
   }
 

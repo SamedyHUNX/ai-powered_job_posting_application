@@ -27,7 +27,7 @@ export default function SignUpPage() {
   const locale = useLocale();
   const signUpT = useTranslations("signUp");
   const validationT = useTranslations("validations");
-  const { signUp, isSigningUp, signUpError } = useAuth();
+  const { signUp, isSigningUp, signUpError, signUpSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -54,6 +54,12 @@ export default function SignUpPage() {
       toast.error(errorMessage);
     }
   }, [signUpError, getErrorMessage]);
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      toast.success(signUpT("success"));
+    }
+  }, [signUpSuccess, signUpT]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

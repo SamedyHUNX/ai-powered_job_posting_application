@@ -37,7 +37,8 @@
     "dontHaveAnAccount": "Don't have an account?",
     "signUp": "Sign Up",
     "invalidEmail": "Invalid email address",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "success": "Sign in successfully"
   },
   "signUp": {
     "title": "Create an account",
@@ -55,7 +56,8 @@
     "alreadyHaveAnAccount": "Already have an account?",
     "signIn": "Sign In",
     "signUp": "Sign Up",
-    "buttonLoading": "Creating account..."
+    "buttonLoading": "Creating account...",
+    "success": "Account created successfully"
   },
   "forgotPassword": {
     "title": "Forgot Your Password?",
@@ -66,7 +68,8 @@
     "signIn": "Sign In",
     "buttonText": "Send reset link",
     "invalidEmail": "Invalid email address",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "success": "Password reset link sent successfully"
   },
   "emailSent": {
     "title": "Check Your Email",
@@ -91,7 +94,8 @@
     "rememberPassword": "Remember your password?",
     "signIn": "Sign In",
     "resetSuccess": "Your password has been reset successfully. You can now sign in with your new password.",
-    "resetError": "An error occurred while resetting your password. Please try again."
+    "resetError": "An error occurred while resetting your password. Please try again.",
+    "success": "Password reset successfully"
   },
   "apiErrors": {
     "MISSING_FIELDS": "Please fill in all required fields",

@@ -37,7 +37,8 @@
     "dontHaveAnAccount": "Kein Konto?",
     "signUp": "Anmelden",
     "invalidEmail": "Ungültige E-Mail",
-    "passwordRequired": "Passwort ist erforderlich"
+    "passwordRequired": "Passwort ist erforderlich",
+    "success": "Erfolgreich angemeldet"
   },
   "signUp": {
     "title": "JobPosting-Konto erstellen",
@@ -55,7 +56,8 @@
     "alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
     "signIn": "Eintragen",
     "signUp": "Anmelden",
-    "buttonLoading": "Erstellen..."
+    "buttonLoading": "Erstellen...",
+    "success": "Konto erfolgreich erstellt"
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",
@@ -66,7 +68,8 @@
     "signIn": "Anmelden",
     "buttonText": "Reset-Link senden",
     "invalidEmail": "Ungültige E-Mail",
-    "sending": "Senden..."
+    "sending": "Senden...",
+    "success": "Link zum Zurücksetzen des Passworts erfolgreich gesendet"
   },
   "emailSent": {
     "title": "Überprüfen Sie Ihre E-Mails",
@@ -91,7 +94,8 @@
     "rememberPassword": "Merken Sie sich Ihr Passwort?",
     "signIn": "Eintragen",
     "resetSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt mit Ihrem neuen Passwort anmelden.",
-    "resetError": "Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "resetError": "Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "success": "Passwort erfolgreich zurückgesetzt"
   },
   "apiErrors": {
     "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",

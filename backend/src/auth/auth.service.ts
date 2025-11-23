@@ -381,9 +381,10 @@ export class AuthService {
   async resetPassword(
     token: string,
     newPassword: string,
-    newConfirmPassword: string,
+    confirmPassword: string,
   ) {
-    if (newPassword !== newConfirmPassword) {
+    console.log(newPassword, confirmPassword);
+    if (newPassword !== confirmPassword) {
       this.logger.error(`User provided non-matching passwords`);
       throw new BadRequestException('Passwords do not match');
     }

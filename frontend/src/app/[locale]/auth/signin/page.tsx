@@ -46,7 +46,7 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (signInSuccess) {
-      toast.success(t("signInSuccess"));
+      toast.success(t("success"));
     }
   }, [signInSuccess, t]);
 

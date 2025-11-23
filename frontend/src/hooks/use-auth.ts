@@ -97,8 +97,10 @@ export function useAuth() {
     forgotPassword: forgotPasswordMutation.mutate,
     isRequestingForgotPassword: forgotPasswordMutation.isPending,
     forgotPasswordError: forgotPasswordMutation.error,
+    forgotPasswordSuccess: forgotPasswordMutation.isSuccess,
     resetPassword: resetPasswordMutation.mutate,
     isResettingPassword: resetPasswordMutation.isPending,
     resetPasswordError: resetPasswordMutation.error,
+    resetPasswordSuccess: resetPasswordMutation.isSuccess,
   };
 }

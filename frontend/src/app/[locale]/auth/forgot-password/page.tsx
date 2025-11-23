@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import PublicRoute from "@/routes/PublicRoute";
 import {
   forgotPasswordSchema,
@@ -29,8 +28,12 @@ export default function ForgotPasswordPage() {
   const t = useTranslations("forgotPassword");
   const validationT = useTranslations("validations");
   const locale = useLocale();
-  const { forgotPassword, isRequestingForgotPassword, forgotPasswordError } =
-    useAuth();
+  const {
+    forgotPassword,
+    isRequestingForgotPassword,
+    forgotPasswordError,
+    forgotPasswordSuccess,
+  } = useAuth();
   const { getErrorMessage } = useErrorHandler();
 
   const forgotPasswordFormSchema = useMemo(
@@ -52,6 +55,12 @@ export default function ForgotPasswordPage() {
     }
   }, [forgotPasswordError, getErrorMessage]);
 
+  useEffect(() => {
+    if (forgotPasswordSuccess) {
+      toast.success(t("success"));
+    }
+  }, [forgotPasswordSuccess, t]);
+
   const onSubmit = async ({ email }: ForgotPasswordSchemaData) => {
     forgotPassword({ email, locale });
   };
@@ -61,10 +70,10 @@ export default function ForgotPasswordPage() {
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             {t("title")}
           </h2>
-          <p className="mt-3 text-base text-gray-400 max-w-md mx-auto">
+          <p className="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
             {t("titleDesc")}
           </p>
         </div>
@@ -72,13 +81,13 @@ export default function ForgotPasswordPage() {
         {/* Form */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-6 rounded-lg bg-gray-900 p-8 shadow-xl border border-gray-800">
+            <div className="space-y-6 rounded-lg bg-gray-50 dark:bg-gray-900 p-8 shadow-xl border border-gray-200 dark:border-gray-800">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-300 font-medium">
+                    <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
                       {t("emailLabel")}
                     </FormLabel>
                     <FormControl>
@@ -86,16 +95,16 @@ export default function ForgotPasswordPage() {
                         {...field}
                         type="email"
                         placeholder={t("emailPlaceholder")}
-                        className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11"
+                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11"
                       />
                     </FormControl>
-                    <FormMessage className="text-red-400" />
+                    <FormMessage className="text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
 
-              <div className="pt-2 border-t border-gray-800">
-                <p className="text-sm text-gray-400">
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {t("rememberPassword")}{" "}
                   <Link
                     href="/auth/signin"
@@ -110,7 +119,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={isRequestingForgotPassword}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isRequestingForgotPassword ? (
                 <span className="flex items-center justify-center">
