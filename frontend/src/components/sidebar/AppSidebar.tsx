@@ -1,3 +1,4 @@
+import { SignedIn } from "../customs/SignInStatus";
 import {
   Sidebar,
   SidebarContent,
@@ -10,7 +11,6 @@ import {
   SidebarTrigger,
 } from "../ui/sidebar";
 import { AppSidebarClient } from "./_AppSidebarClient";
-import { SignedIn } from "@/services/auth/components/SignedIn";
 import { ReactNode } from "react";
 
 export const AppSidebar = ({
@@ -27,12 +27,10 @@ export const AppSidebar = ({
       <AppSidebarClient>
         <Sidebar collapsible="icon" className="overflow-hidden">
           <SidebarHeader className="flex-row">
-            <SidebarTrigger />
-            <span className="mt-1">JobXHub</span>
+            <SidebarTrigger className="mt-1" />
+            <span className="mt-2">JobXHub</span>
           </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>{content}</SidebarGroup>
-          </SidebarContent>
+          <SidebarContent>{content}</SidebarContent>
           <SignedIn>
             <SidebarFooter>
               <SidebarMenu>
