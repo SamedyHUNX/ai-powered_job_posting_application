@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import { ClipboardListIcon, PlusIcon } from "lucide-react";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
@@ -12,6 +12,14 @@ import {
 import Link from "next/link";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
+  return (
+    <Suspense>
+      <LayoutSuspense>{children}</LayoutSuspense>
+    </Suspense>
+  );
+}
+
+async function LayoutSuspense({ children }: { children: ReactNode }) {
   return (
     <AppSidebar
       content={

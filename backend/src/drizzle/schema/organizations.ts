@@ -1,4 +1,4 @@
-import { varchar, pgTable } from 'drizzle-orm/pg-core';
+import { varchar, pgTable, boolean } from 'drizzle-orm/pg-core';
 import { createdAt, id, updatedAt } from '../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 import { JobListingTable } from './job-listings';
@@ -8,6 +8,8 @@ export const OrganizationTable = pgTable('organizations', {
   id,
   name: varchar().notNull(),
   imageUrl: varchar(),
+  isVerified: boolean().default(false),
+  isBanned: boolean().default(false),
   createdAt,
   updatedAt,
 });

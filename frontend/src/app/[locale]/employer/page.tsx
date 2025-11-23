@@ -1,3 +1,9 @@
+import PrivateRoute from "@/routes/PrivateRoute";
+
 export default function EmployerHomePage() {
-  return <h1>Employer page</h1>;
+  return (
+    <PrivateRoute>
+      <h1>Employer page</h1>;
+    </PrivateRoute>
+  );
 }
