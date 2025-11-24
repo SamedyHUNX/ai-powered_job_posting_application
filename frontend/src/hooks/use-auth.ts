@@ -4,7 +4,7 @@ import {
   setCredentials,
   logout as logoutAction,
   setUser,
-} from "@/store/auth-slice";
+} from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";

@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { authApi } from "@/lib/auth-api";
-import { logout } from "@/store/auth-slice";
+import { logout } from "@/store/slices/auth-slice";
 import useSWR from "swr";
 
 export function useProfile() {

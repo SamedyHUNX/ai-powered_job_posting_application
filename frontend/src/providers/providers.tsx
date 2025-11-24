@@ -4,7 +4,11 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "@/store/store";
 import { useState, useEffect, ReactNode, Suspense } from "react";
-import { initializeAuth, markInitialized, setUser } from "@/store/auth-slice";
+import {
+  initializeAuth,
+  markInitialized,
+  setUser,
+} from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
 
 export function Providers({ children }: { children: ReactNode }) {
