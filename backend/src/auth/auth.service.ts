@@ -139,6 +139,7 @@ export class AuthService {
         lastName: capitalizedLastName,
         fullName: `${firstName} ${lastName}`,
         password: hashedPassword,
+
         imageUrl,
       })
       .returning();
@@ -208,6 +209,33 @@ export class AuthService {
         throw new UnauthorizedException({
           code: 'INVALID_CREDENTIALS',
           message: 'Invalid credentials',
+        });
+      }
+
+      // Check if user is banned
+      if (dbUser.isBanned) {
+        this.logger.error(`User with ${email} is banned`);
+        throw new UnauthorizedException({
+          code: 'USER_BANNED',
+          message: 'User is banned',
+        });
+      }
+
+      // Check if user is disabled
+      if (dbUser.isDisabled) {
+        this.logger.error(`User with ${email} is disabled`);
+        throw new UnauthorizedException({
+          code: 'USER_DISABLED',
+          message: 'User is disabled',
+        });
+      }
+
+      // Check if user is verified
+      if (!dbUser.isVerified) {
+        this.logger.error(`User with ${email} is not verified`);
+        throw new UnauthorizedException({
+          code: 'USER_NOT_VERIFIED',
+          message: 'User is not verified',
         });
       }
 

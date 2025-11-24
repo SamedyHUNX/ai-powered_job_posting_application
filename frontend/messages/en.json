@@ -103,6 +103,9 @@
     "EXISTING_EMAIL": "User with this email already exists",
     "EXISTING_USERNAME": "Username is already taken",
     "MISSING_PHOTO": "Profile image is required",
-    "UNKNOWN_ERROR": "An error occurred. Please try again."
+    "UNKNOWN_ERROR": "An error occurred. Please try again",
+    "USER_BANNED": "Your account has been banned. Please contact support.",
+    "USER_DISABLED": "Your account is disabled. Please contact support.",
+    "USER_NOT_VERIFIED": "Your account is not verified. Please check your email for verification instructions."
   }
 }

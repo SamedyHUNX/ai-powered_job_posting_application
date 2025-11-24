@@ -103,6 +103,9 @@
     "EXISTING_EMAIL": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
     "EXISTING_USERNAME": "Benutzername ist bereits vergeben",
     "MISSING_PHOTO": "Profilbild ist erforderlich",
-    "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
+    "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut",
+    "USER_BANNED": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Support.",
+    "USER_DISABLED": "Ihr Konto ist deaktiviert. Bitte kontaktieren Sie den Support.",
+    "USER_NOT_VERIFIED": "Ihr Konto ist nicht verifiziert. Bitte überprüfen Sie Ihre E-Mails für Verifizierungsanweisungen."
   }
 }
