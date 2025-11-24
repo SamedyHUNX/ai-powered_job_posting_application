@@ -30,7 +30,7 @@ export class AuthService {
     private jwtService: JwtService,
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -83,7 +83,7 @@ export class AuthService {
     const { username, password, email, firstName, lastName } = dto;
 
     // Validate required fields from DTO
-    const requiredFields = { name, password, email, firstName, lastName, file };
+    const requiredFields = { username, password, email, firstName, lastName, file };
 
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) {
@@ -249,7 +249,7 @@ export class AuthService {
     let user;
 
     if (cachedUser) {
-      user = JSON.parse(cachedUser);
+      user = cachedUser;
     } else {
       // Find user in database
       const [dbUser] = await this.dbServer
