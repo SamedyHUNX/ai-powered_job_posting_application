@@ -244,8 +244,7 @@ export class AuthService {
     }
 
     // Try to get user from Redis cache
-    const cacheKey = `user:email:${email}`;
-    const cachedUser = await this.redis.get(cacheKey);
+    const cachedUser = await this.getCachedUser(email);
 
     let user;
 
