@@ -57,6 +57,13 @@
       "when": 1763965951217,
       "tag": "0007_high_vanisher",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1763970959718,
+      "tag": "0008_mute_mentor",
+      "breakpoints": true
     }
   ]
 }
