@@ -32,10 +32,14 @@ export class AuthService {
     private s3Service: S3Service,
   ) {}
 
-  private get db() {
+  private getTimestamp(): string {
+    return new Date().toISOString();
+  }
+
+  private get dbServer() {
     if (!this.dbService.db) {
       this.logger.error(
-        `Database connection not established at ${new Date().toISOString()}`,
+        `Database connection not established at ${this.getTimestamp}`,
       );
       throw new InternalServerErrorException({
         code: 'SERVICE_UNAVAILABLE',
@@ -56,6 +60,17 @@ export class AuthService {
     return this.redis;
   }
 
+  private get s3Server() {
+    if (!this.s3Service) {
+      this.logger.error(`S3 service is down at ${this.getTimestamp}`);
+      throw new InternalServerErrorException({
+        code: 'SERVICE_UNAVAILABLE',
+        message: 'Service temporarily unavailable. Please try again later.',
+      });
+    }
+    return this.s3Service;
+  }
+
   private generateToken(payload: any) {
     return this.jwtService.sign(payload);
   }
@@ -65,7 +80,7 @@ export class AuthService {
     file: Express.Multer.File,
     acceptLanguage: string,
   ) {
-    const { name, password, email, firstName, lastName } = dto;
+    const { username, password, email, firstName, lastName } = dto;
 
     // Validate required fields from DTO
     const requiredFields = { name, password, email, firstName, lastName, file };
@@ -83,10 +98,10 @@ export class AuthService {
     }
 
     // Check if email or username already exists
-    const existingUser = await this.db
+    const existingUser = await this.dbServer
       .select()
       .from(UserTable)
-      .where(or(eq(UserTable.email, email), eq(UserTable.name, name)))
+      .where(or(eq(UserTable.email, email), eq(UserTable.username, username)))
       .limit(1);
 
     if (existingUser.length > 0) {
@@ -99,7 +114,7 @@ export class AuthService {
           message: 'User with this email already exists',
         });
       }
-      if (existingUser[0].name === name) {
+      if (existingUser[0].username === username) {
         throw new ConflictException({
           code: 'EXISTING_USERNAME',
           message: 'Username is already taken',
@@ -116,7 +131,7 @@ export class AuthService {
 
     // Upload image to S3
     const imageKey = `users/avatars/${Date.now()}-${file.originalname}`;
-    await this.s3Service.uploadFile(file, imageKey);
+    await this.s3Server.uploadFile(file, imageKey);
 
     // Get the S3 URL (public or presigned)
     const imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
@@ -127,51 +142,93 @@ export class AuthService {
     // Make sure names are capitalized before placing in DB
     const capitalizedFirstName = capitalizeString(firstName);
     const capitalizedLastName = capitalizeString(lastName);
-    const capitalizedName = capitalizeString(name);
+
+    // Generate email verification token
+    const {
+      token: verificationToken,
+      hashedToken: hashedVerificationToken,
+      expiresAt: verificationExpires,
+    } = await this.generateAndHashToken(60 * 24); // 24 hours expiration
+
+    // Send email with reset link
+    const verificationUrl = `${process.env.FRONTEND_URL}/${acceptLanguage}/auth/verify-email?token=${verificationToken}`;
 
     // Create user
-    const [user] = await this.db
+    const [user] = await this.dbServer
       .insert(UserTable)
       .values({
-        name: capitalizedName,
+        username,
         email,
         firstName: capitalizedFirstName,
         lastName: capitalizedLastName,
         fullName: `${firstName} ${lastName}`,
         password: hashedPassword,
-
         imageUrl,
+        verificationToken: hashedVerificationToken,
+        verificationExpires: verificationExpires,
       })
       .returning();
 
-    this.logger.log(`User with email ${email} created an account successfully`);
-
-    // TRIGGER INNGEST EVENT (after user is created)
+    // TRIGGER INNGEST EVENT for email verification
     await inngest.send({
       name: 'jobxhub/user.created',
       data: {
         userId: user.id,
         email: user.email,
-        name: user.name,
+        name: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
         imageUrl: user.imageUrl,
+        verificationUrl,
         acceptLanguage: acceptLanguage || 'en',
       },
     });
 
     return {
       success: true,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        imageUrl: user.imageUrl,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        fullName: user.fullName,
-      },
     };
+  }
+
+  async verifyEmail(token: string) {
+    // Hash the token from URL to compare with stored hash
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    console.log('hased token', hashedToken);
+
+    // Find user by verification token and check expiration
+    const [user] = await this.dbServer
+      .select()
+      .from(UserTable)
+      .where(
+        and(
+          eq(UserTable.verificationToken, hashedToken),
+          gt(UserTable.verificationExpires, new Date()),
+        ),
+      )
+      .limit(1);
+
+    if (!user) {
+      this.logger.error('Invalid or expired email verification token used');
+      throw new UnauthorizedException({
+        message: 'Invalid or expired token',
+        code: 'INVALID_TOKEN',
+      });
+    }
+
+    console.log('checking', user.verificationToken, hashedToken);
+
+    // Update user's verified status and clear verification token fields
+    await this.dbServer
+      .update(UserTable)
+      .set({
+        isVerified: true,
+        verificationToken: null,
+        verificationExpires: null,
+      })
+      .where(eq(UserTable.id, user.id));
+
+    this.logger.log(`Email successfully verified for user ID: ${user.id}`);
+    return { success: true, message: 'Email has been verified successfully' };
   }
 
   // SignIn function
@@ -196,7 +253,7 @@ export class AuthService {
       user = JSON.parse(cachedUser);
     } else {
       // Find user in database
-      const [dbUser] = await this.db
+      const [dbUser] = await this.dbServer
         .select()
         .from(UserTable)
         .where(eq(UserTable.email, email))
@@ -270,37 +327,12 @@ export class AuthService {
       success: true,
       user: {
         id: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
         imageUrl: user.imageUrl,
       },
       token,
     };
-  }
-
-  async validateUser(payload: any) {
-    const [user] = await this.db
-      .select()
-      .from(UserTable)
-      .where(eq(UserTable.id, payload.sub))
-      .limit(1);
-
-    if (!user) {
-      this.logger.error(
-        `User with ID ${payload.sub} not found during validation`,
-      );
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    // Check if tokenVersion matches
-    if (payload.tokenVersion !== user.tokenVersion) {
-      this.logger.error(
-        `Token version mismatch for user ID ${user.id}. Token invalidated.`,
-      );
-      throw new UnauthorizedException('Token has been invalidated');
-    }
-
-    return user;
   }
 
   async forgotPassword(
@@ -342,7 +374,7 @@ export class AuthService {
     }
 
     // Find user by email
-    const [user] = await this.db
+    const [user] = await this.dbServer
       .select()
       .from(UserTable)
       .where(eq(UserTable.email, email))
@@ -350,7 +382,7 @@ export class AuthService {
 
     if (!user) {
       this.logger.warn(
-        `Password reset requested for non-existent email: ${email}!`,
+        `Password reset requested for non-existent email: ${email} at ${this.getTimestamp()}!`,
       );
       return {
         success: true,
@@ -369,16 +401,15 @@ export class AuthService {
       };
     }
 
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(resetToken)
-      .digest('hex');
+    // Generate reset token
+    const {
+      token: resetToken,
+      hashedToken,
+      expiresAt,
+    } = await this.generateAndHashToken(15); // 15 minutes expiration
 
-    // Set token and expiration (1 hour)
-    const expiresAt = new Date(Date.now() + 900000); // 15 minutes
-
-    await this.db
+    // Store hashed token and expiration in DB
+    await this.dbServer
       .update(UserTable)
       .set({
         resetPasswordToken: hashedToken,
@@ -421,7 +452,7 @@ export class AuthService {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     // Find user by reset token and check expiration
-    const [user] = await this.db
+    const [user] = await this.dbServer
       .select()
       .from(UserTable)
       .where(
@@ -441,7 +472,7 @@ export class AuthService {
     const hashedPassword = await hashPassword(newPassword);
 
     // Update user's password and clear reset token fields
-    await this.db
+    await this.dbServer
       .update(UserTable)
       .set({
         password: hashedPassword,
@@ -464,7 +495,7 @@ export class AuthService {
   async validateResetToken(token: string) {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
-    const [user] = await this.db
+    const [user] = await this.dbServer
       .select()
       .from(UserTable)
       .where(
@@ -523,5 +554,38 @@ export class AuthService {
     pipeline.setex(`user:email:${user.email}`, ttl, JSON.stringify(user));
     pipeline.setex(`user:id:${user.id}`, ttl, JSON.stringify(user));
     await pipeline.exec();
+  }
+
+  private async generateAndHashToken(expireMinutes: number) {
+    const token = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    // Set token and expiration (1 hour)
+    const expiresAt = new Date(Date.now() + expireMinutes * 60 * 1000);
+    return { token, hashedToken, expiresAt };
+  }
+
+  async validateUser(payload: any) {
+    const [user] = await this.dbServer
+      .select()
+      .from(UserTable)
+      .where(eq(UserTable.id, payload.sub))
+      .limit(1);
+
+    if (!user) {
+      this.logger.error(
+        `User with ID ${payload.sub} not found during validation`,
+      );
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Check if tokenVersion matches
+    if (payload.tokenVersion !== user.tokenVersion) {
+      this.logger.error(
+        `Token version mismatch for user ID ${user.id}. Token invalidated.`,
+      );
+      throw new UnauthorizedException('Token has been invalidated');
+    }
+
+    return user;
   }
 }

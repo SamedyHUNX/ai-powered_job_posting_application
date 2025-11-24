@@ -17,6 +17,75 @@ export class EmailService {
     });
   }
 
+  async sendVerificationEmail(
+    to: string,
+    verificationUrl: string,
+    acceptLanguage: string,
+  ) {
+    const translations = {
+      en: {
+        subject: 'Verify Your Email Address',
+        title: 'Email Verification',
+        message:
+          'Thank you for registering! Please verify your email address by clicking the button below:',
+        button: 'Verify Email',
+        ignore: "If you didn't create an account, please ignore this email.",
+        fallback:
+          "If the button doesn't work, copy and paste this link into your browser:",
+      },
+      kh: {
+        subject: 'បញ្ជាក់អាសយដ្ឋានអ៊ីមែលរបស់អ្នក',
+        title: 'ការបញ្ជាក់អ៊ីមែល',
+        message:
+          'សូមអរគុណសម្រាប់ការចុះឈ្មោះ! សូមបញ្ជាក់អាសយដ្ឋានអ៊ីមែលរបស់អ្នកដោយចុចប៊ូតុងខាងក្រោម៖',
+        button: 'បញ្ជាក់អ៊ីមែល',
+        ignore: 'ប្រសិនបើអ្នកមិនបានបង្កើតគណនីទេ សូមអើពើអ៊ីមែលនេះ។',
+        fallback:
+          'ប្រសិនបើប៊ូតុងមិនដំណើរការទេ សូមចម្លងនិងដាក់តំណនេះទៅក្នុងកម្មវិធីរុករករបស់អ្នក៖',
+      },
+      de: {
+        subject: 'Bestätigen Sie Ihre E-Mail-Adresse',
+        title: 'E-Mail-Bestätigung',
+        message:
+          'Vielen Dank für Ihre Registrierung! Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf die Schaltfläche unten klicken:',
+        button: 'E-Mail bestätigen',
+        ignore:
+          'Wenn Sie kein Konto erstellt haben, ignorieren Sie bitte diese E-Mail.',
+        fallback:
+          'Wenn die Schaltfläche nicht funktioniert, kopieren Sie diesen Link und fügen Sie ihn in Ihren Browser ein:',
+      },
+    };
+
+    const lang = translations[acceptLanguage] || translations.en;
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to,
+      subject: lang.subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #333;">${lang.title}</h1>
+          <p>${lang.message}</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${verificationUrl}" 
+               style="background-color: #4CAF50; color: white; padding: 14px 28px; 
+                      text-decoration: none; border-radius: 4px; display: inline-block;">
+              ${lang.button}
+            </a>
+          </div>
+          <p style="color: #666;">${lang.ignore}</p>
+          <hr style="border: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            ${lang.fallback}<br>
+            <a href="${verificationUrl}">${verificationUrl}</a>
+          </p>
+        </div>
+      `,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
+
   async sendWelcomeEmail(to: string, name: string, acceptLanguage: string) {
     console.log('diddy', acceptLanguage);
     // Email translations

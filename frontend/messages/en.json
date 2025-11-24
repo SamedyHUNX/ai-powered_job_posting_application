@@ -97,6 +97,14 @@
     "resetError": "An error occurred while resetting your password. Please try again.",
     "success": "Password reset successfully"
   },
+  "verifyEmail": {
+    "title": "Verifying Your Email",
+    "verifying": "Your email is being verified...",
+    "success": "Your email has been verified successfully.",
+    "havingTrouble": "Having trouble?",
+    "description": "If you're having trouble verifying your email, please check your spam folder or try resending the verification email.",
+    "contactSupport": "Contact support for assistance."
+  },
   "apiErrors": {
     "MISSING_FIELDS": "Please fill in all required fields",
     "INVALID_CREDENTIALS": "Invalid email or password",
@@ -106,6 +114,7 @@
     "UNKNOWN_ERROR": "An error occurred. Please try again",
     "USER_BANNED": "Your account has been banned. Please contact support.",
     "USER_DISABLED": "Your account is disabled. Please contact support.",
-    "USER_NOT_VERIFIED": "Your account is not verified. Please check your email for verification instructions."
+    "USER_NOT_VERIFIED": "Your account is not verified. Please check your email for verification instructions.",
+    "INVALID_TOKEN": "The provided token is invalid or has expired."
   }
 }

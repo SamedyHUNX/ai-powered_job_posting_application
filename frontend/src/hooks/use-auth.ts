@@ -46,6 +46,14 @@ export function useAuth() {
     },
   });
 
+  // Verify email mutation
+  const verifyEmailMutation = useMutation({
+    mutationFn: (token: string) => authApi.verifyEmail(token),
+    onSuccess: () => {
+      router.push("/auth/signin");
+    },
+  });
+
   // Forgot password reset
   const forgotPasswordMutation = useMutation({
     mutationFn: ({ email, locale }: { email: string; locale: string }) =>
@@ -102,5 +110,9 @@ export function useAuth() {
     isResettingPassword: resetPasswordMutation.isPending,
     resetPasswordError: resetPasswordMutation.error,
     resetPasswordSuccess: resetPasswordMutation.isSuccess,
+    verifyEmail: verifyEmailMutation.mutate,
+    isVerifyingEmail: verifyEmailMutation.isPending,
+    verifyEmailError: verifyEmailMutation.error,
+    verifyEmailSuccess: verifyEmailMutation.isSuccess,
   };
 }

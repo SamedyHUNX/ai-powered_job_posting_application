@@ -97,6 +97,14 @@
     "resetError": "Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "success": "Passwort erfolgreich zurückgesetzt"
   },
+  "verifyEmail": {
+    "title": "E-Mail verifizieren",
+    "titleDesc": "Geben Sie unten Ihren Verifizierungslink ein",
+    "success": "Ihre E-Mail wurde erfolgreich verifiziert.",
+    "havingTrouble": "Probleme?",
+    "description": "Wenn Sie Probleme haben, Ihre E-Mail zu verifizieren, überprüfen Sie bitte Ihren Spam-Ordner oder versuchen Sie, die Bestätigungs-E-Mail erneut zu senden.",
+    "contactSupport": "Kontaktieren Sie den Support für Hilfe."
+  },
   "apiErrors": {
     "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
     "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
@@ -106,6 +114,7 @@
     "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut",
     "USER_BANNED": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Support.",
     "USER_DISABLED": "Ihr Konto ist deaktiviert. Bitte kontaktieren Sie den Support.",
-    "USER_NOT_VERIFIED": "Ihr Konto ist nicht verifiziert. Bitte überprüfen Sie Ihre E-Mails für Verifizierungsanweisungen."
+    "USER_NOT_VERIFIED": "Ihr Konto ist nicht verifiziert. Bitte überprüfen Sie Ihre E-Mails für Verifizierungsanweisungen.",
+    "INVALID_TOKEN": "Der bereitgestellte Token ist ungültig oder abgelaufen."
   }
 }

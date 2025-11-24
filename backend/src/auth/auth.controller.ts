@@ -50,6 +50,11 @@ export class AuthController {
     return this.authService.signUp(dto, file, acceptLanguage);
   }
 
+  @Post('verify-email')
+  verifyEmail(@Body('token') token: string) {
+    return this.authService.verifyEmail(token);
+  }
+
   @Post('signin')
   signIn(@Body() dto: SignInDto) {
     return this.authService.signIn(dto);
@@ -77,11 +82,7 @@ export class AuthController {
   async resetPassword(
     @Body() { token, newPassword, confirmPassword }: ResetPasswordDto,
   ) {
-    return this.authService.resetPassword(
-      token,
-      newPassword,
-      confirmPassword,
-    );
+    return this.authService.resetPassword(token, newPassword, confirmPassword);
   }
 
   @Get('validate-reset-token')

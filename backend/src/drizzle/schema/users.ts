@@ -9,22 +9,28 @@ import { integer } from 'drizzle-orm/pg-core';
 
 export const UserTable = pgTable('users', {
   id,
-  name: varchar().notNull(),
-  imageUrl: varchar().notNull(),
+  username: varchar('username').notNull(),
+  imageUrl: varchar('image_url').notNull(),
   password: varchar().notNull(),
   email: varchar().notNull().unique(),
-  firstName: varchar().notNull(),
-  lastName: varchar().notNull(),
-  fullName: varchar(),
+  firstName: varchar('first_name').notNull(),
+  lastName: varchar('last_name').notNull(),
+  fullName: varchar('full_name'),
   resetPasswordToken: varchar('reset_password_token'),
   resetPasswordExpires: timestamp('reset_password_expires'),
   tokenVersion: integer('token_version').notNull().default(0),
-  isBanned: boolean().default(false),
-  isVerified: boolean().default(false),
-  isDisabled: boolean().default(false),
-  isAdmin: boolean().default(false),
-  createdAt,
-  updatedAt,
+  isBanned: boolean('is_banned').default(false),
+  isVerified: boolean('is_verified').default(false),
+  isDisabled: boolean('is_disabled').default(false),
+  isAdmin: boolean('is_admin').default(false),
+  verificationToken: varchar('verification_token'),
+  verificationExpires: timestamp('verification_expires', {
+    withTimezone: true,
+  }),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const userRelations = relations(UserTable, ({ one, many }) => ({

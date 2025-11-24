@@ -6,6 +6,7 @@ export type UserCreatedData = {
   lastName: string;
   imageUrl: string;
   acceptLanguage: string;
+  verificationUrl: string;
 };
 
 export type UserUpdatedData = {

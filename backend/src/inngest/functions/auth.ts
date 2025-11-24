@@ -5,24 +5,35 @@ export const createUser = inngest.createFunction(
   { id: 'jobxhub/create-db-user', name: 'JobXHub - Create DB User' },
   { event: 'jobxhub/user.created' },
   async ({ event, step }) => {
-    const { userId, email, name, lastName, acceptLanguage } = event.data;
+    const { userId, email, name, lastName, acceptLanguage, verificationUrl } =
+      event.data;
     const emailService = new EmailService();
 
-    await step.run('send-welcome-email', async () => {
-      await emailService.sendWelcomeEmail(
+    await step.run('send-verification-email', async () => {
+      await emailService.sendVerificationEmail(
         email,
-        lastName || name,
+        verificationUrl,
         acceptLanguage,
       );
 
       return { emailSent: true };
     });
 
-    await step.run('create-user-profile', async () => {
-      console.log(`Creating profile for user ${userId}`);
-      // userId is typed as string
-      return { profileCreated: true };
-    });
+    // await step.run('send-welcome-email', async () => {
+    //   await emailService.sendWelcomeEmail(
+    //     email,
+    //     lastName || name,
+    //     acceptLanguage,
+    //   );
+
+    //   return { emailSent: true };
+    // });
+
+    // await step.run('create-user-profile', async () => {
+    //   console.log(`Creating profile for user ${userId}`);
+    //   // userId is typed as string
+    //   return { profileCreated: true };
+    // });
 
     return {
       success: true,

@@ -5,6 +5,7 @@ import {
   AuthResponse,
   ForgotPasswordResponse,
   ResetPasswordResponse,
+  VerifyEmailResponse,
 } from "@/types/response.auth.type";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
@@ -34,6 +35,15 @@ export const authApi = {
     return data;
   },
 
+  // Verify Email
+  verifyEmail: async (token: string): Promise<VerifyEmailResponse> => {
+    const { data } = await api.post<VerifyEmailResponse>("/auth/verify-email", {
+      token,
+    });
+    return data;
+  },
+
+  // Get user profile
   getProfile: async (token: string) => {
     const { data } = await api.get("/auth/me", {
       headers: {

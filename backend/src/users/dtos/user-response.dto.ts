@@ -18,7 +18,7 @@ export class UserResponseDto {
   fullName: string;
 
   @Expose()
-  name: string;
+  username: string;
 
   @Expose()
   imageUrl: string;

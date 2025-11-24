@@ -11,6 +11,11 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface VerifyEmailResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface ForgotPasswordResponse {
   success: boolean;
   email: string;

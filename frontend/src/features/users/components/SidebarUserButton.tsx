@@ -31,7 +31,7 @@ function SidebarUserSuspense() {
   return (
     <SidebarUserButtonClient
       email={user.email}
-      name={user.name}
+      username={user.username}
       imageUrl={user.imageUrl}
     />
   );

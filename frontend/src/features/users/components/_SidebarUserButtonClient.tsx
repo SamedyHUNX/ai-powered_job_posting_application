@@ -20,7 +20,7 @@ import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
 
 type User = {
-  name: string;
+  username: string;
   email: string;
   imageUrl: string;
 };
@@ -73,8 +73,8 @@ export function SidebarUserButtonClient(user: User) {
   );
 }
 
-function UserInfo({ email, name, imageUrl }: User) {
-  const nameInitial = name
+function UserInfo({ email, username, imageUrl }: User) {
+  const nameInitial = username
     .split(" ")
     .slice(0, 2)
     .map((str) => str[0])
@@ -83,13 +83,13 @@ function UserInfo({ email, name, imageUrl }: User) {
   return (
     <div className="flex items-center gap-2 overflow-hidden">
       <Avatar className="rounded-lg size-8">
-        <AvatarImage src={imageUrl} alt={name} />
+        <AvatarImage src={imageUrl} alt={username} />
         <AvatarFallback className="uppercase bg-primary text-primary-foreground">
           {nameInitial}
         </AvatarFallback>
       </Avatar>
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
-        <span className="truncate text-sm font-semibold">{name}</span>
+        <span className="truncate text-sm font-semibold">{username}</span>
         <span className="truncate text-xs">{email}</span>
       </div>
     </div>
