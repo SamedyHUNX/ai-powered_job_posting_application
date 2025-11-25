@@ -15,6 +15,8 @@ import { useOrganization } from "@/hooks/use-organization";
 import { useRouter } from "next/navigation";
 import { CustomDialog } from "@/components/customs/CustomDialog";
 import { useTranslations } from "next-intl";
+import { useProfile } from "@/hooks/use-profile";
+import { Loading } from "@/components/customs/Loading";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   return (
@@ -27,8 +29,16 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
 function LayoutSuspense({ children }: { children: ReactNode }) {
   const t = useTranslations("employer");
   const router = useRouter();
-  const { selectedOrganization } = useOrganization();
+  const { currentUser } = useProfile();
+  const {
+    organizations,
+    selectedOrganization,
+    fetchOrganizationsByUser,
+    isFetchingOrganizationsError,
+    isFetchingOrganizations,
+  } = useOrganization();
   const [showOrgDialog, setShowOrgDialog] = useState(false);
+  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   const benefits = useMemo(
     () => [
@@ -40,16 +50,43 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
     [t]
   );
 
+  // Fetch organizations when current user is available
   useEffect(() => {
-    if (!selectedOrganization) {
+    if (currentUser?.id) {
+      fetchOrganizationsByUser(currentUser.id);
+    }
+  }, [currentUser?.id]);
+
+  // Track when initial load is complete
+  useEffect(() => {
+    if (!isFetchingOrganizations && !hasInitiallyLoaded) {
+      setHasInitiallyLoaded(true);
+    }
+  }, [isFetchingOrganizations, hasInitiallyLoaded]);
+
+  // Show dialog only after initial load is complete
+  useEffect(() => {
+    if (
+      hasInitiallyLoaded &&
+      !selectedOrganization &&
+      organizations.length === 0
+    ) {
       setShowOrgDialog(true);
     }
-  }, [selectedOrganization]);
+  }, [hasInitiallyLoaded, selectedOrganization, organizations.length]);
 
   const handleCancel = () => {
     setShowOrgDialog(false);
     router.push("/");
   };
+
+  if (isFetchingOrganizations) {
+    return <Loading />;
+  }
+
+  if (isFetchingOrganizationsError) {
+    return <div className="error">Error: {isFetchingOrganizationsError}</div>;
+  }
 
   return (
     <>
@@ -84,19 +121,21 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
         {children}
       </AppSidebar>
 
-      {!selectedOrganization && (
-        <CustomDialog
-          title="Organization not found"
-          description="To post job listings and manage your employer profile, you'll need to create an organization first."
-          open={showOrgDialog}
-          onOpenChange={setShowOrgDialog}
-          onCancel={handleCancel}
-          additionalDescTitle="An organization allows you to:"
-          additionalDesc={benefits}
-          buttonText={"Create Organization"}
-          href={"/employer/organizations/new"}
-        />
-      )}
+      {hasInitiallyLoaded &&
+        !selectedOrganization &&
+        organizations.length === 0 && (
+          <CustomDialog
+            title="Organization not found"
+            description="To post job listings and manage your employer profile, you'll need to create an organization first."
+            open={showOrgDialog}
+            onOpenChange={setShowOrgDialog}
+            onCancel={handleCancel}
+            additionalDescTitle="An organization allows you to:"
+            additionalDesc={benefits}
+            buttonText={"Create Organization"}
+            href={"/employer/organizations/new"}
+          />
+        )}
     </>
   );
 }

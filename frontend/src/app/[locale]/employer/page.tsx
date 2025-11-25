@@ -1,9 +1,45 @@
+"use client";
+
+import { useOrganization } from "@/hooks/use-organization";
+import { useProfile } from "@/hooks/use-profile";
 import PrivateRoute from "@/routes/PrivateRoute";
+import { useEffect } from "react";
 
 export default function EmployerHomePage() {
+  const { organizations, isLoading, error, fetchOrganizationsByUser } =
+    useOrganization();
+  const { currentUser } = useProfile();
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      fetchOrganizationsByUser(currentUser.id);
+    }
+  }, [currentUser?.id]);
+
   return (
     <PrivateRoute>
-      <h1>Employer page</h1>
+      <div>
+        <h1>Employer page</h1>
+
+        {isLoading && <p>Loading organizations...</p>}
+
+        {error && <p className="error">Error: {error}</p>}
+
+        {!isLoading && organizations.length === 0 && (
+          <p>No organizations found.</p>
+        )}
+
+        {!isLoading && organizations.length > 0 && (
+          <div>
+            <h2>Your Organizations ({organizations.length})</h2>
+            <ul>
+              {organizations.map((org) => (
+                <li key={org.id}>{org.orgName}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </PrivateRoute>
   );
 }

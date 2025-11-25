@@ -1,6 +1,6 @@
 "use client";
 
-export default function Loading() {
+export const Loading = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
       <div className="relative">
@@ -12,4 +12,4 @@ export default function Loading() {
       </div>
     </div>
   );
-}
+};

@@ -1,8 +1,7 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useProfile } from "@/hooks/use-profile";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -13,7 +12,15 @@ export const SidebarOrganizationButton = () => {
 };
 
 function SidebarOrganizationSuspense() {
-  const { selectedOrganization, isLoading, error } = useOrganization();
+  const { organizations, isLoading, error, fetchOrganizationsByUser } =
+    useOrganization();
+  const { currentUser } = useProfile();
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      fetchOrganizationsByUser(currentUser.id);
+    }
+  }, [currentUser?.id]);
 
   // Handle loading state
   if (isLoading) {
@@ -22,18 +29,18 @@ function SidebarOrganizationSuspense() {
 
   // Handle error state
   if (error) {
-    return <div className="text-center">Error loading organization!</div>;
+    return <div className="text-center">Error loading organizations!</div>;
   }
 
-  // Handle undefined profile (no token or failed to load)
-  if (!selectedOrganization) {
+  // Handle no selected organization
+  if (!organizations || organizations.length === 0) {
     return <div className="text-center">No organization found!</div>;
   }
 
   return (
     <SidebarOrganizationButtonClient
-      orgName={selectedOrganization.orgName}
-      imageUrl={selectedOrganization.imageUrl}
+      orgName={organizations[0].orgName}
+      imageUrl={organizations[0].imageUrl}
     />
   );
 }

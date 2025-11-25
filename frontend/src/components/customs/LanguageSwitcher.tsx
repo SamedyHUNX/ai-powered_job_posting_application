@@ -18,7 +18,7 @@ const languages = [
   { code: "de", name: "Deutsch", flag: "🇨🇭" },
 ];
 
-export function LanguageSwitcher() {
+export const LanguageSwitcher = () => {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -96,4 +96,4 @@ export function LanguageSwitcher() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
