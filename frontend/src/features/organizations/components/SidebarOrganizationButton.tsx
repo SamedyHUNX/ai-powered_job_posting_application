@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -26,7 +27,11 @@ function SidebarOrganizationSuspense() {
 
   // Handle undefined profile (no token or failed to load)
   if (!selectedOrganization) {
-    return <Button className="w-full">Create an organization</Button>;
+    return (
+      <Link href="/employer/create-organization">
+        <Button className="w-full">Create an organization</Button>
+      </Link>
+    );
   }
 
   return (

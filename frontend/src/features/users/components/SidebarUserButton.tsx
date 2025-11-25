@@ -11,28 +11,28 @@ export const SidebarUserButton = () => {
 };
 
 function SidebarUserSuspense() {
-  const { user, isLoading, error } = useProfile();
+  const { currentUser, isFetchingCurrentUser, currentUserError } = useProfile();
 
   // Handle loading state
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isFetchingCurrentUser) {
+    return <div className="text-center">Loading...</div>;
   }
 
   // Handle error state
-  if (error) {
-    return <div>Error loading profile</div>;
+  if (currentUserError) {
+    return <div className="text-center">Error loading profile</div>;
   }
 
   // Handle undefined profile (no token or failed to load)
-  if (!user) {
+  if (!currentUser) {
     return null;
   }
 
   return (
     <SidebarUserButtonClient
-      email={user.email}
-      username={user.username}
-      imageUrl={user.imageUrl}
+      email={currentUser.email}
+      username={currentUser.username}
+      imageUrl={currentUser.imageUrl}
     />
   );
 }

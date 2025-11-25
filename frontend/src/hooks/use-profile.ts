@@ -21,8 +21,8 @@ export function useProfile() {
   );
 
   return {
-    user: data,
-    isLoading,
-    error,
+    currentUser: data,
+    isFetchingCurrentUser: isLoading,
+    currentUserError: error,
   };
 }

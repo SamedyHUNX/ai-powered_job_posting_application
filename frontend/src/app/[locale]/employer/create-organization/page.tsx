@@ -1,9 +1,9 @@
 import PrivateRoute from "@/routes/PrivateRoute";
 
-export default function HomePage() {
+export default function CreateOrganizationPage() {
   return (
     <PrivateRoute>
-      <h1>Hi</h1>
+      <div>Create an organization</div>
     </PrivateRoute>
   );
 }
