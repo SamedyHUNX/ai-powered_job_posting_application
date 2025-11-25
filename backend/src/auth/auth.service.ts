@@ -250,7 +250,7 @@ export class AuthService {
 
     if (cachedUser) {
       user = cachedUser;
-    } else {
+    } else { 
       // Find user in database
       const [dbUser] = await this.dbServer
         .select()

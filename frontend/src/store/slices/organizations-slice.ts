@@ -1,64 +1,87 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Organization } from "@/types/organization.type";
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
+interface OrganizationsState {
+  organizations: Organization[];
+  selectedOrganization: Organization | null;
+  isLoading: boolean;
+  error: string | null;
+  count: number;
 }
 
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  isInitialized: boolean;
-}
-
-const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isInitialized: false,
+const initialState: OrganizationsState = {
+  organizations: [],
+  selectedOrganization: null,
+  isLoading: false,
+  error: null,
+  count: 0,
 };
 
-const authSlice = createSlice({
+const organizationsSlice = createSlice({
   name: "organizations",
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ token: string }>) => {
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-    },
-    setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-    },
-    initializeAuth: (
+    setOrganizations: (
       state,
-      action: PayloadAction<{ token: string; user?: User }>
+      action: PayloadAction<{ organizations: Organization[]; count: number }>
     ) => {
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-      state.isInitialized = true;
-      if (action.payload.user) {
-        state.user = action.payload.user;
+      state.organizations = action.payload.organizations;
+      state.count = action.payload.count;
+      state.isLoading = false;
+      state.error = null;
+    },
+    setSelectedOrganization: (state, action: PayloadAction<Organization | null>) => {
+      state.selectedOrganization = action.payload;
+    },
+    addOrganization: (state, action: PayloadAction<Organization>) => {
+      state.organizations.push(action.payload);
+      state.count += 1;
+    },
+    updateOrganization: (state, action: PayloadAction<Organization>) => {
+      const index = state.organizations.findIndex(
+        (org) => org.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.organizations[index] = action.payload;
+      }
+      if (state.selectedOrganization?.id === action.payload.id) {
+        state.selectedOrganization = action.payload;
       }
     },
-    markInitialized: (state) => {
-      state.isInitialized = true;
+    removeOrganization: (state, action: PayloadAction<string>) => {
+      state.organizations = state.organizations.filter(
+        (org) => org.id !== action.payload
+      );
+      state.count -= 1;
+      if (state.selectedOrganization?.id === action.payload) {
+        state.selectedOrganization = null;
+      }
     },
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.isInitialized = true;
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    },
+    clearOrganizations: (state) => {
+      state.organizations = [];
+      state.selectedOrganization = null;
+      state.count = 0;
+      state.error = null;
     },
   },
 });
 
 export const {
-  setCredentials,
-  setUser,
-  initializeAuth,
-  markInitialized,
-  logout,
-} = authSlice.actions;
-export default authSlice.reducer;
+  setOrganizations,
+  setSelectedOrganization,
+  addOrganization,
+  updateOrganization,
+  removeOrganization,
+  setLoading,
+  setError,
+  clearOrganizations,
+} = organizationsSlice.actions;
+
+export default organizationsSlice.reducer;
