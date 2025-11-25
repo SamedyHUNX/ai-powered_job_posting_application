@@ -59,7 +59,7 @@ export function LanguageSwitcher() {
     router.push(`/${newLocale}${pathWithoutLocale}`);
 
     // Force a refresh to ensure the layout re-renders with new locale
-    router.refresh();
+    // router.refresh();
   };
 
   return (

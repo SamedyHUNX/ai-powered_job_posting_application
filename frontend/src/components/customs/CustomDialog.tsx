@@ -18,6 +18,7 @@ interface CustomDialogProps {
   href?: string;
   additionalDesc?: string[];
   additionalDescTitle?: string;
+  buttonText?: string;
 }
 
 export const CustomDialog = ({
@@ -29,6 +30,7 @@ export const CustomDialog = ({
   additionalDesc,
   additionalDescTitle,
   href,
+  buttonText,
 }: CustomDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -62,7 +64,7 @@ export const CustomDialog = ({
           )}
           {href && (
             <Button asChild>
-              <Link href={href}>Create</Link>
+              <Link href={href}>{buttonText ? buttonText : "Create"}</Link>
             </Button>
           )}
         </DialogFooter>
