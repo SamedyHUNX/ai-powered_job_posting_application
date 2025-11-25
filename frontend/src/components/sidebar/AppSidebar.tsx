@@ -18,7 +18,7 @@ export const AppSidebar = ({
   children,
   footerButton,
 }: {
-  content: ReactNode;
+  content?: ReactNode;
   children: ReactNode;
   footerButton: ReactNode;
 }) => {

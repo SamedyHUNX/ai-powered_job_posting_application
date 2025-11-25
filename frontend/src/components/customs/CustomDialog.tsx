@@ -33,7 +33,7 @@ export const CustomDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+        className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 [&>button]:hidden"
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >

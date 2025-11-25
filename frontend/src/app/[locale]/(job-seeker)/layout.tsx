@@ -21,13 +21,11 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
               href: "/",
               icon: <ClipboardListIcon />,
               label: "Find Jobs",
-              authStatus: "signedIn",
             },
             {
               href: "/ai-search",
               icon: <BrainCircuitIcon />,
               label: "AI Search",
-              authStatus: "signedIn",
             },
             {
               href: "/employer",
