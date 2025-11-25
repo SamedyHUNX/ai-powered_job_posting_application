@@ -26,7 +26,7 @@ export const AppSidebar = ({
     <SidebarProvider className="overflow-y-hidden">
       <AppSidebarClient>
         <Sidebar collapsible="icon" className="overflow-hidden">
-          <SidebarHeader className="flex-row">
+          <SidebarHeader className="flex-row h-[68px]">
             <SidebarTrigger className="mt-1" />
             <span className="mt-2">JobXHub</span>
           </SidebarHeader>

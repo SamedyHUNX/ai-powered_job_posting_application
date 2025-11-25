@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
+import { NavBar } from "@/components/customs/Navbar";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
   return (
@@ -38,6 +39,7 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
       }
       footerButton={<SidebarUserButton />}
     >
+      <NavBar />
       {children}
     </AppSidebar>
   );

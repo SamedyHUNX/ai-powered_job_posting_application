@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle() {
+export const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -16,12 +16,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-black/20 dark:hover:bg-black/30 transition-all duration-200 backdrop-blur-sm border border-white/20"
+      className="h-10 w-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 dark:bg-black/20 dark:hover:bg-black/30 transition-all duration-200 backdrop-blur-sm border border-white/20"
       aria-label="Toggle theme"
     >
-      <span className="text-2xl">
-        {theme === "dark" ? "🌞" : "🌙"}
-      </span>
+      <span className="text-xl">{theme === "dark" ? "🌞" : "🌙"}</span>
     </button>
   );
-}
+};
