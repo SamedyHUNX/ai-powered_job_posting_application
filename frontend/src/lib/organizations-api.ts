@@ -65,6 +65,16 @@ export const organizationsApi = {
     },
 
     /**
+     * Get organizations by user ID
+     */
+    findByUser: async (userId: string): Promise<OrganizationsListResponse> => {
+        const { data } = await api.get<OrganizationsListResponse>(
+            `/organizations/user/${userId}`
+        );
+        return data;
+    },
+
+    /**
      * Get a single organization by ID
      */
     findOne: async (id: string): Promise<OrganizationResponse> => {

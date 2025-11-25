@@ -10,6 +10,7 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   return (

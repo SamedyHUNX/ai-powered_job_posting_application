@@ -19,18 +19,18 @@ import Link from "next/link";
 import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
 
-type User = {
+type Organization = {
   name: string;
   email: string;
   imageUrl: string;
 };
 
-export function SidebarUserButtonClient(user: User) {
+export function SidebarOrganizationButtonClient(organization: Organization) {
   const { isMobile, setOpenMobile } = useSidebar();
   const router = useRouter();
-  const openUserProfile = () => {
+  const openOrganizationProfile = () => {
     setOpenMobile(false);
-    router.push("/user-profile");
+    router.push("/organization-profile");
   };
 
   return (
@@ -41,7 +41,7 @@ export function SidebarUserButtonClient(user: User) {
             size={"lg"}
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
-            <UserInfo {...user} />
+            <OrganizationInfo {...organization} />
             <ChevronsUpDown className="ml-auto group-data-[state=collapsed]:hidden" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
@@ -52,10 +52,10 @@ export function SidebarUserButtonClient(user: User) {
           className="min-w-64 max-w-80"
         >
           <DropdownMenuLabel>
-            <UserInfo {...user} />
+            <OrganizationInfo {...organization} />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={openUserProfile}>
+          <DropdownMenuItem onClick={openOrganizationProfile}>
             <UserIcon className="mr-1" /> Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -73,7 +73,7 @@ export function SidebarUserButtonClient(user: User) {
   );
 }
 
-function UserInfo({ email, name, imageUrl }: User) {
+function OrganizationInfo({ email, name, imageUrl }: Organization) {
   const nameInitial = name
     .split(" ")
     .slice(0, 2)

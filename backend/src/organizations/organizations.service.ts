@@ -7,7 +7,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { DrizzleService } from '@/drizzle/drizzle.service';
-import { OrganizationTable } from '@/drizzle/schema';
+import { OrganizationTable, OrganizationUserSettingsTable } from '@/drizzle/schema';
 import { eq, like, and } from 'drizzle-orm';
 import {
   CreateOrganizationDto,
@@ -22,7 +22,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -161,6 +161,45 @@ export class OrganizationsService {
       throw new InternalServerErrorException({
         code: 'FETCH_ERROR',
         message: 'Failed to fetch organizations',
+      });
+    }
+  }
+
+  /**
+   * Get organizations by user ID
+   */
+  async findByUser(userId: string) {
+    try {
+      // Join organizations with organization_user_settings to get user's organizations
+      const organizations = await this.dbServer
+        .select({
+          id: OrganizationTable.id,
+          orgName: OrganizationTable.orgName,
+          imageUrl: OrganizationTable.imageUrl,
+          isVerified: OrganizationTable.isVerified,
+          isBanned: OrganizationTable.isBanned,
+          createdAt: OrganizationTable.createdAt,
+          updatedAt: OrganizationTable.updatedAt,
+        })
+        .from(OrganizationTable)
+        .innerJoin(
+          OrganizationUserSettingsTable,
+          eq(OrganizationTable.id, OrganizationUserSettingsTable.organizationId),
+        )
+        .where(eq(OrganizationUserSettingsTable.userId, userId));
+
+      return {
+        success: true,
+        organizations,
+        count: organizations.length,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Error fetching organizations for user ${userId}: ${error.message}`,
+      );
+      throw new InternalServerErrorException({
+        code: 'FETCH_ERROR',
+        message: 'Failed to fetch user organizations',
       });
     }
   }

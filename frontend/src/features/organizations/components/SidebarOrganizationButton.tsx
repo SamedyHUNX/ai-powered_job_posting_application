@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { useProfile } from "@/hooks/use-profile";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
+import { useOrganization } from "@/hooks/use-organization";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -11,7 +11,8 @@ export const SidebarOrganizationButton = () => {
 };
 
 function SidebarOrganizationSuspense() {
-  const { Organization, isLoading, error } = useProfile();
+  const { organizations, isLoading, fetchOrganizationsByUser, error } =
+    useOrganization();
 
   // Handle loading state
   if (isLoading) {
@@ -24,15 +25,15 @@ function SidebarOrganizationSuspense() {
   }
 
   // Handle undefined profile (no token or failed to load)
-  if (!Organization) {
+  if (!fetchOrganizationsByUser) {
     return null;
   }
 
   return (
     <SidebarOrganizationButtonClient
-      email={Organization.email}
-      name={Organization.name}
-      imageUrl={Organization.imageUrl}
+      email={organization.email}
+      name={organization.name}
+      imageUrl={organization.imageUrl}
     />
   );
 }

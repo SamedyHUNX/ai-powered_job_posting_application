@@ -23,7 +23,7 @@ import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 
 @Controller('organizations')
 export class OrganizationsController {
-  constructor(private readonly organizationsService: OrganizationsService) {}
+  constructor(private readonly organizationsService: OrganizationsService) { }
 
   /**
    * Create a new organization
@@ -52,6 +52,15 @@ export class OrganizationsController {
     const isVerifiedBool =
       isVerified === 'true' ? true : isVerified === 'false' ? false : undefined;
     return this.organizationsService.findAll(search, isVerifiedBool);
+  }
+
+  /**
+   * Get organizations by user ID
+   * GET /organizations/user/:userId
+   */
+  @Get('user/:userId')
+  async findByUser(@Param('userId') userId: string) {
+    return this.organizationsService.findByUser(userId);
   }
 
   /**
