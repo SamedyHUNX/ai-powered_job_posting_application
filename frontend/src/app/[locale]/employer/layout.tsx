@@ -12,16 +12,15 @@ import {
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { CustomDialog } from "@/components/customs/CustomDialog";
+
+const benefits = [
+  "Post and manage job listings",
+  "Track applications",
+  "Build your employer brand",
+  "Collaborate with team members",
+];
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   return (
@@ -108,40 +107,16 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
         {children}
       </AppSidebar>
 
-      <Dialog open={showOrgDialog} onOpenChange={setShowOrgDialog}>
-        <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <DialogHeader>
-            <DialogTitle className="text-slate-900 dark:text-slate-50">
-              Create an Organization
-            </DialogTitle>
-            <DialogDescription className="text-slate-500 dark:text-slate-400">
-              To post job listings and manage your employer profile, you'll need
-              to create an organization first.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              An organization allows you to:
-            </p>
-            <ul className="mt-2 space-y-1 text-sm text-slate-600 dark:text-slate-400 list-disc list-inside">
-              <li>Post and manage job listings</li>
-              <li>Track applications</li>
-              <li>Build your employer brand</li>
-              <li>Collaborate with team members</li>
-            </ul>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={handleCancel}>
-              Maybe Later
-            </Button>
-            <Button asChild>
-              <Link href="/employer/organizations/new">
-                Create Organization
-              </Link>
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CustomDialog
+        title="Create an Organization"
+        description="To post job listings and manage your employer profile, you'll need to create an organization first."
+        open={showOrgDialog}
+        onOpenChange={setShowOrgDialog}
+        onCancel={handleCancel}
+        additionalDescTitle="An organization allows you to:"
+        additionalDesc={benefits}
+        href={"/employer/organizations/new"}
+      />
     </>
   );
 }
