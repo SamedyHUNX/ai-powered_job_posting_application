@@ -68,7 +68,7 @@ export function LanguageSwitcher() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+          className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm h-10"
         >
           <Globe className="h-4 w-4" />
           <span className="text-lg">{currentLanguage.flag}</span>
@@ -77,7 +77,7 @@ export function LanguageSwitcher() {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[180px]">
+      <DropdownMenuContent align="end" className="h-10">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}

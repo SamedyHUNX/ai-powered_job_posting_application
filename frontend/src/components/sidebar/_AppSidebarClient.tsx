@@ -3,7 +3,8 @@
 import { ReactNode } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { NavBar } from "../customs/Navbar";
+import { ThemeToggle } from "../customs/ThemeToggle";
+import { LanguageSwitcher } from "../customs/LanguageSwitcher";
 
 export function AppSidebarClient({ children }: { children: ReactNode }) {
   const isMobile = useIsMobile();
@@ -11,10 +12,13 @@ export function AppSidebarClient({ children }: { children: ReactNode }) {
   if (isMobile) {
     return (
       <div className="flex flex-col w-full">
-        <div className="p-2 border-b flex items-center gap-1 h-[68px]">
-          <NavBar />
+        <div className="p-2 border-b flex items-center gap-2 h-[68px]">
           <SidebarTrigger />
           <span className="text-xl text-nowrap">JobXHub</span>
+          <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
         </div>
         <div className="flex-1 flex">{children}</div>
       </div>
