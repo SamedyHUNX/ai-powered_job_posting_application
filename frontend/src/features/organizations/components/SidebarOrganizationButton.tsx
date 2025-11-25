@@ -17,21 +17,17 @@ function SidebarOrganizationSuspense() {
 
   // Handle loading state
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-center">Loading...</div>;
   }
 
   // Handle error state
   if (error) {
-    return <div>Error loading organization!</div>;
+    return <div className="text-center">Error loading organization!</div>;
   }
 
   // Handle undefined profile (no token or failed to load)
   if (!selectedOrganization) {
-    return (
-      <Link href="/employer/create-organization">
-        <Button className="w-full">Create an organization</Button>
-      </Link>
-    );
+    return <div className="text-center">No organization found!</div>;
   }
 
   return (

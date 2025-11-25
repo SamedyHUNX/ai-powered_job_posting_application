@@ -38,7 +38,7 @@ export const CustomDialog = ({
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-slate-900 dark:text-slate-50">
+          <DialogTitle className="text-slate-900 dark:text-slate-50 mb-4">
             {title}
           </DialogTitle>
           <DialogDescription className="text-slate-500 dark:text-slate-400">
