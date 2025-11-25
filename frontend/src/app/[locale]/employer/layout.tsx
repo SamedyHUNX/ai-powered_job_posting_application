@@ -20,7 +20,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
   );
 }
 
-async function LayoutSuspense({ children }: { children: ReactNode }) {
+function LayoutSuspense({ children }: { children: ReactNode }) {
   return (
     <AppSidebar
       content={

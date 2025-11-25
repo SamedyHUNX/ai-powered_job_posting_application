@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
+import { Button } from "@/components/ui/button";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -11,8 +12,7 @@ export const SidebarOrganizationButton = () => {
 };
 
 function SidebarOrganizationSuspense() {
-  const { organizations, isLoading, fetchOrganizationsByUser, error } =
-    useOrganization();
+  const { selectedOrganization, isLoading, error } = useOrganization();
 
   // Handle loading state
   if (isLoading) {
@@ -21,19 +21,18 @@ function SidebarOrganizationSuspense() {
 
   // Handle error state
   if (error) {
-    return <div>Error loading profile</div>;
+    return <div>Error loading organization!</div>;
   }
 
   // Handle undefined profile (no token or failed to load)
-  if (!fetchOrganizationsByUser) {
-    return null;
+  if (!selectedOrganization) {
+    return <Button className="w-full">Create an organization</Button>;
   }
 
   return (
     <SidebarOrganizationButtonClient
-      email={organization.email}
-      name={organization.name}
-      imageUrl={organization.imageUrl}
+      orgName={selectedOrganization.orgName}
+      imageUrl={selectedOrganization.imageUrl}
     />
   );
 }

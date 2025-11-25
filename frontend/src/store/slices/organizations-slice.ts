@@ -30,7 +30,10 @@ const organizationsSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
-    setSelectedOrganization: (state, action: PayloadAction<Organization | null>) => {
+    setSelectedOrganization: (
+      state,
+      action: PayloadAction<Organization | null>
+    ) => {
       state.selectedOrganization = action.payload;
     },
     addOrganization: (state, action: PayloadAction<Organization>) => {

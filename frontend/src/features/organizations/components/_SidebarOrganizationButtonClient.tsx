@@ -19,13 +19,13 @@ import Link from "next/link";
 import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
 
-type Organization = {
-  name: string;
-  email: string;
+export function SidebarOrganizationButtonClient({
+  orgName,
+  imageUrl,
+}: {
+  orgName: string;
   imageUrl: string;
-};
-
-export function SidebarOrganizationButtonClient(organization: Organization) {
+}) {
   const { isMobile, setOpenMobile } = useSidebar();
   const router = useRouter();
   const openOrganizationProfile = () => {
@@ -41,7 +41,7 @@ export function SidebarOrganizationButtonClient(organization: Organization) {
             size={"lg"}
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
-            <OrganizationInfo {...organization} />
+            <OrganizationInfo {...{ orgName, imageUrl }} />
             <ChevronsUpDown className="ml-auto group-data-[state=collapsed]:hidden" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
@@ -52,7 +52,7 @@ export function SidebarOrganizationButtonClient(organization: Organization) {
           className="min-w-64 max-w-80"
         >
           <DropdownMenuLabel>
-            <OrganizationInfo {...organization} />
+            <OrganizationInfo {...{ orgName, imageUrl }} />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={openOrganizationProfile}>
@@ -73,8 +73,14 @@ export function SidebarOrganizationButtonClient(organization: Organization) {
   );
 }
 
-function OrganizationInfo({ email, name, imageUrl }: Organization) {
-  const nameInitial = name
+function OrganizationInfo({
+  orgName,
+  imageUrl,
+}: {
+  orgName: string;
+  imageUrl: string;
+}) {
+  const nameInitial = orgName
     .split(" ")
     .slice(0, 2)
     .map((str) => str[0])
@@ -83,14 +89,13 @@ function OrganizationInfo({ email, name, imageUrl }: Organization) {
   return (
     <div className="flex items-center gap-2 overflow-hidden">
       <Avatar className="rounded-lg size-8">
-        <AvatarImage src={imageUrl} alt={name} />
+        <AvatarImage src={imageUrl} alt={orgName} />
         <AvatarFallback className="uppercase bg-primary text-primary-foreground">
           {nameInitial}
         </AvatarFallback>
       </Avatar>
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
-        <span className="truncate text-sm font-semibold">{name}</span>
-        <span className="truncate text-xs">{email}</span>
+        <span className="truncate text-sm font-semibold">{orgName}</span>
       </div>
     </div>
   );

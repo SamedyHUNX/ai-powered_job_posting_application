@@ -7,7 +7,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { DrizzleService } from '@/drizzle/drizzle.service';
-import { OrganizationTable, OrganizationUserSettingsTable } from '@/drizzle/schema';
+import {
+  OrganizationTable,
+  OrganizationUserSettingsTable,
+} from '@/drizzle/schema';
 import { eq, like, and } from 'drizzle-orm';
 import {
   CreateOrganizationDto,
@@ -22,7 +25,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) { }
+  ) {}
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -184,7 +187,10 @@ export class OrganizationsService {
         .from(OrganizationTable)
         .innerJoin(
           OrganizationUserSettingsTable,
-          eq(OrganizationTable.id, OrganizationUserSettingsTable.organizationId),
+          eq(
+            OrganizationTable.id,
+            OrganizationUserSettingsTable.organizationId,
+          ),
         )
         .where(eq(OrganizationUserSettingsTable.userId, userId));
 
