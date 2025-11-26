@@ -65,7 +65,12 @@ export const CustomDialog = ({
             </Button>
           )}
           {href && (
-            <Button asChild>
+            <Button
+              onClick={() => {
+                onOpenChange(false);
+              }}
+              asChild
+            >
               <Link href={href}>{buttonText ? buttonText : "Create"}</Link>
             </Button>
           )}

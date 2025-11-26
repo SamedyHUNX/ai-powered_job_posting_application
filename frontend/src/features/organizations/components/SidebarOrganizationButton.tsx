@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
 import { useProfile } from "@/hooks/use-profile";
-import { SignOutButton } from "@/components/customs/SignOutButton";
+import { BackHomeButton } from "@/components/customs/CustomButtons";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -30,7 +30,7 @@ function SidebarOrganizationSuspense() {
 
   // Handle no selected organization
   if (!organizations || organizations.length === 0 || !currentUser || error) {
-    return <SignOutButton />;
+    return <BackHomeButton />;
   }
 
   return (
