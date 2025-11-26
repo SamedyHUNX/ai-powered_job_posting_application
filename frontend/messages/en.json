@@ -118,6 +118,23 @@
       },
       "createButton": "Create Organization",
       "cancelButton": "Nevermind"
+    },
+    "organizations": {
+      "newPage": {
+        "title": "Create New Organization",
+        "description": "Set up your organization's profile to start posting jobs and attracting top talent.",
+        "upload": "Upload",
+        "uploadDesc": "Recommend size 1:1, upto 5MB. Supported formats: JPG, PNG.",
+        "nameLabel": "Organization Name",
+        "namePlaceholder": "Your organization's name",
+        "slugLabel": "Organization URL",
+        "slugPlaceholder": "Your organization's URL",
+        "logoLabel": "Organization Logo",
+        "logoPlaceholder": "Upload your organization's logo",
+        "buttonText": "Create Organization",
+        "creatingText": "Creating organization...",
+        "success": "Organization created successfully"
+      }
     }
   },
   "apiErrors": {

@@ -1,11 +1,13 @@
 "use client";
 
 import { Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export default function CreateOrganizationForm() {
+  const t = useTranslations("employer.organizations.newPage");
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("Your organization's URL");
+  const [slug, setSlug] = useState("");
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
@@ -28,15 +30,13 @@ export default function CreateOrganizationForm() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl w-full max-w-3xl p-12">
-        <h1 className="text-4xl font-bold mb-12 text-black">
-          Create organization
-        </h1>
+        <h1 className="text-4xl font-bold mb-12 text-black">{t("title")}</h1>
 
         <div>
           {/* Logo Upload Section */}
           <div className="mb-8">
             <label className="block text-gray-700 text-lg font-medium mb-4">
-              Logo
+              {t("logoLabel")}
             </label>
             <div className="flex items-center gap-4">
               <label className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50">
@@ -52,13 +52,14 @@ export default function CreateOrganizationForm() {
                 <input
                   type="file"
                   accept="image/*"
+                  placeholder={t("logoPlaceholder")}
                   onChange={handleLogoUpload}
                   className="hidden"
                 />
               </label>
               <div>
                 <label className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium cursor-pointer hover:bg-gray-50 transition-colors inline-block">
-                  Upload
+                  {t("upload")}
                   <input
                     type="file"
                     accept="image/*"
@@ -66,9 +67,7 @@ export default function CreateOrganizationForm() {
                     className="hidden"
                   />
                 </label>
-                <p className="text-gray-500 mt-2 text-sm">
-                  Recommend size 1:1, upto 5MB.
-                </p>
+                <p className="text-gray-500 mt-2 text-sm">{t("uploadDesc")}</p>
               </div>
             </div>
           </div>
@@ -76,21 +75,21 @@ export default function CreateOrganizationForm() {
           {/* Name Input */}
           <div className="mb-8">
             <label className="block text-gray-700 text-lg font-medium mb-4">
-              Name
+              {t("nameLabel")}
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              placeholder="Your organization's name"
+              placeholder={t("namePlaceholder")}
             />
           </div>
 
           {/* Slug URL Input */}
           <div className="mb-8">
             <label className="block text-gray-700 text-lg font-medium mb-4">
-              Slug URL
+              {t("slugLabel")}
             </label>
             <input
               type="text"
@@ -106,7 +105,7 @@ export default function CreateOrganizationForm() {
               onClick={handleSubmit}
               className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
             >
-              Create organization
+              {t("buttonText")}
             </button>
           </div>
         </div>

@@ -117,7 +117,22 @@
         "four": "សហការជាមួយសមាជិកក្រុម"
       },
       "createButton": "បង្កើតអង្គភាព",
-      "cancelButton": "បោះបង់"
+      "cancelButton": "បោះបង់",
+      "organizations": {
+        "newPage": {
+          "title": "បង្កើតអង្គភាពថ្មី",
+          "description": "បំពេញព័ត៌មានខាងក្រោមដើម្បីបង្កើតអង្គភាពថ្មីរបស់អ្នក។",
+          "upload": "បង្ហោះ",
+          "uploadDesc": "ទំហំដែលបានណែនាំ 1:1, រហូតដល់ 5MB។ រូបភាពដែលគាំទ្រ: JPG, PNG។",
+          "organizationName": "ឈ្មោះអង្គភាព",
+          "organizationNamePlaceholder": "ឈ្មោះអង្គភាពរបស់អ្នក",
+          "slugLabel": "URL របស់អង្គភាព",
+          "slugPlaceholder": "URL របស់អង្គភាពរបស់អ្នក",
+          "uploadLogo": "បង្ហោះរូបសញ្ញា",
+          "createButton": "បង្កើតអង្គភាព",
+          "creatingText": "កំពុងបង្កើតអង្គភាព..."
+        }
+      }
     }
   },
   "apiErrors": {

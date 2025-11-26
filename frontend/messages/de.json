@@ -118,6 +118,23 @@
       },
       "createButton": "Organisation erstellen",
       "cancelButton": "Abbrechen"
+    },
+    "organizations": {
+      "newPage": {
+        "title": "Neue Organisation erstellen",
+        "description": "Erstellen Sie eine Organisation, um Stellenanzeigen zu veröffentlichen und Ihr Arbeitgeberprofil zu verwalten.",
+        "upload": "Hochladen",
+        "uploadDesc": "Empfohlene Größe 1:1, bis zu 5 MB. Unterstützte Formate: JPG, PNG.",
+        "nameLabel": "Organisationsname",
+        "namePlaceholder": "Name Ihrer Organisation",
+        "slugLabel": "Organisations-URL",
+        "slugPlaceholder": "URL Ihrer Organisation",
+        "logoLabel": "Organisationslogo",
+        "logoPlaceholder": "Logo Ihrer Organisation hochladen",
+        "buttonText": "Organisation erstellen",
+        "creatingText": "Organisation wird erstellt...",
+        "success": "Organisation erfolgreich erstellt"
+      }
     }
   },
   "apiErrors": {
