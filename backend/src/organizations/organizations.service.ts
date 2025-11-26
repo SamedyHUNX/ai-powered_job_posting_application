@@ -120,9 +120,7 @@ export class OrganizationsService {
     'Failed to create organization',
   );
 
-  /**
-   * Get all organizations with optional filtering
-   */
+  // Get all organizations with optional filtering
   findAll = catchAsync(async (search?: string, isVerified?: boolean) => {
     if (search && isVerified !== undefined) {
       const organizations = await this.dbServer
@@ -159,9 +157,7 @@ export class OrganizationsService {
     }
   }, this.logger);
 
-  /**
-   * Get organizations by user ID
-   */
+  // Get organizations by user ID
   findByUser = catchAsync(
     async (userId: string) => {
       const organizations = await this.dbServer
@@ -194,239 +190,251 @@ export class OrganizationsService {
     'Failed to fetch user organizations',
   );
 
-  /**
-   * Get a single organization by ID
-   */
-  async findOne(id: string) {
-    const [organization] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
-
-    if (!organization) {
-      this.logger.error(`Organization with ID ${id} not found`);
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
-
-    return {
-      success: true,
-      organization,
-    };
-  }
-
-  /**
-   * Update an organization
-   */
-  async update(
-    id: string,
-    dto: UpdateOrganizationDto,
-    file?: Express.Multer.File,
-  ) {
-    // Check if organization exists
-    const [existingOrg] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
-
-    if (!existingOrg) {
-      this.logger.error(`Organization with ID ${id} not found`);
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
-
-    // If orgName is being updated, check for duplicates
-    if (dto.orgName && dto.orgName !== existingOrg.orgName) {
-      const duplicateOrg = await this.dbServer
+  // Get a single organization by ID
+  findOne = catchAsync(
+    async (id: string) => {
+      const [organization] = await this.dbServer
         .select()
         .from(OrganizationTable)
-        .where(eq(OrganizationTable.orgName, dto.orgName))
+        .where(eq(OrganizationTable.id, id))
         .limit(1);
 
-      if (duplicateOrg.length > 0) {
-        throw new ConflictException({
-          code: 'ORGANIZATION_EXISTS',
-          message: 'Organization with this orgName already exists',
+      if (!organization) {
+        this.logger.error(`Organization with ID ${id} not found`);
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
         });
       }
-    }
 
-    let imageUrl = dto.imageUrl;
+      return {
+        success: true,
+        organization,
+      };
+    },
+    this.logger,
+    'Failed to find organization',
+  );
 
-    // Upload new image if provided
-    if (file && file.originalname) {
-      const imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
-      await this.s3Server.uploadFile(file, imageKey);
-      imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
-    }
+  // Update an organization
+  update = catchAsync(
+    async (
+      id: string,
+      dto: UpdateOrganizationDto,
+      file?: Express.Multer.File,
+    ) => {
+      // Check if organization exists
+      const [existingOrg] = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.id, id))
+        .limit(1);
 
-    // Update organization
-    const [updatedOrg] = await this.dbServer
-      .update(OrganizationTable)
-      .set({
-        ...dto,
-        imageUrl,
-      })
-      .where(eq(OrganizationTable.id, id))
-      .returning();
+      if (!existingOrg) {
+        this.logger.error(`Organization with ID ${id} not found`);
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
+        });
+      }
 
-    this.logger.log(`Organization updated with ID: ${id}`);
+      // If orgName is being updated, check for duplicates
+      if (dto.orgName && dto.orgName !== existingOrg.orgName) {
+        const duplicateOrg = await this.dbServer
+          .select()
+          .from(OrganizationTable)
+          .where(eq(OrganizationTable.orgName, dto.orgName))
+          .limit(1);
 
-    return {
-      success: true,
-      organization: updatedOrg,
-    };
-  }
+        if (duplicateOrg.length > 0) {
+          throw new ConflictException({
+            code: 'ORGANIZATION_EXISTS',
+            message: 'Organization with this orgName already exists',
+          });
+        }
+      }
 
-  /**
-   * Delete an organization
-   */
-  async remove(id: string) {
-    // Check if organization exists
-    const [existingOrg] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
+      let imageUrl = dto.imageUrl;
 
-    if (!existingOrg) {
-      this.logger.error(`Organization with ID ${id} not found`);
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
+      // Upload new image if provided
+      if (file && file.originalname) {
+        const imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
+        await this.s3Server.uploadFile(file, imageKey);
+        imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
+      }
 
-    // Delete organization
-    await this.dbServer
-      .delete(OrganizationTable)
-      .where(eq(OrganizationTable.id, id));
+      // Update organization
+      const [updatedOrg] = await this.dbServer
+        .update(OrganizationTable)
+        .set({
+          ...dto,
+          imageUrl,
+        })
+        .where(eq(OrganizationTable.id, id))
+        .returning();
 
-    this.logger.log(`Organization deleted with ID: ${id}`);
+      this.logger.log(`Organization updated with ID: ${id}`);
 
-    return {
-      success: true,
-      message: 'Organization deleted successfully',
-    };
-  }
+      return {
+        success: true,
+        organization: updatedOrg,
+      };
+    },
+    this.logger,
+    'Failed to update organization',
+  );
 
-  /**
-   * Verify an organization
-   */
-  async verify(id: string) {
-    const [organization] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
+  // Delete an organization
+  remove = catchAsync(
+    async (id: string) => {
+      // Check if organization exists
+      const [existingOrg] = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.id, id))
+        .limit(1);
 
-    if (!organization) {
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
+      if (!existingOrg) {
+        this.logger.error(`Organization with ID ${id} not found`);
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
+        });
+      }
 
-    if (organization.isVerified) {
-      throw new BadRequestException({
-        code: 'ALREADY_VERIFIED',
-        message: 'Organization is already verified',
-      });
-    }
+      // Delete organization
+      await this.dbServer
+        .delete(OrganizationTable)
+        .where(eq(OrganizationTable.id, id));
 
-    const [updatedOrg] = await this.dbServer
-      .update(OrganizationTable)
-      .set({ isVerified: true })
-      .where(eq(OrganizationTable.id, id))
-      .returning();
+      this.logger.log(`Organization deleted with ID: ${id}`);
 
-    this.logger.log(`Organization verified with ID: ${id}`);
+      return {
+        success: true,
+        message: 'Organization deleted successfully',
+      };
+    },
+    this.logger,
+    'Failed to remove organization',
+  );
 
-    return {
-      success: true,
-      organization: updatedOrg,
-    };
-  }
+  // Verify an organization
+  verify = catchAsync(
+    async (id: string) => {
+      const [organization] = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.id, id))
+        .limit(1);
 
-  /**
-   * Ban an organization
-   */
-  async ban(id: string) {
-    const [organization] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
+      if (!organization) {
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
+        });
+      }
 
-    if (!organization) {
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
+      if (organization.isVerified) {
+        throw new BadRequestException({
+          code: 'ALREADY_VERIFIED',
+          message: 'Organization is already verified',
+        });
+      }
 
-    if (organization.isBanned) {
-      throw new BadRequestException({
-        code: 'ALREADY_BANNED',
-        message: 'Organization is already banned',
-      });
-    }
+      const [updatedOrg] = await this.dbServer
+        .update(OrganizationTable)
+        .set({ isVerified: true })
+        .where(eq(OrganizationTable.id, id))
+        .returning();
 
-    const [updatedOrg] = await this.dbServer
-      .update(OrganizationTable)
-      .set({ isBanned: true })
-      .where(eq(OrganizationTable.id, id))
-      .returning();
+      this.logger.log(`Organization verified with ID: ${id}`);
 
-    this.logger.log(`Organization banned with ID: ${id}`);
+      return {
+        success: true,
+        organization: updatedOrg,
+      };
+    },
+    this.logger,
+    'Failed to verify organization',
+  );
 
-    return {
-      success: true,
-      organization: updatedOrg,
-    };
-  }
+  // Ban an organization
+  ban = catchAsync(
+    async (id: string) => {
+      const [organization] = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.id, id))
+        .limit(1);
 
-  /**
-   * Unban an organization
-   */
-  async unban(id: string) {
-    const [organization] = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.id, id))
-      .limit(1);
+      if (!organization) {
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
+        });
+      }
 
-    if (!organization) {
-      throw new NotFoundException({
-        code: 'ORGANIZATION_NOT_FOUND',
-        message: 'Organization not found',
-      });
-    }
+      if (organization.isBanned) {
+        throw new BadRequestException({
+          code: 'ALREADY_BANNED',
+          message: 'Organization is already banned',
+        });
+      }
 
-    if (!organization.isBanned) {
-      throw new BadRequestException({
-        code: 'NOT_BANNED',
-        message: 'Organization is not banned',
-      });
-    }
+      const [updatedOrg] = await this.dbServer
+        .update(OrganizationTable)
+        .set({ isBanned: true })
+        .where(eq(OrganizationTable.id, id))
+        .returning();
 
-    const [updatedOrg] = await this.dbServer
-      .update(OrganizationTable)
-      .set({ isBanned: false })
-      .where(eq(OrganizationTable.id, id))
-      .returning();
+      this.logger.log(`Organization banned with ID: ${id}`);
 
-    this.logger.log(`Organization unbanned with ID: ${id}`);
+      return {
+        success: true,
+        organization: updatedOrg,
+      };
+    },
+    this.logger,
+    'Failed to ban organization',
+  );
 
-    return {
-      success: true,
-      organization: updatedOrg,
-    };
-  }
+  // Unban an organization
+  unban = catchAsync(
+    async (id: string) => {
+      const [organization] = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.id, id))
+        .limit(1);
+
+      if (!organization) {
+        throw new NotFoundException({
+          code: 'ORGANIZATION_NOT_FOUND',
+          message: 'Organization not found',
+        });
+      }
+
+      if (!organization.isBanned) {
+        throw new BadRequestException({
+          code: 'NOT_BANNED',
+          message: 'Organization is not banned',
+        });
+      }
+
+      const [updatedOrg] = await this.dbServer
+        .update(OrganizationTable)
+        .set({ isBanned: false })
+        .where(eq(OrganizationTable.id, id))
+        .returning();
+
+      this.logger.log(`Organization unbanned with ID: ${id}`);
+
+      return {
+        success: true,
+        organization: updatedOrg,
+      };
+    },
+    this.logger,
+    'Failed to unban organization',
+  );
 }
