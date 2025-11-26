@@ -20,24 +20,23 @@ import {
   UpdateOrganizationDto,
 } from './dtos/organization.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { CurrentUser } from '@/auth/decorators/current-user.decorator';
 
 @Controller('organizations')
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) { }
 
-  /**
-   * Create a new organization
-   * POST /organizations
-   */
+  // Create a new organization: POST /organizations
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('logo'))
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createOrganizationDto: CreateOrganizationDto,
-    @UploadedFile() file?: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() user: any,
   ) {
-    return this.organizationsService.create(createOrganizationDto, file);
+    return this.organizationsService.create(createOrganizationDto, file, user.id);
   }
 
   /**

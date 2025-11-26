@@ -1,19 +1,42 @@
 "use client";
 
+import { useOrganization } from "@/hooks/use-organization";
+import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import z from "zod";
 
 export default function CreateOrganizationForm() {
   const t = useTranslations("employer.organizations.newPage");
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-
+  const validationT = useTranslations("validations");
+  const router = useRouter();
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+  const { createOrganization, isCreating, createError, createSuccess } =
+    useOrganization();
+
+  const createOrganizationFormSchema = useMemo(
+    () => createOrganizationSchema(validationT),
+    [validationT]
+  );
+
+  const form = useForm<z.infer<typeof createOrganizationFormSchema>>({
+    resolver: zodResolver(createOrganizationFormSchema),
+    defaultValues: {
+      orgName: "",
+      image: "",
+    },
+  });
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setLogoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
@@ -22,13 +45,34 @@ export default function CreateOrganizationForm() {
     }
   };
 
-  const handleSubmit = () => {
-    console.log({ name, slug, logo: logoPreview });
-    alert("Organization created!");
+  const isFormValid = () => {
+    const values = form.getValues();
+    return values.orgName && logoFile;
   };
 
+  const handleSubmit = form.handleSubmit((data) => {
+    if (!logoFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("orgName", data.orgName);
+    if (logoFile) {
+      formData.append("logo", logoFile);
+    }
+
+    createOrganization(formData);
+  });
+
+  // Redirect to employer dashboard on success
+  useEffect(() => {
+    if (createSuccess) {
+      router.push("/employer");
+    }
+  }, [createSuccess, router]);
+
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-0">
       <div className="bg-white rounded-3xl w-full max-w-3xl p-12">
         <h1 className="text-4xl font-bold mb-12 text-black">{t("title")}</h1>
 
@@ -36,7 +80,7 @@ export default function CreateOrganizationForm() {
           {/* Logo Upload Section */}
           <div className="mb-8">
             <label className="block text-gray-700 text-lg font-medium mb-4">
-              {t("logoLabel")}
+              {t("logoLabel")} <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center gap-4">
               <label className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50">
@@ -52,7 +96,6 @@ export default function CreateOrganizationForm() {
                 <input
                   type="file"
                   accept="image/*"
-                  placeholder={t("logoPlaceholder")}
                   onChange={handleLogoUpload}
                   className="hidden"
                 />
@@ -68,6 +111,9 @@ export default function CreateOrganizationForm() {
                   />
                 </label>
                 <p className="text-gray-500 mt-2 text-sm">{t("uploadDesc")}</p>
+                {!logoFile && (
+                  <p className="text-red-500 text-sm mt-1">Logo is required</p>
+                )}
               </div>
             </div>
           </div>
@@ -79,33 +125,42 @@ export default function CreateOrganizationForm() {
             </label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              {...form.register("orgName")}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-gray-700"
               placeholder={t("namePlaceholder")}
             />
+            {form.formState.errors.orgName && (
+              <p className="text-red-500 text-sm mt-1">
+                {form.formState.errors.orgName.message}
+              </p>
+            )}
           </div>
 
-          {/* Slug URL Input */}
-          <div className="mb-8">
-            <label className="block text-gray-700 text-lg font-medium mb-4">
-              {t("slugLabel")}
-            </label>
-            <input
-              type="text"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-gray-500"
-            />
-          </div>
+          {/* Error Display */}
+          {createError && (
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600">{createError}</p>
+            </div>
+          )}
+
+          {/* Success Display */}
+          {createSuccess && (
+            <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-600">
+                Organization created successfully!
+              </p>
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="flex justify-end mt-12">
             <button
+              type="button"
               onClick={handleSubmit}
-              className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+              disabled={isCreating || !isFormValid()}
+              className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("buttonText")}
+              {isCreating ? "..." : t("buttonText")}
             </button>
           </div>
         </div>

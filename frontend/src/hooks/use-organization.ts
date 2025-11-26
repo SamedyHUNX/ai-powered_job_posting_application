@@ -92,18 +92,14 @@ export function useOrganization() {
 
   // Create organization mutation
   const createOrganizationMutation = useMutation({
-    mutationFn: ({
-      dto,
-      file,
-    }: {
-      dto: CreateOrganizationDto;
-      file?: File;
-    }) => {
+    mutationFn: (formData: FormData) => {
       if (!token) throw new Error("Authentication required");
-      return organizationsApi.create(dto, token, file);
+      return organizationsApi.create(formData, token);
     },
     onSuccess: (data) => {
       dispatch(addOrganization(data.organization));
+      // Automatically select the newly created organization
+      dispatch(setSelectedOrganization(data.organization));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: any) => {

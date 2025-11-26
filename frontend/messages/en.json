@@ -1,6 +1,6 @@
 {
   "validations": {
-    "imageRequired": "Missing profile photo",
+    "imageRequired": "Missing photo upload",
     "nameRequired": "Missing username",
     "firstNameRequired": "Missing firstname",
     "lastNameRequired": "Missing lastname",
@@ -10,7 +10,9 @@
     "passwordUppercase": "Password must have at least 1 uppercase character",
     "passwordNumber": "Password must have at least 1 number",
     "confirmPasswordRequired": "Confirm password is required",
-    "passwordsMustMatch": "Passwords must match"
+    "passwordsMustMatch": "Passwords must match",
+    "organizationNameRequired": "Organization name is required",
+    "slugRequired": "Organization URL is required"
   },
   "authLayout": {
     "title": "Welcome to JobXHub",

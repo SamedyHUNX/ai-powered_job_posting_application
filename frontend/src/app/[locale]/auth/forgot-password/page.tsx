@@ -21,7 +21,7 @@ import PublicRoute from "@/routes/PublicRoute";
 import {
   forgotPasswordSchema,
   ForgotPasswordSchemaData,
-} from "@/schemas/forgotPasswordSchema";
+} from "@/schemas/auth/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
 import Loading from "@/components/customs/Loading";
 

@@ -1,6 +1,6 @@
 {
   "validations": {
-    "imageRequired": "Bitte laden Sie Ihr Profilfoto hoch",
+    "imageRequired": "Bitte laden Sie Ihr Foto hoch",
     "nameRequired": "Bitte geben Sie den Benutzernamen ein",
     "firstNameRequired": "Bitte geben Sie den Namen ein",
     "lastNameRequired": "Bitte geben Sie den Nachnamen ein",
@@ -10,7 +10,9 @@
     "passwordUppercase": "Das Passwort muss mindestens 1 Großbuchstaben enthalten",
     "passwordNumber": "Das Passwort muss mindestens 1 Zahl enthalten",
     "confirmPasswordRequired": "Bestätigung des Passworts ist erforderlich",
-    "passwordsMustMatch": "Die Passwörter müssen übereinstimmen"
+    "passwordsMustMatch": "Die Passwörter müssen übereinstimmen",
+    "organizationNameRequired": "Der Name der Organisation ist erforderlich",
+    "slugRequired": "Die URL der Organisation ist erforderlich"
   },
   "authLayout": {
     "title": "Willkommen bei JobXHub",

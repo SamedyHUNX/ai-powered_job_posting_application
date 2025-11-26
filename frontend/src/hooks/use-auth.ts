@@ -7,7 +7,7 @@ import {
 } from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
-import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
+import { ResetPasswordFormData } from "@/schemas/auth/resetPasswordSchema";
 import { SignInRequest } from "@/types/request.auth.type";
 import { useLocale } from "next-intl";
 

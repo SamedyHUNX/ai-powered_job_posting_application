@@ -21,7 +21,7 @@ import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/errorHandler";
-import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
+import { createSignUpSchema, SignUpFormData } from "@/schemas/auth/signUpSchema";
 import { Loading } from "@/components/customs/Loading";
 
 export default function SignUpPage() {

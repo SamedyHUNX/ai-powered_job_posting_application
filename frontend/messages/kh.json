@@ -10,7 +10,9 @@
     "passwordUppercase": "ពាក្យសម្ងាត់ត្រូវតែមានតួអក្សរធំយ៉ាងហោចណាស់ 1 តួ",
     "passwordNumber": "ពាក្យសម្ងាត់ត្រូវតែមានលេខយ៉ាងហោចណាស់ 1 តួ",
     "confirmPasswordRequired": "ត្រូវការបញ្ជាក់ពាក្យសម្ង្ងាត់",
-    "passwordsMustMatch": "ពាក្យសម្ងាត់ត្រូវតែត្រូវគ្នា"
+    "passwordsMustMatch": "ពាក្យសម្ងាត់ត្រូវតែត្រូវគ្នា",
+    "organizationNameRequired": "ត្រូវការឈ្មោះអង្គភាព",
+    "slugRequired": "ត្រូវការ URL អង្គភាព"
   },
   "authLayout": {
     "title": "សូមស្វាគមន៍មកកាន់ JobXHub",

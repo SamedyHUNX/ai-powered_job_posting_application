@@ -56,10 +56,13 @@ export class OrganizationsService {
     return this.s3Service;
   }
 
-  /**
-   * Create a new organization
-   */
-  async create(dto: CreateOrganizationDto, file?: Express.Multer.File) {
+  // Create an organization
+  async create(
+    dto: CreateOrganizationDto,
+    file: Express.Multer.File,
+    userId: string,
+  ) {
+    console.log('gjklsafdkjlfdgjk');
     const { orgName } = dto;
 
     // Check if organization with same orgName already exists
@@ -97,7 +100,16 @@ export class OrganizationsService {
       })
       .returning();
 
-    this.logger.log(`Organization created with ID: ${organization.id}`);
+    // Assign the creator as a member of the organization
+    await this.dbServer.insert(OrganizationUserSettingsTable).values({
+      userId,
+      organizationId: organization.id,
+      newApplicationEmailNotifications: false,
+    });
+
+    this.logger.log(
+      `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
+    );
 
     return {
       success: true,
