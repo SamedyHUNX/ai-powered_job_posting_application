@@ -62,7 +62,6 @@ export class OrganizationsService {
     file: Express.Multer.File,
     userId: string,
   ) {
-    console.log('gjklsafdkjlfdgjk');
     const { orgName } = dto;
 
     // Check if organization with same orgName already exists

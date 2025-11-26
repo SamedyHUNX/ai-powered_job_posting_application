@@ -2,20 +2,22 @@
 
 import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
+import { useErrorHandler } from "@/utils/errorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 export default function CreateOrganizationForm() {
   const t = useTranslations("employer.organizations.newPage");
   const validationT = useTranslations("validations");
   const router = useRouter();
-  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const { getErrorMessage } = useErrorHandler();
 
   const { createOrganization, isCreating, createError, createSuccess } =
     useOrganization();
@@ -29,14 +31,29 @@ export default function CreateOrganizationForm() {
     resolver: zodResolver(createOrganizationFormSchema),
     defaultValues: {
       orgName: "",
-      image: "",
+      image: undefined,
     },
   });
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (createError) {
+      const errorMessage = getErrorMessage(createError);
+      toast.error(errorMessage);
+    }
+  }, [createError, getErrorMessage]);
+
+  // Redirect to employer dashboard on success
+  useEffect(() => {
+    if (createSuccess) {
+      toast.success(t("success"));
+      router.push("/employer");
+    }
+  }, [createSuccess, router]);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setLogoFile(file);
+      form.setValue("image", file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
@@ -47,29 +64,21 @@ export default function CreateOrganizationForm() {
 
   const isFormValid = () => {
     const values = form.getValues();
-    return values.orgName && logoFile;
+    return values.orgName && values.image;
   };
 
   const handleSubmit = form.handleSubmit((data) => {
-    if (!logoFile) {
+    if (!data.image) {
+      toast.error("Please upload a photo");
       return;
     }
 
     const formData = new FormData();
     formData.append("orgName", data.orgName);
-    if (logoFile) {
-      formData.append("logo", logoFile);
-    }
+    formData.append("image", data.image);
 
     createOrganization(formData);
   });
-
-  // Redirect to employer dashboard on success
-  useEffect(() => {
-    if (createSuccess) {
-      router.push("/employer");
-    }
-  }, [createSuccess, router]);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-0">
@@ -96,7 +105,7 @@ export default function CreateOrganizationForm() {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleLogoUpload}
+                  onChange={handleFileUpload}
                   className="hidden"
                 />
               </label>
@@ -106,14 +115,11 @@ export default function CreateOrganizationForm() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleLogoUpload}
+                    onChange={handleFileUpload}
                     className="hidden"
                   />
                 </label>
                 <p className="text-gray-500 mt-2 text-sm">{t("uploadDesc")}</p>
-                {!logoFile && (
-                  <p className="text-red-500 text-sm mt-1">Logo is required</p>
-                )}
               </div>
             </div>
           </div>
@@ -136,10 +142,10 @@ export default function CreateOrganizationForm() {
             )}
           </div>
 
-          {/* Error Display */}
+          {/* Error Display - FIXED */}
           {createError && (
             <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600">{createError}</p>
+              <p className="text-red-600">{getErrorMessage(createError)}</p>
             </div>
           )}
 
@@ -157,7 +163,7 @@ export default function CreateOrganizationForm() {
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={isCreating || !isFormValid()}
+              disabled={isCreating}
               className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isCreating ? "..." : t("buttonText")}
@@ -165,7 +171,7 @@ export default function CreateOrganizationForm() {
           </div>
         </div>
 
-        {/* Clerk Branding */}
+        {/* JobXHub Branding */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center gap-2 text-gray-500">
             <span>Secured by</span>

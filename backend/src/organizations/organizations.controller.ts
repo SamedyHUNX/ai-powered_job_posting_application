@@ -24,19 +24,33 @@ import { CurrentUser } from '@/auth/decorators/current-user.decorator';
 
 @Controller('organizations')
 export class OrganizationsController {
-  constructor(private readonly organizationsService: OrganizationsService) { }
+  constructor(private readonly organizationsService: OrganizationsService) {}
 
   // Create a new organization: POST /organizations
   @Post()
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('logo'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (_, file, cb) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+          return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createOrganizationDto: CreateOrganizationDto,
     @UploadedFile() file: Express.Multer.File,
     @CurrentUser() user: any,
   ) {
-    return this.organizationsService.create(createOrganizationDto, file, user.id);
+    return this.organizationsService.create(
+      createOrganizationDto,
+      file,
+      user.id,
+    );
   }
 
   /**
