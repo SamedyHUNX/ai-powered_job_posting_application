@@ -28,6 +28,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
 
 function LayoutSuspense({ children }: { children: ReactNode }) {
   const t = useTranslations("employer");
+  const customDialT = useTranslations("employer.customDialog");
   const router = useRouter();
   const { currentUser } = useProfile();
   const {
@@ -41,13 +42,11 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   const benefits = useMemo(
-    () => [
-      "Post and manage job listings",
-      "Track applications",
-      "Build your employer brand",
-      "Collaborate with team members",
-    ],
-    [t]
+    () =>
+      ["one", "two", "three", "four"].map((key) =>
+        customDialT(`benefits.${key}`)
+      ),
+    [customDialT]
   );
 
   // Fetch organizations when current user is available
@@ -125,14 +124,15 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
         !selectedOrganization &&
         organizations.length === 0 && (
           <CustomDialog
-            title="Organization not found"
-            description="To post job listings and manage your employer profile, you'll need to create an organization first."
+            title={customDialT("title")}
+            description={customDialT("description")}
             open={showOrgDialog}
             onOpenChange={setShowOrgDialog}
             onCancel={handleCancel}
             additionalDescTitle="An organization allows you to:"
             additionalDesc={benefits}
-            buttonText={"Create Organization"}
+            buttonText={customDialT("createButton")}
+            cancelButtonText={customDialT("cancelButton")}
             href={"/employer/organizations/new"}
           />
         )}

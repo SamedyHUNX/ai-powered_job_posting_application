@@ -105,6 +105,21 @@
     "description": "Wenn Sie Probleme haben, Ihre E-Mail zu verifizieren, überprüfen Sie bitte Ihren Spam-Ordner oder versuchen Sie, die Bestätigungs-E-Mail erneut zu senden.",
     "contactSupport": "Kontaktieren Sie den Support für Hilfe."
   },
+  "employer": {
+    "customDialog": {
+      "title": "Organisation nicht gefunden",
+      "description": "Um Stellenanzeigen zu veröffentlichen und Ihr Arbeitgeberprofil zu verwalten, müssen Sie zuerst eine Organisation erstellen.",
+      "additionalDescTitle": "Eine Organisation ermöglicht Ihnen:",
+      "benefits": {
+        "one": "Stellenanzeigen veröffentlichen und verwalten",
+        "two": "Bewerbungen verfolgen",
+        "three": "Ihre Arbeitgebermarke aufbauen",
+        "four": "Mit Teammitgliedern zusammenarbeiten"
+      },
+      "createButton": "Organisation erstellen",
+      "cancelButton": "Abbrechen"
+    }
+  },
   "apiErrors": {
     "MISSING_FIELDS": "Bitte füllen Sie alle Felder aus",
     "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
@@ -115,6 +130,7 @@
     "USER_BANNED": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Support.",
     "USER_DISABLED": "Ihr Konto ist deaktiviert. Bitte kontaktieren Sie den Support.",
     "USER_NOT_VERIFIED": "Ihr Konto ist nicht verifiziert. Bitte überprüfen Sie Ihre E-Mails für Verifizierungsanweisungen.",
-    "INVALID_TOKEN": "Der bereitgestellte Token ist ungültig oder abgelaufen."
+    "INVALID_TOKEN": "Der bereitgestellte Token ist ungültig oder abgelaufen.",
+    "ERR_NETWORK": "Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung."
   }
 }

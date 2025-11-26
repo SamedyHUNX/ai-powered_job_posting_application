@@ -18,6 +18,7 @@ interface CustomDialogProps {
   href?: string;
   additionalDesc?: string[];
   additionalDescTitle?: string;
+  cancelButtonText?: string;
   buttonText?: string;
 }
 
@@ -29,6 +30,7 @@ export const CustomDialog = ({
   description,
   additionalDesc,
   additionalDescTitle,
+  cancelButtonText = "Nevermind",
   href,
   buttonText,
 }: CustomDialogProps) => {
@@ -59,7 +61,7 @@ export const CustomDialog = ({
         <DialogFooter>
           {onCancel && (
             <Button variant="destructive" onClick={onCancel}>
-              Nevermind
+              {cancelButtonText}
             </Button>
           )}
           {href && (

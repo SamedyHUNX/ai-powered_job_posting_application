@@ -22,7 +22,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
-import Loading from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/Loading";
 
 export default function SignUpPage() {
   const locale = useLocale();
@@ -86,7 +86,7 @@ export default function SignUpPage() {
     }
 
     const formData = new FormData();
-    formData.append("name", data.name);
+    formData.append("username", data.name);
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
@@ -286,7 +286,7 @@ export default function SignUpPage() {
               disabled={isSigningUp}
               className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
             >
-              {isSigningUp ? signUpT("buttonLoading") : signUpT("signUp")}
+              {isSigningUp ? "..." : signUpT("signUp")}
             </Button>
           </form>
         </Form>

@@ -21,7 +21,7 @@ import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
-import Loading from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/Loading";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");

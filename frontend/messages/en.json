@@ -105,6 +105,21 @@
     "description": "If you're having trouble verifying your email, please check your spam folder or try resending the verification email.",
     "contactSupport": "Contact support for assistance."
   },
+  "employer": {
+    "customDialog": {
+      "title": "Organization not found",
+      "description": "To post job listings and manage your employer profile, you'll need to create an organization first.",
+      "additionalDescTitle": "An organization allows you to:",
+      "benefits": {
+        "one": "Post and manage job listings",
+        "two": "Track applications",
+        "three": "Build your employer brand",
+        "four": "Collaborate with team members"
+      },
+      "createButton": "Create Organization",
+      "cancelButton": "Nevermind"
+    }
+  },
   "apiErrors": {
     "MISSING_FIELDS": "Please fill in all required fields",
     "INVALID_CREDENTIALS": "Invalid email or password",
@@ -115,6 +130,7 @@
     "USER_BANNED": "Your account has been banned. Please contact support.",
     "USER_DISABLED": "Your account is disabled. Please contact support.",
     "USER_NOT_VERIFIED": "Your account is not verified. Please check your email for verification instructions.",
-    "INVALID_TOKEN": "The provided token is invalid or has expired."
+    "INVALID_TOKEN": "The provided token is invalid or has expired.",
+    "ERR_NETWORK": "Network error. Please check your internet connection."
   }
 }
