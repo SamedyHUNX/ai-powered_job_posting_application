@@ -74,7 +74,12 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
     ) {
       setShowOrgDialog(true);
     }
-  }, [hasInitiallyLoaded, selectedOrganization, organizations.length, pathname]);
+  }, [
+    hasInitiallyLoaded,
+    selectedOrganization,
+    organizations.length,
+    pathname,
+  ]);
 
   const handleCancel = () => {
     setShowOrgDialog(false);
@@ -88,6 +93,10 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
   if (isFetchingOrganizationsError) {
     return <div className="error">Error: {isFetchingOrganizationsError}</div>;
   }
+
+  // if (!selectedOrganization) {
+  //   return redirect("/employer/organizations/select");
+  // }
 
   return (
     <>
