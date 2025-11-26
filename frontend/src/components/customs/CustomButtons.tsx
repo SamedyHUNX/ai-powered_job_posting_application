@@ -3,16 +3,33 @@ import { Button } from "../ui/button";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export const BackHomeButton = () => {
+type CustomButtonProps = {
+  className?: string;
+  variant?:
+    | "link"
+    | "ghost"
+    | "default"
+    | "outline"
+    | "secondary"
+    | "destructive";
+  buttonText?: string;
+};
+
+export const BackHomeButton = ({
+  className,
+  variant,
+  buttonText,
+}: CustomButtonProps) => {
   const router = useRouter();
   return (
     <Button
-      className="w-full"
+      variant={variant}
+      className={`${className} w-full`}
       onClick={() => {
         router.push("/");
       }}
     >
-      Back Home
+      {buttonText ? buttonText : "Nevermind"}
     </Button>
   );
 };

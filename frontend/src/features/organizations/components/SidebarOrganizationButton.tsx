@@ -30,7 +30,7 @@ function SidebarOrganizationSuspense() {
 
   // Handle no selected organization
   if (!organizations || organizations.length === 0 || !currentUser || error) {
-    return <BackHomeButton />;
+    return <BackHomeButton variant="destructive" />;
   }
 
   return (

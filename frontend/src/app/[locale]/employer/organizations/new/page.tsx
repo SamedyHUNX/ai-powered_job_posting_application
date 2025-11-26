@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function CreateOrganizationForm() {
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("my-org");
+  const [slug, setSlug] = useState("Your organization's URL");
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
@@ -83,7 +83,7 @@ export default function CreateOrganizationForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              placeholder=""
+              placeholder="Your organization's name"
             />
           </div>
 

@@ -12,7 +12,7 @@ import {
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { CustomDialog } from "@/components/customs/CustomDialog";
 import { useTranslations } from "next-intl";
 import { useProfile } from "@/hooks/use-profile";
@@ -30,6 +30,7 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
   const t = useTranslations("employer");
   const customDialT = useTranslations("employer.customDialog");
   const router = useRouter();
+  const pathname = usePathname();
   const { currentUser } = useProfile();
   const {
     organizations,
@@ -63,16 +64,17 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
     }
   }, [isFetchingOrganizations, hasInitiallyLoaded]);
 
-  // Show dialog only after initial load is complete
+  // Show dialog only after initial load is complete and not on the create org page
   useEffect(() => {
     if (
       hasInitiallyLoaded &&
       !selectedOrganization &&
-      organizations.length === 0
+      organizations.length === 0 &&
+      !pathname.includes("/employer/organizations/new")
     ) {
       setShowOrgDialog(true);
     }
-  }, [hasInitiallyLoaded, selectedOrganization, organizations.length]);
+  }, [hasInitiallyLoaded, selectedOrganization, organizations.length, pathname]);
 
   const handleCancel = () => {
     setShowOrgDialog(false);
