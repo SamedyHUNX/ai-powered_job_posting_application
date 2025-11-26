@@ -57,64 +57,68 @@ export class OrganizationsService {
   }
 
   // Create an organization
-  async create(
-    dto: CreateOrganizationDto,
-    file: Express.Multer.File,
-    userId: string,
-  ) {
-    const { orgName } = dto;
+  create = catchAsync(
+    async (
+      dto: CreateOrganizationDto,
+      file: Express.Multer.File,
+      userId: string,
+    ) => {
+      const { orgName } = dto;
 
-    // Check if organization with same orgName already exists
-    const existingOrg = await this.dbServer
-      .select()
-      .from(OrganizationTable)
-      .where(eq(OrganizationTable.orgName, orgName))
-      .limit(1);
+      // Check if organization with same orgName already exists
+      const existingOrg = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.orgName, orgName))
+        .limit(1);
 
-    if (existingOrg.length > 0) {
-      this.logger.error(
-        `Organization with orgName "${orgName}" already exists`,
-      );
-      throw new ConflictException({
-        code: 'ORGANIZATION_EXISTS',
-        message: 'Organization with this orgName already exists',
+      if (existingOrg.length > 0) {
+        this.logger.error(
+          `Organization with orgName "${orgName}" already exists`,
+        );
+        throw new ConflictException({
+          code: 'ORGANIZATION_EXISTS',
+          message: 'Organization with this name already exists',
+        });
+      }
+
+      let imageUrl: string | undefined;
+
+      // Upload image to S3 if provided
+      if (file && file.originalname) {
+        const imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
+        await this.s3Server.uploadFile(file, imageKey);
+        imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
+      }
+
+      // Create organization
+      const [organization] = await this.dbServer
+        .insert(OrganizationTable)
+        .values({
+          orgName,
+          imageUrl: imageUrl || dto.imageUrl,
+        })
+        .returning();
+
+      // Assign the creator as a member of the organization
+      await this.dbServer.insert(OrganizationUserSettingsTable).values({
+        userId,
+        organizationId: organization.id,
+        newApplicationEmailNotifications: false,
       });
-    }
 
-    let imageUrl: string | undefined;
+      this.logger.log(
+        `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
+      );
 
-    // Upload image to S3 if provided
-    if (file && file.originalname) {
-      const imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
-      await this.s3Server.uploadFile(file, imageKey);
-      imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
-    }
-
-    // Create organization
-    const [organization] = await this.dbServer
-      .insert(OrganizationTable)
-      .values({
-        orgName,
-        imageUrl: imageUrl || dto.imageUrl,
-      })
-      .returning();
-
-    // Assign the creator as a member of the organization
-    await this.dbServer.insert(OrganizationUserSettingsTable).values({
-      userId,
-      organizationId: organization.id,
-      newApplicationEmailNotifications: false,
-    });
-
-    this.logger.log(
-      `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
-    );
-
-    return {
-      success: true,
-      organization,
-    };
-  }
+      return {
+        success: true,
+        organization,
+      };
+    },
+    this.logger,
+    'Failed to create organization',
+  );
 
   /**
    * Get all organizations with optional filtering

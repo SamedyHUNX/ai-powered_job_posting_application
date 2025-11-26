@@ -151,6 +151,8 @@
     "USER_NOT_VERIFIED": "Your account is not verified. Please check your email for verification instructions.",
     "INVALID_TOKEN": "The provided token is invalid or has expired.",
     "ERR_NETWORK": "Network error. Please check your internet connection.",
-    "ERR_BAD_REQUEST": "Bad request. Please check your input and try again."
+    "ERR_BAD_REQUEST": "Bad request. Please check your input and try again.",
+    "ORGANIZATION_EXISTS": "An organization with this name already exists.",
+    "FETCH_ERROR": "Error fetching data. Please try again."
   }
 }

@@ -53,10 +53,7 @@ export class OrganizationsController {
     );
   }
 
-  /**
-   * Get all organizations with optional filtering
-   * GET /organizations?search=name&isVerified=true
-   */
+  // Get all organizations with optional filtering: GET /organizations?search=name&isVerified=true
   @Get()
   async findAll(
     @Query('search') search?: string,
@@ -67,28 +64,19 @@ export class OrganizationsController {
     return this.organizationsService.findAll(search, isVerifiedBool);
   }
 
-  /**
-   * Get organizations by user ID
-   * GET /organizations/user/:userId
-   */
+  // Get organizations by user ID: GET /organizations/user/:userId
   @Get('user/:userId')
   async findByUser(@Param('userId') userId: string) {
     return this.organizationsService.findByUser(userId);
   }
 
-  /**
-   * Get a single organization by ID
-   * GET /organizations/:id
-   */
+  //Get a single organization by ID: GET /organizations/:id
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.organizationsService.findOne(id);
   }
 
-  /**
-   * Update an organization
-   * PATCH /organizations/:id
-   */
+  // Update an organization: PATCH /organizations/:id
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('logo'))
@@ -100,10 +88,7 @@ export class OrganizationsController {
     return this.organizationsService.update(id, updateOrganizationDto, file);
   }
 
-  /**
-   * Delete an organization
-   * DELETE /organizations/:id
-   */
+  //Delete an organization: DELETE /organizations/:id
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -111,10 +96,7 @@ export class OrganizationsController {
     return this.organizationsService.remove(id);
   }
 
-  /**
-   * Verify an organization
-   * POST /organizations/:id/verify
-   */
+  // Verify an organization: POST /organizations/:id/verify
   @Post(':id/verify')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -122,10 +104,7 @@ export class OrganizationsController {
     return this.organizationsService.verify(id);
   }
 
-  /**
-   * Ban an organization
-   * POST /organizations/:id/ban
-   */
+  //Ban an organization: POST /organizations/:id/ban
   @Post(':id/ban')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -133,10 +112,7 @@ export class OrganizationsController {
     return this.organizationsService.ban(id);
   }
 
-  /**
-   * Unban an organization
-   * POST /organizations/:id/unban
-   */
+  // Unban an organization: POST /organizations/:id/unban
   @Post(':id/unban')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
