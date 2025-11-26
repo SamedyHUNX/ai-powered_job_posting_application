@@ -14,7 +14,13 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  ArrowLeftRightIcon,
+  Building2,
+  ChevronsUpDown,
+  CreditCard,
+  UserRoundCogIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
@@ -67,13 +73,26 @@ export function SidebarOrganizationButtonClient({
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={openOrganizationProfile}>
-            <UserIcon className="mr-1" /> Profile
+            <Building2 className="mr-1" /> Manage Organization
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href={"/user-settings/notifications"}>
-              <SettingsIcon className="mr-1" />
-              Settings
+            <Link href={"/employer/user-settings"}>
+              <UserRoundCogIcon className="mr-1" />
+              User Settings
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={"/employer/pricing"}>
+              <CreditCard className="mr-1" />
+              Change Plan
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href={"/organizations/select"}>
+              <ArrowLeftRightIcon className="mr-1" />
+              Switch Organizations
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
