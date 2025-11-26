@@ -17,6 +17,7 @@ import {
   UpdateOrganizationDto,
 } from './dtos/organization.dto';
 import { S3Service } from '@/s3/s3.service';
+import { catchAsync } from '@/utils/catchAsync';
 
 @Injectable()
 export class OrganizationsService {
@@ -107,73 +108,47 @@ export class OrganizationsService {
   /**
    * Get all organizations with optional filtering
    */
-  async findAll(search?: string, isVerified?: boolean) {
-    try {
-      // Build query dynamically based on filters
-      if (search && isVerified !== undefined) {
-        const organizations = await this.dbServer
-          .select()
-          .from(OrganizationTable)
-          .where(
-            and(
-              like(OrganizationTable.orgName, `%${search}%`),
-              eq(OrganizationTable.isVerified, isVerified),
-            ),
-          );
+  findAll = catchAsync(async (search?: string, isVerified?: boolean) => {
+    if (search && isVerified !== undefined) {
+      const organizations = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(
+          and(
+            like(OrganizationTable.orgName, `%${search}%`),
+            eq(OrganizationTable.isVerified, isVerified),
+          ),
+        );
 
-        return {
-          success: true,
-          organizations,
-          count: organizations.length,
-        };
-      } else if (search) {
-        const organizations = await this.dbServer
-          .select()
-          .from(OrganizationTable)
-          .where(like(OrganizationTable.orgName, `%${search}%`));
+      return { success: true, organizations, count: organizations.length };
+    } else if (search) {
+      const organizations = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(like(OrganizationTable.orgName, `%${search}%`));
 
-        return {
-          success: true,
-          organizations,
-          count: organizations.length,
-        };
-      } else if (isVerified !== undefined) {
-        const organizations = await this.dbServer
-          .select()
-          .from(OrganizationTable)
-          .where(eq(OrganizationTable.isVerified, isVerified));
+      return { success: true, organizations, count: organizations.length };
+    } else if (isVerified !== undefined) {
+      const organizations = await this.dbServer
+        .select()
+        .from(OrganizationTable)
+        .where(eq(OrganizationTable.isVerified, isVerified));
 
-        return {
-          success: true,
-          organizations,
-          count: organizations.length,
-        };
-      } else {
-        const organizations = await this.dbServer
-          .select()
-          .from(OrganizationTable);
+      return { success: true, organizations, count: organizations.length };
+    } else {
+      const organizations = await this.dbServer
+        .select()
+        .from(OrganizationTable);
 
-        return {
-          success: true,
-          organizations,
-          count: organizations.length,
-        };
-      }
-    } catch (error) {
-      this.logger.error(`Error fetching organizations: ${error.message}`);
-      throw new InternalServerErrorException({
-        code: 'FETCH_ERROR',
-        message: 'Failed to fetch organizations',
-      });
+      return { success: true, organizations, count: organizations.length };
     }
-  }
+  }, this.logger);
 
   /**
    * Get organizations by user ID
    */
-  async findByUser(userId: string) {
-    try {
-      // Join organizations with organization_user_settings to get user's organizations
+  findByUser = catchAsync(
+    async (userId: string) => {
       const organizations = await this.dbServer
         .select({
           id: OrganizationTable.id,
@@ -199,16 +174,10 @@ export class OrganizationsService {
         organizations,
         count: organizations.length,
       };
-    } catch (error) {
-      this.logger.error(
-        `Error fetching organizations for user ${userId}: ${error.message}`,
-      );
-      throw new InternalServerErrorException({
-        code: 'FETCH_ERROR',
-        message: 'Failed to fetch user organizations',
-      });
-    }
-  }
+    },
+    this.logger,
+    'Failed to fetch user organizations',
+  );
 
   /**
    * Get a single organization by ID
