@@ -150,6 +150,7 @@
     "USER_DISABLED": "Ihr Konto ist deaktiviert. Bitte kontaktieren Sie den Support.",
     "USER_NOT_VERIFIED": "Ihr Konto ist nicht verifiziert. Bitte überprüfen Sie Ihre E-Mails für Verifizierungsanweisungen.",
     "INVALID_TOKEN": "Der bereitgestellte Token ist ungültig oder abgelaufen.",
-    "ERR_NETWORK": "Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung."
+    "ERR_NETWORK": "Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.",
+    "ERR_BAD_REQUEST": "Ungültige Anfrage. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
   }
 }
