@@ -18,11 +18,14 @@ import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
+import { User } from "@/store/slices/auth-slice";
 
 export function SidebarOrganizationButtonClient({
+  user,
   orgName,
   imageUrl,
 }: {
+  user: User;
   orgName: string;
   imageUrl: string;
 }) {
@@ -41,7 +44,11 @@ export function SidebarOrganizationButtonClient({
             size={"lg"}
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
-            <OrganizationInfo {...{ orgName, imageUrl }} />
+            <OrganizationInfo
+              user={user}
+              orgName={orgName}
+              imageUrl={imageUrl}
+            />
             <ChevronsUpDown className="ml-auto group-data-[state=collapsed]:hidden" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
@@ -52,7 +59,11 @@ export function SidebarOrganizationButtonClient({
           className="min-w-64 max-w-80"
         >
           <DropdownMenuLabel>
-            <OrganizationInfo {...{ orgName, imageUrl }} />
+            <OrganizationInfo
+              user={user}
+              orgName={orgName}
+              imageUrl={imageUrl}
+            />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={openOrganizationProfile}>
@@ -74,9 +85,11 @@ export function SidebarOrganizationButtonClient({
 }
 
 function OrganizationInfo({
+  user,
   orgName,
   imageUrl,
 }: {
+  user: User;
   orgName: string;
   imageUrl: string;
 }) {
@@ -96,6 +109,7 @@ function OrganizationInfo({
       </Avatar>
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
         <span className="truncate text-sm font-semibold">{orgName}</span>
+        <span className="truncate text-sm font-medium">{user.email}</span>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { Suspense, useEffect } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
 import { useProfile } from "@/hooks/use-profile";
+import { SignOutButton } from "@/components/customs/SignOutButton";
 
 export const SidebarOrganizationButton = () => {
   return (
@@ -27,18 +28,14 @@ function SidebarOrganizationSuspense() {
     return <div className="text-center">Loading...</div>;
   }
 
-  // Handle error state
-  if (error) {
-    return <div className="text-center">Error loading organizations!</div>;
-  }
-
   // Handle no selected organization
-  if (!organizations || organizations.length === 0) {
-    return <div className="text-center">No organization found!</div>;
+  if (!organizations || organizations.length === 0 || !currentUser || error) {
+    return <SignOutButton />;
   }
 
   return (
     <SidebarOrganizationButtonClient
+      user={currentUser}
       orgName={organizations[0].orgName}
       imageUrl={organizations[0].imageUrl}
     />
