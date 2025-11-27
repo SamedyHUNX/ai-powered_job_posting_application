@@ -46,22 +46,6 @@ export function useOrganization() {
     }
   };
 
-  // Fetch organizations by user ID
-  // const fetchOrganizationsByUser = async (userId: string) => {
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await organizationsApi.findByUser(userId);
-  //     dispatch(
-  //       setOrganizations({
-  //         organizations: response.organizations,
-  //         count: response.count,
-  //       })
-  //     );
-  //   } catch (err: any) {
-  //     dispatch(setError(err.message || "Failed to fetch user organizations"));
-  //   }
-  // };
-
   const fetchOrganizationByUserMutation = useMutation({
     mutationFn: (userId: string) => organizationsApi.findByUser(userId),
     onSuccess: (data) => {

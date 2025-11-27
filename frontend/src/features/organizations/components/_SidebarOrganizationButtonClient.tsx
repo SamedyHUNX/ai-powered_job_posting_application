@@ -39,7 +39,7 @@ export function SidebarOrganizationButtonClient({
   const router = useRouter();
   const openOrganizationProfile = () => {
     setOpenMobile(false);
-    router.push("/employer/organizations/profile");
+    router.push("/employer/organizations/select");
   };
 
   return (
@@ -90,7 +90,7 @@ export function SidebarOrganizationButtonClient({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href={"/organizations/select"}>
+            <Link href={"/employer/organizations/select"}>
               <ArrowLeftRightIcon className="mr-1" />
               Switch Organizations
             </Link>

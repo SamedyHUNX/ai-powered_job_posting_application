@@ -14,15 +14,19 @@ import { relations } from 'drizzle-orm';
 export const OrganizationUserSettingsTable = pgTable(
   'organization_user_settings',
   {
-    userId: uuid('userId')
+    userId: uuid('user_id')
       .notNull()
       .references(() => UserTable.id),
-    organizationId: uuid('organizationId')
+    organizationId: uuid('organization_id')
       .notNull()
       .references(() => OrganizationTable.id),
     role: varchar('role').notNull().default('Member'),
-    newApplicationEmailNotifications: boolean().notNull().default(false),
-    minimumRating: integer(),
+    newApplicationEmailNotifications: boolean(
+      'new_application_email_notifications',
+    )
+      .notNull()
+      .default(false),
+    minimumRating: integer('minimum_rating'),
     createdAt,
     updatedAt,
   },

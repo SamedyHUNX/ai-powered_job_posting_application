@@ -26,7 +26,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) { }
+  ) {}
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -104,7 +104,6 @@ export class OrganizationsService {
       await this.dbServer.insert(OrganizationUserSettingsTable).values({
         userId,
         organizationId: organization.id,
-        role: 'Admin',
         newApplicationEmailNotifications: false,
       });
 
@@ -185,7 +184,6 @@ export class OrganizationsService {
           jobsCount: OrganizationTable.jobsCount,
           createdAt: OrganizationTable.createdAt,
           updatedAt: OrganizationTable.updatedAt,
-          userRole: OrganizationUserSettingsTable.role,
         })
         .from(OrganizationTable)
         .innerJoin(

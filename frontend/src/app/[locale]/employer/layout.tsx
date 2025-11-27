@@ -8,7 +8,6 @@ import {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupLabel,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
@@ -50,13 +49,6 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
           selectedOrganization ? (
             <>
               <SidebarGroup>
-                {/* <SidebarGroupLabel>Job Listings</SidebarGroupLabel>
-                <SidebarGroupAction title="Add Job Listing" asChild>
-                  <Link href={"/employer/job-listings/new"}>
-                    <PlusIcon />
-                    <span className="sr-only">Add Job Listing</span>
-                  </Link>
-                </SidebarGroupAction> */}
                 <SidebarGroupLabel>Create Organization</SidebarGroupLabel>
                 <SidebarGroupAction title="Add Job Listing" asChild>
                   <Link href={"/employer/organizations/new"}>

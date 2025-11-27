@@ -4,6 +4,7 @@ import { relations } from 'drizzle-orm';
 import { JobListingTable } from './job-listings';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
 import { timestamp } from 'drizzle-orm/pg-core';
+import { integer } from 'drizzle-orm/pg-core';
 
 export const OrganizationTable = pgTable('organizations', {
   id,
@@ -13,11 +14,10 @@ export const OrganizationTable = pgTable('organizations', {
   hasImage: boolean('has_image').default(false),
   isVerified: boolean('is_verified').default(false),
   isBanned: boolean('is_banned').default(false),
-  membersCount: varchar('members_count').default('0'),
-  pendingInvitationsCount: varchar('pending_invitations_count').default('0'),
+  membersCount: integer('members_count').default(0),
+  pendingInvitationsCount: integer('pending_invitations_count').default(0),
   adminDeleteEnabled: boolean('admin_delete_enabled').default(false),
-  maxAllowedMemberships: varchar('max_allowed_memberships').default('5'),
-  userOrgRole: varchar('user_role'),
+  maxAllowedMemberships: integer('max_allowed_memberships').default(5),
   jobsCount: varchar('jobs_count').default('0'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at')
