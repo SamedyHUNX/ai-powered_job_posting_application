@@ -31,8 +31,12 @@ export const OrganizationList = ({
 }: OrganizationListProps) => {
   const { currentUser, isFetchingCurrentUser } = useProfile();
   const router = useRouter();
-  const { fetchOrganizationsByUser, organizations, isLoading, selectOrganization } =
-    useOrganization();
+  const {
+    fetchOrganizationsByUser,
+    organizations,
+    isLoading,
+    selectOrganization,
+  } = useOrganization();
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -120,7 +124,7 @@ export const OrganizationList = ({
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex items-center justify-center px-8 py-4">
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden">
         {/* Header */}
         <div className="text-center px-8 py-12 border-b border-gray-200">
@@ -166,10 +170,11 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
+                org.isBanned
                   ? "opacity-50 cursor-not-allowed hover:bg-red-50"
                   : "hover:bg-gray-50"
-                }`}
+              }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">

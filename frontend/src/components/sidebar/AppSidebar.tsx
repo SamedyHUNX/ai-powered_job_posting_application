@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SignedIn } from "../customs/SignInStatus";
 import {
   Sidebar,
@@ -28,7 +29,9 @@ export const AppSidebar = ({
         <Sidebar collapsible="icon" className="overflow-hidden">
           <SidebarHeader className="flex-row h-[68px]">
             <SidebarTrigger className="mt-1" />
-            <span className="mt-2">JobXHub</span>
+            <Link className="mt-2" href={"/"}>
+              JobXHub
+            </Link>
           </SidebarHeader>
           <SidebarContent>{content}</SidebarContent>
           <SignedIn>
