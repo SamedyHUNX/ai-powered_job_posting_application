@@ -39,7 +39,7 @@ export function SidebarOrganizationButtonClient({
   const router = useRouter();
   const openOrganizationProfile = () => {
     setOpenMobile(false);
-    router.push("/organizations/profile");
+    router.push("/employer/organizations/profile");
   };
 
   return (

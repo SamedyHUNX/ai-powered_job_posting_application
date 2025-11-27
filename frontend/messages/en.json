@@ -135,7 +135,9 @@
         "logoPlaceholder": "Upload your organization's logo",
         "buttonText": "Create Organization",
         "creatingText": "Creating organization...",
-        "success": "Organization created successfully"
+        "success": "Organization created successfully",
+        "slug": "Organization Slug (Unique Identifier)",
+        "slugDesc": "This will be used in your organization's URL. Only lowercase letters, numbers, and hyphens are allowed."
       }
     }
   },

@@ -3,6 +3,7 @@ import { z } from "zod";
 export const createOrganizationSchema = (t: (key: string) => string) => {
   return z.object({
     orgName: z.string().min(1, t("organizationNameRequired")),
+    slug: z.string().min(1, t("slugRequired")),
     image: z.any().refine((file) => file instanceof File, t("imageRequired")),
   });
 };
