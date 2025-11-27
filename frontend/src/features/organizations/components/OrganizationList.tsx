@@ -19,7 +19,6 @@ interface OrganizationListProps {
   hidePersonal?: boolean;
   hideSlug?: boolean;
   skipInvitationScreen?: boolean;
-  userId: string;
 }
 
 export const OrganizationList = ({
@@ -28,7 +27,6 @@ export const OrganizationList = ({
   afterSelectPersonalUrl,
   appearance,
   fallback,
-  userId,
   hidePersonal = false,
   hideSlug = false,
   skipInvitationScreen = false,
