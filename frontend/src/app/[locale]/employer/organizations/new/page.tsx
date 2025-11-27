@@ -101,7 +101,9 @@ export default function CreateOrganizationForm() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-0">
       <div className="bg-white rounded-3xl w-full max-w-3xl p-12">
-        <h1 className="text-4xl font-bold mb-12 text-black">{t("title")}</h1>
+        <h1 className="text-4xl font-bold mb-12 text-black tracking-tighter">
+          {t("title")}
+        </h1>
 
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -111,7 +113,7 @@ export default function CreateOrganizationForm() {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-medium text-gray-700">
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
                     {t("logoLabel")} <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
@@ -160,7 +162,7 @@ export default function CreateOrganizationForm() {
               name="orgName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-medium text-gray-700">
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
                     {t("nameLabel")}
                   </FormLabel>
                   <FormControl>
@@ -187,7 +189,7 @@ export default function CreateOrganizationForm() {
               name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-medium text-gray-700">
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
                     {t("slug")}
                   </FormLabel>
                   <FormControl>
