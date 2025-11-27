@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, Suspense, useEffect, useMemo, useState } from "react";
+import { ReactNode, Suspense } from "react";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import { ClipboardListIcon, PlusIcon } from "lucide-react";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
@@ -12,79 +12,27 @@ import {
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
-import { useRouter, usePathname } from "next/navigation";
-import { CustomDialog } from "@/components/customs/CustomDialog";
-import { useTranslations } from "next-intl";
-import { useProfile } from "@/hooks/use-profile";
+
 import { Loading } from "@/components/customs/Loading";
 
-export default function EmployerLayout({ children }: { children: ReactNode }) {
+export default function EmployerDashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
-    <Suspense>
-      <LayoutSuspense>{children}</LayoutSuspense>
+    <Suspense fallback={<Loading />}>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </Suspense>
   );
 }
 
-function LayoutSuspense({ children }: { children: ReactNode }) {
-  const t = useTranslations("employer");
-  const customDialT = useTranslations("employer.customDialog");
-  const router = useRouter();
-  const pathname = usePathname();
-  const { currentUser } = useProfile();
+function DashboardLayoutContent({ children }: { children: ReactNode }) {
   const {
-    organizations,
     selectedOrganization,
-    fetchOrganizationsByUser,
-    isFetchingOrganizationsError,
     isFetchingOrganizations,
+    isFetchingOrganizationsError,
   } = useOrganization();
-  const [showOrgDialog, setShowOrgDialog] = useState(false);
-  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
-
-  const benefits = useMemo(
-    () =>
-      ["one", "two", "three", "four"].map((key) =>
-        customDialT(`benefits.${key}`)
-      ),
-    [customDialT]
-  );
-
-  // Fetch organizations when current user is available
-  useEffect(() => {
-    if (currentUser?.id) {
-      fetchOrganizationsByUser(currentUser.id);
-    }
-  }, [currentUser?.id]);
-
-  // Track when initial load is complete
-  useEffect(() => {
-    if (!isFetchingOrganizations && !hasInitiallyLoaded) {
-      setHasInitiallyLoaded(true);
-    }
-  }, [isFetchingOrganizations, hasInitiallyLoaded]);
-
-  // Show dialog only after initial load is complete and not on the create org page
-  useEffect(() => {
-    if (
-      hasInitiallyLoaded &&
-      !selectedOrganization &&
-      organizations.length === 0 &&
-      !pathname.includes("/employer/organizations/new")
-    ) {
-      setShowOrgDialog(true);
-    }
-  }, [
-    hasInitiallyLoaded,
-    selectedOrganization,
-    organizations.length,
-    pathname,
-  ]);
-
-  const handleCancel = () => {
-    setShowOrgDialog(false);
-    router.push("/");
-  };
 
   if (isFetchingOrganizations) {
     return <Loading />;
@@ -93,10 +41,6 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
   if (isFetchingOrganizationsError) {
     return <div className="error">Error: {isFetchingOrganizationsError}</div>;
   }
-
-  // if (!selectedOrganization) {
-  //   return redirect("/employer/organizations/select");
-  // }
 
   return (
     <>
@@ -130,23 +74,6 @@ function LayoutSuspense({ children }: { children: ReactNode }) {
       >
         {children}
       </AppSidebar>
-
-      {hasInitiallyLoaded &&
-        !selectedOrganization &&
-        organizations.length === 0 && (
-          <CustomDialog
-            title={customDialT("title")}
-            description={customDialT("description")}
-            open={showOrgDialog}
-            onOpenChange={setShowOrgDialog}
-            onCancel={handleCancel}
-            additionalDescTitle="An organization allows you to:"
-            additionalDesc={benefits}
-            buttonText={customDialT("createButton")}
-            cancelButtonText={customDialT("cancelButton")}
-            href={"/employer/organizations/new"}
-          />
-        )}
     </>
   );
 }

@@ -17,11 +17,12 @@ async function SuspendedPage({ searchParams }: Props) {
   const redirectUrl = redirect ?? "/employer";
 
   return (
-    <Organizationlist
-      hidePersonal
-      hideSlug
-      afterSelectOrganizationUrl={redirectUrl}
-      afterCreateOrganizationUrl={redirectUrl}
-    />
+    // <Organizationlist
+    //   hidePersonal
+    //   hideSlug
+    //   afterSelectOrganizationUrl={redirectUrl}
+    //   afterCreateOrganizationUrl={redirectUrl}
+    // />
+    null
   );
 }

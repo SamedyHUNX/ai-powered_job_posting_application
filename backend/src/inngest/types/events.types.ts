@@ -28,6 +28,13 @@ export type ResetPasswordRequestData = {
   acceptLanguage: string;
 };
 
+export type OrganizationJSON = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Events = {
   'jobxhub/user.created': {
     data: UserCreatedData;
@@ -41,4 +48,7 @@ export type Events = {
   'jobxhub/job.posted': {
     data: JobPostedData;
   };
+  // 'jobxhub/organization.created', {
+  //   data: OrganizationJSON
+  // }
 };

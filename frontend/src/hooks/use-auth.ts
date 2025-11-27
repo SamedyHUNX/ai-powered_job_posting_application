@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/auth/resetPasswordSchema";
 import { SignInRequest } from "@/types/request.auth.type";
 import { useLocale } from "next-intl";
+import { clearOrganizations } from "@/store/slices/organizations-slice";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -83,6 +84,7 @@ export function useAuth() {
   // Logout
   const logout = () => {
     dispatch(logoutAction());
+    dispatch(clearOrganizations());
     localStorage.removeItem("access_token");
     queryClient.clear();
     router.push("/auth/signin");

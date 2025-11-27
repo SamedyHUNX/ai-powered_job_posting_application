@@ -10,8 +10,18 @@ import {
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
 import { NavBar } from "@/components/customs/Navbar";
+import { useOrganization } from "@/hooks/use-organization";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
+  const { selectedOrganization } = useOrganization();
+
+  let href = "";
+  if (selectedOrganization) {
+    href = `/employer/organizations/${selectedOrganization.orgName}`;
+  } else {
+    href = "/employer/organizations/select";
+  }
+
   return (
     <AppSidebar
       content={
@@ -29,7 +39,7 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
               label: "AI Search",
             },
             {
-              href: "/employer",
+              href,
               icon: <LayoutDashboard />,
               label: "Employer Dashboard",
               authStatus: "signedIn",

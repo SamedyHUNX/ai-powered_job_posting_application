@@ -12,7 +12,6 @@ import {
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
 import {
-  CreateOrganizationDto,
   UpdateOrganizationDto,
 } from "@/types/organization.type";
 import { is } from "zod/v4/locales";

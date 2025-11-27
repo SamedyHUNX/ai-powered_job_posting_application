@@ -1,14 +1,16 @@
 "use client";
 
+import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
 import { useOrganization } from "@/hooks/use-organization";
 import { useProfile } from "@/hooks/use-profile";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { useEffect } from "react";
 
-export default function EmployerHomePage() {
-  const { organizations, isLoading, error, fetchOrganizationsByUser } =
-    useOrganization();
+export default function EmployerDashbordPage() {
+  const { isLoading, error, fetchOrganizationsByUser } = useOrganization();
   const { currentUser } = useProfile();
+
+  const organizations = [] as string[];
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -25,9 +27,7 @@ export default function EmployerHomePage() {
 
         {error && <p className="error">Error: {error}</p>}
 
-        {!isLoading && organizations.length === 0 && (
-          <p>No organizations found.</p>
-        )}
+        {!isLoading && organizations.length === 0 && <NoOrganizationDialog />}
 
         {!isLoading && organizations.length > 0 && (
           <div>
