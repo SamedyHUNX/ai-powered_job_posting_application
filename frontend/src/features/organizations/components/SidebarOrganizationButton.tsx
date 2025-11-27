@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
 import { useOrganization } from "@/hooks/use-organization";
 import { useProfile } from "@/hooks/use-profile";
@@ -13,15 +13,8 @@ export const SidebarOrganizationButton = () => {
 };
 
 function SidebarOrganizationSuspense() {
-  const { organizations, isLoading, error, fetchOrganizationsByUser } =
-    useOrganization();
+  const { selectedOrganization, isLoading, error } = useOrganization();
   const { currentUser } = useProfile();
-
-  useEffect(() => {
-    if (currentUser?.id) {
-      fetchOrganizationsByUser(currentUser.id);
-    }
-  }, [currentUser?.id]);
 
   // Handle loading state
   if (isLoading) {
@@ -29,15 +22,15 @@ function SidebarOrganizationSuspense() {
   }
 
   // Handle no selected organization
-  if (!organizations || organizations.length === 0 || !currentUser || error) {
+  if (!currentUser || error) {
     return <BackHomeButton variant="destructive" />;
   }
 
   return (
     <SidebarOrganizationButtonClient
       user={currentUser}
-      orgName={organizations[0].orgName}
-      imageUrl={organizations[0].imageUrl}
+      orgName={selectedOrganization?.orgName ?? null}
+      imageUrl={selectedOrganization?.imageUrl ?? null}
     />
   );
 }

@@ -32,8 +32,8 @@ export function SidebarOrganizationButtonClient({
   imageUrl,
 }: {
   user: User;
-  orgName: string;
-  imageUrl: string;
+  orgName: string | null;
+  imageUrl: string | null;
 }) {
   const { isMobile, setOpenMobile } = useSidebar();
   const router = useRouter();
@@ -109,25 +109,28 @@ function OrganizationInfo({
   imageUrl,
 }: {
   user: User;
-  orgName: string;
-  imageUrl: string;
+  orgName: string | null;
+  imageUrl: string | null;
 }) {
-  const nameInitial = orgName
+  const displayName = orgName || user.username;
+
+  const nameInitial = displayName
     .split(" ")
     .slice(0, 2)
     .map((str) => str[0])
-    .join("");
+    .join("")
+    .toUpperCase();
 
   return (
     <div className="flex items-center gap-2 overflow-hidden">
       <Avatar className="rounded-lg size-8">
-        <AvatarImage src={imageUrl} alt={orgName} />
+        <AvatarImage src={imageUrl || undefined} alt={displayName} />
         <AvatarFallback className="uppercase bg-primary text-primary-foreground">
           {nameInitial}
         </AvatarFallback>
       </Avatar>
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
-        <span className="truncate text-sm font-semibold">{orgName}</span>
+        <span className="truncate text-sm font-semibold">{`${displayName}'s org`}</span>
         <span className="truncate text-sm font-medium">{user.email}</span>
       </div>
     </div>

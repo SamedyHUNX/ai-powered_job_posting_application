@@ -14,7 +14,7 @@ export default async function OrganizationSelectPage(props: Props) {
 
 async function SuspendedPage({ searchParams }: Props) {
   const { redirect } = await searchParams;
-  const redirectUrl = redirect ?? "/employer";
+  const redirectUrl = redirect ?? "/employer/dashboard";
 
   return (
     // <Organizationlist
