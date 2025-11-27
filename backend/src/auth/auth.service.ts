@@ -343,7 +343,6 @@ export class AuthService {
       const token = this.generateToken(payload);
 
       return {
-        success: true,
         user: {
           id: user.id,
           username: user.username,
