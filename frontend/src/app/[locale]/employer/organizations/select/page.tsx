@@ -21,7 +21,7 @@ async function SuspendedPage({ searchParams }: Props) {
       hidePersonal
       hideSlug
       afterSelectOrganizationUrl={redirect}
-      afterCreateOrganizationUrl={redirect ?? "/employer/organizations"}
+      afterCreateOrganizationUrl={redirect ?? "/employer/organizations/:slug"}
     />
   );
 }

@@ -17,7 +17,7 @@ export const OrganizationTable = pgTable('organizations', {
   pendingInvitationsCount: varchar('pending_invitations_count').default('0'),
   adminDeleteEnabled: boolean('admin_delete_enabled').default(false),
   maxAllowedMemberships: varchar('max_allowed_memberships').default('5'),
-  userRole: varchar('user_role'),
+  userOrgRole: varchar('user_role'),
   jobsCount: varchar('jobs_count').default('0'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at')

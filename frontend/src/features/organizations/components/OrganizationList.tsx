@@ -22,10 +22,8 @@ interface OrganizationListProps {
 }
 
 export const OrganizationList = ({
-  afterCreateOrganizationUrl,
   afterSelectOrganizationUrl,
   afterSelectPersonalUrl,
-  appearance,
   fallback,
   hidePersonal = false,
   hideSlug = false,
