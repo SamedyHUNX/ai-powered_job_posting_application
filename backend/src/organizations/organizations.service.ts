@@ -26,7 +26,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -104,6 +104,7 @@ export class OrganizationsService {
       await this.dbServer.insert(OrganizationUserSettingsTable).values({
         userId,
         organizationId: organization.id,
+        role: 'Admin',
         newApplicationEmailNotifications: false,
       });
 
@@ -122,39 +123,47 @@ export class OrganizationsService {
 
   // Get all organizations with optional filtering
   findAll = catchAsync(async (search?: string, isVerified?: boolean) => {
+    const baseQuery = this.dbServer
+      .select({
+        id: OrganizationTable.id,
+        orgName: OrganizationTable.orgName,
+        imageUrl: OrganizationTable.imageUrl,
+        slug: OrganizationTable.slug,
+        hasImage: OrganizationTable.hasImage,
+        isVerified: OrganizationTable.isVerified,
+        isBanned: OrganizationTable.isBanned,
+        membersCount: OrganizationTable.membersCount,
+        pendingInvitationsCount: OrganizationTable.pendingInvitationsCount,
+        adminDeleteEnabled: OrganizationTable.adminDeleteEnabled,
+        maxAllowedMemberships: OrganizationTable.maxAllowedMemberships,
+        jobsCount: OrganizationTable.jobsCount,
+        createdAt: OrganizationTable.createdAt,
+        updatedAt: OrganizationTable.updatedAt,
+      })
+      .from(OrganizationTable);
+
+    let organizations;
+
     if (search && isVerified !== undefined) {
-      const organizations = await this.dbServer
-        .select()
-        .from(OrganizationTable)
-        .where(
-          and(
-            like(OrganizationTable.orgName, `%${search}%`),
-            eq(OrganizationTable.isVerified, isVerified),
-          ),
-        );
-
-      return { success: true, organizations, count: organizations.length };
+      organizations = await baseQuery.where(
+        and(
+          like(OrganizationTable.orgName, `%${search}%`),
+          eq(OrganizationTable.isVerified, isVerified),
+        ),
+      );
     } else if (search) {
-      const organizations = await this.dbServer
-        .select()
-        .from(OrganizationTable)
-        .where(like(OrganizationTable.orgName, `%${search}%`));
-
-      return { success: true, organizations, count: organizations.length };
+      organizations = await baseQuery.where(
+        like(OrganizationTable.orgName, `%${search}%`),
+      );
     } else if (isVerified !== undefined) {
-      const organizations = await this.dbServer
-        .select()
-        .from(OrganizationTable)
-        .where(eq(OrganizationTable.isVerified, isVerified));
-
-      return { success: true, organizations, count: organizations.length };
+      organizations = await baseQuery.where(
+        eq(OrganizationTable.isVerified, isVerified),
+      );
     } else {
-      const organizations = await this.dbServer
-        .select()
-        .from(OrganizationTable);
-
-      return { success: true, organizations, count: organizations.length };
+      organizations = await baseQuery;
     }
+
+    return { success: true, organizations, count: organizations.length };
   }, this.logger);
 
   // Get organizations by user ID
@@ -165,10 +174,18 @@ export class OrganizationsService {
           id: OrganizationTable.id,
           orgName: OrganizationTable.orgName,
           imageUrl: OrganizationTable.imageUrl,
+          slug: OrganizationTable.slug,
+          hasImage: OrganizationTable.hasImage,
           isVerified: OrganizationTable.isVerified,
           isBanned: OrganizationTable.isBanned,
+          membersCount: OrganizationTable.membersCount,
+          pendingInvitationsCount: OrganizationTable.pendingInvitationsCount,
+          adminDeleteEnabled: OrganizationTable.adminDeleteEnabled,
+          maxAllowedMemberships: OrganizationTable.maxAllowedMemberships,
+          jobsCount: OrganizationTable.jobsCount,
           createdAt: OrganizationTable.createdAt,
           updatedAt: OrganizationTable.updatedAt,
+          userRole: OrganizationUserSettingsTable.role,
         })
         .from(OrganizationTable)
         .innerJoin(

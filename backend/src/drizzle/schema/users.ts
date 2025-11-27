@@ -24,6 +24,7 @@ export const UserTable = pgTable('users', {
   isDisabled: boolean('is_disabled').default(false),
   isAdmin: boolean('is_admin').default(false),
   verificationToken: varchar('verification_token'),
+  userRole: varchar('user_role').notNull().default('USER'),
   verificationExpires: timestamp('verification_expires', {
     withTimezone: true,
   }),

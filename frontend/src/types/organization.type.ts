@@ -1,11 +1,19 @@
 export interface Organization {
   id: string;
   orgName: string;
-  imageUrl: string;
+  imageUrl: string | null;
+  slug?: string | null;
+  hasImage: boolean;
   isVerified: boolean;
   isBanned: boolean;
+  membersCount: string;
+  pendingInvitationsCount: string;
+  adminDeleteEnabled: boolean;
+  maxAllowedMemberships: string;
+  jobsCount: string;
   createdAt: string;
   updatedAt: string;
+  userRole?: "Admin" | "Member";
 }
 
 export interface CreateOrganizationDto {

@@ -1,0 +1,271 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Plus } from "lucide-react";
+import { useOrganization } from "@/hooks/use-organization";
+import { Organization } from "@/types/organization.type";
+
+interface OrganizationListProps {
+  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
+  appearance?: {
+    elements?: Record<string, string>;
+    variables?: Record<string, string>;
+  };
+  fallback?: React.ReactNode;
+  hidePersonal?: boolean;
+  hideSlug?: boolean;
+  skipInvitationScreen?: boolean;
+}
+
+export const OrganizationList = ({
+  afterCreateOrganizationUrl,
+  afterSelectOrganizationUrl,
+  afterSelectPersonalUrl,
+  appearance,
+  fallback,
+  hidePersonal = false,
+  hideSlug = false,
+  skipInvitationScreen = false,
+}: OrganizationListProps) => {
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const router = useRouter();
+  const { fetchOrganizations, organizations, isLoading } = useOrganization();
+
+  useEffect(() => {
+    fetchOrganizations();
+  }, []);
+
+  const handleSelectOrganization = (org: Organization) => {
+    if (org.isBanned) {
+      alert("This organization has been banned and cannot be accessed.");
+      return;
+    }
+
+    if (afterSelectOrganizationUrl) {
+      const url =
+        typeof afterSelectOrganizationUrl === "function"
+          ? afterSelectOrganizationUrl(org)
+          : afterSelectOrganizationUrl;
+      router.push(url);
+    } else {
+      router.push(`/organization/${org.slug || org.id}`);
+    }
+  };
+
+  const handleSelectPersonal = () => {
+    if (afterSelectPersonalUrl) {
+      const url =
+        typeof afterSelectPersonalUrl === "function"
+          ? afterSelectPersonalUrl(currentUser)
+          : afterSelectPersonalUrl;
+      router.push(url);
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
+  const handleCreateOrganization = () => {
+    const baseUrl = "/employer/organizations/new";
+    const params = new URLSearchParams();
+
+    if (hideSlug) {
+      params.append("hideSlug", "true");
+    }
+
+    if (skipInvitationScreen !== undefined) {
+      params.append("skipInvitationScreen", String(skipInvitationScreen));
+    }
+
+    const url = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+    router.push(url);
+  };
+
+  const getOrgInitial = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
+  const getOrgColor = (index: number) => {
+    const colors = [
+      "bg-purple-500",
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-orange-500",
+      "bg-pink-500",
+    ];
+    return colors[index % colors.length];
+  };
+
+  if (isLoading && fallback) {
+    return <>{fallback}</>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-12 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading organizations...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="text-center px-8 py-12 border-b border-gray-200">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-6">
+            <div className="w-8 h-8 bg-white rounded-full"></div>
+          </div>
+          <h1 className="text-4xl font-bold text-black mb-3 tracking-tighter">
+            Choose an account
+          </h1>
+          <p className="text-gray-500 text-lg">
+            Select the account with which you wish to continue.
+          </p>
+        </div>
+
+        {/* Account List */}
+        <div className="divide-y divide-gray-200">
+          {/* Personal Account */}
+          {!hidePersonal && currentUser && (
+            <div
+              onClick={handleSelectPersonal}
+              className="flex items-center gap-4 px-8 py-6 hover:bg-gray-50 transition-colors cursor-pointer group"
+            >
+              <div className="flex-shrink-0">
+                <img
+                  src={currentUser.image}
+                  alt={currentUser.name}
+                  className="w-14 h-14 rounded-full object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-lg font-semibold text-black tracking-tighter">
+                  {currentUser.name}
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-colors" />
+              </div>
+            </div>
+          )}
+
+          {/* Organizations */}
+          {organizations.map((org, index) => (
+            <div
+              key={org.id}
+              onClick={() => handleSelectOrganization(org)}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
+                org.isBanned
+                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              {/* Avatar/Icon */}
+              <div className="flex-shrink-0 relative">
+                {org.hasImage && org.imageUrl ? (
+                  <img
+                    src={org.imageUrl}
+                    alt={org.orgName}
+                    className="w-14 h-14 rounded-full object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`w-14 h-14 ${getOrgColor(
+                      index
+                    )} rounded-full flex items-center justify-center text-2xl text-white font-bold`}
+                  >
+                    {getOrgInitial(org.orgName)}
+                  </div>
+                )}
+                {org.isVerified && (
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Organization Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <div className="text-lg font-semibold text-black tracking-tighter">
+                    {org.orgName}
+                  </div>
+                  {org.isBanned && (
+                    <span className="px-2 py-0.5 text-xs font-medium text-red-700 bg-red-100 rounded">
+                      Banned
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 mt-1">
+                  {org.userRole && (
+                    <span className="text-sm text-gray-500">
+                      {org.userRole}
+                    </span>
+                  )}
+                  <span className="text-sm text-gray-400">
+                    {org.membersCount}{" "}
+                    {parseInt(org.membersCount) === 1 ? "member" : "members"}
+                  </span>
+                  {parseInt(org.jobsCount) > 0 && (
+                    <span className="text-sm text-gray-400">
+                      {org.jobsCount}{" "}
+                      {parseInt(org.jobsCount) === 1 ? "job" : "jobs"}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Action */}
+              <div className="flex-shrink-0">
+                {!org.isBanned && (
+                  <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                )}
+              </div>
+            </div>
+          ))}
+
+          {/* Create Organization */}
+          <div
+            onClick={handleCreateOrganization}
+            className="flex items-center gap-4 px-8 py-6 hover:bg-gray-50 transition-colors cursor-pointer group"
+          >
+            <div className="flex-shrink-0">
+              <div className="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center group-hover:bg-gray-300 transition-colors">
+                <Plus className="w-6 h-6 text-gray-500" />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-lg font-semibold text-black tracking-tighter">
+                Create organization
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-8 py-6 border-t border-gray-200">
+          <div className="flex items-center justify-center gap-2 text-gray-500">
+            <span>Secured by</span>
+            <span className="text-gray-900 font-semibold">JobXHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

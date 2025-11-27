@@ -1,3 +1,4 @@
+import { OrganizationList } from "@/features/organizations/components/OrganizationList";
 import { Suspense } from "react";
 
 type Props = {
@@ -17,12 +18,11 @@ async function SuspendedPage({ searchParams }: Props) {
   const redirectUrl = redirect ?? "/employer/dashboard";
 
   return (
-    // <Organizationlist
-    //   hidePersonal
-    //   hideSlug
-    //   afterSelectOrganizationUrl={redirectUrl}
-    //   afterCreateOrganizationUrl={redirectUrl}
-    // />
-    null
+    <OrganizationList
+      hidePersonal
+      hideSlug
+      afterSelectOrganizationUrl={redirectUrl}
+      afterCreateOrganizationUrl={redirectUrl}
+    />
   );
 }
