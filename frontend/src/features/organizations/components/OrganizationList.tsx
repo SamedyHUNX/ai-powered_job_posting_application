@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import { Organization } from "@/types/organization.type";
+import { useProfile } from "@/hooks/use-profile";
 
 interface OrganizationListProps {
   afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
@@ -18,6 +19,7 @@ interface OrganizationListProps {
   hidePersonal?: boolean;
   hideSlug?: boolean;
   skipInvitationScreen?: boolean;
+  userId: string;
 }
 
 export const OrganizationList = ({
@@ -26,17 +28,21 @@ export const OrganizationList = ({
   afterSelectPersonalUrl,
   appearance,
   fallback,
+  userId,
   hidePersonal = false,
   hideSlug = false,
   skipInvitationScreen = false,
 }: OrganizationListProps) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { currentUser, isFetchingCurrentUser } = useProfile();
   const router = useRouter();
-  const { fetchOrganizations, organizations, isLoading } = useOrganization();
+  const { fetchOrganizationsByUser, organizations, isLoading } =
+    useOrganization();
 
   useEffect(() => {
-    fetchOrganizations();
-  }, []);
+    if (currentUser?.id) {
+      fetchOrganizationsByUser(currentUser.id);
+    }
+  }, [currentUser]);
 
   const handleSelectOrganization = (org: Organization) => {
     if (org.isBanned) {
@@ -102,7 +108,7 @@ export const OrganizationList = ({
     return <>{fallback}</>;
   }
 
-  if (isLoading) {
+  if (isLoading || isFetchingCurrentUser) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center p-4">
         <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-12 text-center">

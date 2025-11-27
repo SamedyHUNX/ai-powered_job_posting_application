@@ -1,0 +1,1 @@
+ALTER TABLE "organizations" ADD COLUMN "user_role" varchar;
