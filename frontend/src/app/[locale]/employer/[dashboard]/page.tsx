@@ -4,15 +4,17 @@ import { NoOrganizationDialog } from "@/features/employers/components/NoOrganiza
 import { useOrganization } from "@/hooks/use-organization";
 import { useProfile } from "@/hooks/use-profile";
 import PrivateRoute from "@/routes/PrivateRoute";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function EmployerDashbordPage() {
-  const { isLoading, error, fetchOrganizationsByUser, organizations } =
+export default function EmployerDashboardPage() {
+  const { isLoading, fetchOrganizationsByUser, organizations } =
     useOrganization();
   const { currentUser } = useProfile();
   const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const dashboard = params?.dashboard as string;
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -35,11 +37,7 @@ export default function EmployerDashbordPage() {
   return (
     <PrivateRoute>
       <div>
-        <h1>Employer page</h1>
-
-        {isLoading && <p>Loading organizations...</p>}
-
-        {error && <p className="error">Error: {error}</p>}
+        <h1>Employer page - {dashboard}</h1>
 
         {!isLoading && organizations.length === 0 && (
           <NoOrganizationDialog
