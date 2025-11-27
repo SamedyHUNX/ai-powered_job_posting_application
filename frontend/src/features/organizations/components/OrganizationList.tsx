@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
@@ -33,7 +33,7 @@ export const OrganizationList = ({
 }: OrganizationListProps) => {
   const { currentUser, isFetchingCurrentUser } = useProfile();
   const router = useRouter();
-  const { fetchOrganizationsByUser, organizations, isLoading } =
+  const { fetchOrganizationsByUser, organizations, isLoading, selectOrganization } =
     useOrganization();
 
   useEffect(() => {
@@ -48,6 +48,9 @@ export const OrganizationList = ({
       return;
     }
 
+    // Save selected organization to Redux
+    selectOrganization(org.id);
+
     if (afterSelectOrganizationUrl) {
       const url =
         typeof afterSelectOrganizationUrl === "function"
@@ -55,7 +58,8 @@ export const OrganizationList = ({
           : afterSelectOrganizationUrl;
       router.push(url);
     } else {
-      router.push(`/organization/${org.slug || org.id}`);
+      // Changed from /organization/${org.slug || org.id} to:
+      router.push(`/employer/organizations/${org.id}`);
     }
   };
 
@@ -67,7 +71,7 @@ export const OrganizationList = ({
           : afterSelectPersonalUrl;
       router.push(url);
     } else {
-      router.push("/dashboard");
+      router.push("/organizations/dashboard");
     }
   };
 
@@ -164,11 +168,10 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
-                org.isBanned
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned
                   ? "opacity-50 cursor-not-allowed hover:bg-red-50"
                   : "hover:bg-gray-50"
-              }`}
+                }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">

@@ -15,14 +15,13 @@ export default async function OrganizationSelectPage(props: Props) {
 
 async function SuspendedPage({ searchParams }: Props) {
   const { redirect } = await searchParams;
-  const redirectUrl = redirect ?? "/employer/dashboard";
 
   return (
     <OrganizationList
       hidePersonal
       hideSlug
-      afterSelectOrganizationUrl={redirectUrl}
-      afterCreateOrganizationUrl={redirectUrl}
+      afterSelectOrganizationUrl={redirect}
+      afterCreateOrganizationUrl={redirect ?? "/employer/organizations"}
     />
   );
 }
