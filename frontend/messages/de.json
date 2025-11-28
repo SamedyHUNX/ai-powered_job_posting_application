@@ -159,6 +159,7 @@
   "apiSuccess": {
     "signInSuccess": "Erfolgreich angemeldet",
     "signUpSuccess": "Bitte überprüfen Sie Ihre E-Mails, um Ihr Konto zu verifizieren",
-    "verifyEmailSuccess": "Ihre E-Mail wurde erfolgreich verifiziert"
+    "verifyEmailSuccess": "Ihre E-Mail wurde erfolgreich verifiziert",
+    "resetPasswordSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt"
   }
 }

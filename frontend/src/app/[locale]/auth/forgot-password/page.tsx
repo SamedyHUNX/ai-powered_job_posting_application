@@ -23,11 +23,15 @@ import {
   ForgotPasswordSchemaData,
 } from "@/schemas/auth/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
-import Loading from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/Loading";
 
 export default function ForgotPasswordPage() {
-  const t = useTranslations("forgotPassword");
-  const validationT = useTranslations("validations");
+  // Translations
+  const t = useTranslations();
+  const resetPasswordT = (key: string) => t(`forgotPassword.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const locale = useLocale();
   const {
     forgotPassword,
