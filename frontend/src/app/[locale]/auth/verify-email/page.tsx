@@ -9,38 +9,29 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function VerifyEmailPage() {
-  const t = useTranslations("verifyEmail");
+  // Translations
+  const t = useTranslations();
+  const verifyEmailT = (key: string) => t(`verifyEmail.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { getErrorMessage } = useErrorHandler();
 
-  const {
-    verifyEmail,
-    isVerifyingEmail,
-    verifyEmailError,
-    verifyEmailSuccess,
-  } = useAuth();
+  const { verifyEmail, verifyEmailError, verifyEmailSuccess } = useAuth();
 
   // Trigger verification on mount
   useEffect(() => {
     if (!token) {
+      // Force navigate to signin
       router.push("/auth/signin");
       return;
     }
 
     verifyEmail(token);
   }, [token]);
-
-  // Handle success with toast
-  useEffect(() => {
-    if (verifyEmailSuccess) {
-      toast.success(t("success"));
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    }
-  }, [verifyEmailSuccess, t, router]);
 
   // Handle error with toast
   useEffect(() => {
@@ -49,6 +40,16 @@ export default function VerifyEmailPage() {
       toast.error(errorMessage);
     }
   }, [verifyEmailError, t]);
+
+  // Handle success with toast
+  useEffect(() => {
+    if (verifyEmailSuccess) {
+      toast.success(successT("verifyEmailSuccess"));
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    }
+  }, [verifyEmailSuccess, t, router]);
 
   return (
     <div className="space-y-8">

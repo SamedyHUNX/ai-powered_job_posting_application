@@ -27,9 +27,12 @@ import {
 import { Loading } from "@/components/customs/Loading";
 
 export default function SigninPage() {
-  const signInT = useTranslations("signIn");
-  const validationT = useTranslations("validations");
-  const successT = useTranslations("apiSuccess");
+  // Translations
+  const t = useTranslations();
+  const signInT = (key: string) => t(`signIn.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();
 

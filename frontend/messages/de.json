@@ -13,7 +13,8 @@
     "passwordsMustMatch": "Die Passwörter müssen übereinstimmen",
     "organizationNameRequired": "Der Name der Organisation ist erforderlich",
     "slugRequired": "Die URL der Organisation ist erforderlich",
-    "passwordRequired": "Passwort ist erforderlich"
+    "passwordRequired": "Passwort ist erforderlich",
+    "photoRequired": "Bitte laden Sie ein Foto hoch"
   },
   "authLayout": {
     "title": "Willkommen bei JobXHub",
@@ -57,8 +58,7 @@
     "alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
     "signIn": "Eintragen",
     "signUp": "Anmelden",
-    "buttonLoading": "Erstellen...",
-    "success": "Konto erfolgreich erstellt"
+    "buttonLoading": "Erstellen..."
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",
@@ -157,6 +157,8 @@
     "FETCH_ERROR": "Fehler beim Abrufen der Daten. Bitte versuchen Sie es erneut."
   },
   "apiSuccess": {
-    "signInSuccess": "Erfolgreich angemeldet"
+    "signInSuccess": "Erfolgreich angemeldet",
+    "signUpSuccess": "Bitte überprüfen Sie Ihre E-Mails, um Ihr Konto zu verifizieren",
+    "verifyEmailSuccess": "Ihre E-Mail wurde erfolgreich verifiziert"
   }
 }

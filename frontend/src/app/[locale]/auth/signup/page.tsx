@@ -21,13 +21,21 @@ import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/errorHandler";
-import { createSignUpSchema, SignUpFormData } from "@/schemas/auth/signUpSchema";
+import {
+  createSignUpSchema,
+  SignUpFormData,
+} from "@/schemas/auth/signUpSchema";
 import { Loading } from "@/components/customs/Loading";
 
 export default function SignUpPage() {
   const locale = useLocale();
-  const signUpT = useTranslations("signUp");
-  const validationT = useTranslations("validations");
+
+  // Translations
+  const t = useTranslations();
+  const signUpT = (key: string) => t(`signUp.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const { signUp, isSigningUp, signUpError, signUpSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();
   const [preview, setPreview] = useState<string | null>(null);
@@ -58,7 +66,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (signUpSuccess) {
-      toast.success(signUpT("success"));
+      toast.success(successT("signUpSuccess"));
     }
   }, [signUpSuccess, signUpT]);
 
@@ -81,7 +89,7 @@ export default function SignUpPage() {
 
   const onSubmit = (data: SignUpFormData) => {
     if (!data.image) {
-      toast.error("Please upload a profile photo");
+      toast.error(validationT("photoRequired"));
       return;
     }
 
@@ -286,7 +294,7 @@ export default function SignUpPage() {
               disabled={isSigningUp}
               className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
             >
-              {isSigningUp ? "..." : signUpT("signUp")}
+              {isSigningUp ? signUpT("buttonLoading") : signUpT("signUp")}
             </Button>
           </form>
         </Form>

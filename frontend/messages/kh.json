@@ -13,7 +13,8 @@
     "passwordsMustMatch": "ពាក្យសម្ងាត់ត្រូវតែត្រូវគ្នា",
     "organizationNameRequired": "ត្រូវការឈ្មោះអង្គភាព",
     "slugRequired": "ត្រូវការ URL អង្គភាព",
-    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់"
+    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់",
+    "photoRequired": "សូមបង្ហោះរូបថត"
   },
   "authLayout": {
     "title": "សូមស្វាគមន៍មកកាន់ JobXHub",
@@ -156,6 +157,8 @@
     "FETCH_ERROR": "កំហុសក្នុងការទាញយកទិន្នន័យ សូមព្យាយាមម្តងទៀត"
   },
   "apiSuccess": {
-    "signInSuccess": "ចូលដោយជោគជ័យ"
+    "signInSuccess": "ចូលដោយជោគជ័យ",
+    "signUpSuccess": "សូមពិនិត្យអ៊ីមែលរបស់អ្នកដើម្បីផ្ទៀងផ្ទាត់គណនីរបស់អ្នក",
+    "verifyEmailSuccess": "អ៊ីមែលរបស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់ដោយជោគជ័យ"
   }
 }
