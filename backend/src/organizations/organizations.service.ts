@@ -83,40 +83,58 @@ export class OrganizationsService {
       }
 
       let imageUrl: string | undefined;
+      let imageKey: string | undefined;
 
       // Upload image to S3 if provided
       if (file && file.originalname) {
-        const imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
+        imageKey = `organizations/logos/${Date.now()}-${file.originalname}`;
         await this.s3Server.uploadFile(file, imageKey);
         imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
       }
 
-      // Create organization
-      const [organization] = await this.dbServer
-        .insert(OrganizationTable)
-        .values({
-          orgName,
-          imageUrl: imageUrl || dto.imageUrl,
-          slug,
-          hasImage: imageUrl || dto.imageUrl ? true : false,
-        })
-        .returning();
+      try {
+        // Create organization
+        const [organization] = await this.dbServer
+          .insert(OrganizationTable)
+          .values({
+            orgName,
+            imageUrl: imageUrl || dto.imageUrl,
+            slug,
+            hasImage: imageUrl || dto.imageUrl ? true : false,
+          })
+          .returning();
 
-      // Assign the creator as a member of the organization
-      await this.dbServer.insert(OrganizationUserSettingsTable).values({
-        userId,
-        organizationId: organization.id,
-        newApplicationEmailNotifications: false,
-      });
+        // Assign the creator as a member of the organization
+        await this.dbServer.insert(OrganizationUserSettingsTable).values({
+          userId,
+          organizationId: organization.id,
+          newApplicationEmailNotifications: false,
+        });
 
-      this.logger.log(
-        `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
-      );
+        this.logger.log(
+          `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
+        );
 
-      return {
-        message:
-          'Organization created successfully. Please wait for verification.',
-      };
+        return {
+          message:
+            'Organization created successfully. Please wait for verification.',
+        };
+      } catch (error) {
+        // If database insertion fails, delete the uploaded file from S3
+        if (imageKey) {
+          this.logger.warn(
+            `Database insertion failed. Deleting orphaned file: ${imageKey}`,
+          );
+          try {
+            await this.s3Server.deleteFile(imageKey);
+          } catch (s3Error: any) {
+            this.logger.error(
+              `Failed to delete orphaned file ${imageKey}: ${s3Error.message}`,
+            );
+          }
+        }
+        throw error;
+      }
     },
     this.logger,
     'Failed to create organization',

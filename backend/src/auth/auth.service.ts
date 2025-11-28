@@ -146,58 +146,73 @@ export class AuthService {
       // Get the S3 URL (public or presigned)
       const imageUrl = `${process.env.R2_PUBLIC_DOMAIN}/${imageKey}`;
 
-      // Hash password
-      const hashedPassword = await hashPassword(password);
+      try {
+        // Hash password
+        const hashedPassword = await hashPassword(password);
 
-      // Make sure names are capitalized before placing in DB
-      const capitalizedFirstName = capitalizeString(firstName);
-      const capitalizedLastName = capitalizeString(lastName);
+        // Make sure names are capitalized before placing in DB
+        const capitalizedFirstName = capitalizeString(firstName);
+        const capitalizedLastName = capitalizeString(lastName);
 
-      // Generate email verification token
-      const {
-        token: verificationToken,
-        hashedToken: hashedVerificationToken,
-        expiresAt: verificationExpires,
-      } = await this.generateAndHashToken(60 * 24); // 24 hours expiration
+        // Generate email verification token
+        const {
+          token: verificationToken,
+          hashedToken: hashedVerificationToken,
+          expiresAt: verificationExpires,
+        } = await this.generateAndHashToken(60 * 24); // 24 hours expiration
 
-      // Send email with reset link
-      const verificationUrl = `${process.env.FRONTEND_URL}/${acceptLanguage}/auth/verify-email?token=${verificationToken}`;
+        // Send email with reset link
+        const verificationUrl = `${process.env.FRONTEND_URL}/${acceptLanguage}/auth/verify-email?token=${verificationToken}`;
 
-      // Create user
-      const [user] = await this.dbServer
-        .insert(UserTable)
-        .values({
-          username,
-          email,
-          firstName: capitalizedFirstName,
-          lastName: capitalizedLastName,
-          fullName: `${firstName} ${lastName}`,
-          password: hashedPassword,
-          imageUrl,
-          userRole: 'USER', // Explicity set the userRole to 'USER' for security
-          verificationToken: hashedVerificationToken,
-          verificationExpires: verificationExpires,
-        })
-        .returning();
+        // Create user
+        const [user] = await this.dbServer
+          .insert(UserTable)
+          .values({
+            username,
+            email,
+            firstName: capitalizedFirstName,
+            lastName: capitalizedLastName,
+            fullName: `${firstName} ${lastName}`,
+            password: hashedPassword,
+            imageUrl,
+            userRole: 'USER', // Explicity set the userRole to 'USER' for security
+            verificationToken: hashedVerificationToken,
+            verificationExpires: verificationExpires,
+          })
+          .returning();
 
-      // TRIGGER INNGEST EVENT for email verification
-      await inngest.send({
-        name: 'jobxhub/user.created',
-        data: {
-          userId: user.id,
-          email: user.email,
-          name: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          imageUrl: user.imageUrl,
-          verificationUrl,
-          acceptLanguage: acceptLanguage || 'en',
-        },
-      });
+        // TRIGGER INNGEST EVENT for email verification
+        await inngest.send({
+          name: 'jobxhub/user.created',
+          data: {
+            userId: user.id,
+            email: user.email,
+            name: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            imageUrl: user.imageUrl,
+            verificationUrl,
+            acceptLanguage: acceptLanguage || 'en',
+          },
+        });
 
-      return {
-        success: true,
-      };
+        return {
+          success: true,
+        };
+      } catch (error) {
+        // If database insertion falsi, delete the uploaded file from S3
+        this.logger.warn(
+          `Database insertion failed. Deleting orphaned file: ${imageKey}`,
+        );
+        try {
+          await this.s3Server.deleteFile(imageKey);
+        } catch (s3Error: any) {
+          this.logger.error(
+            `Failed to delete orphaned file ${imageKey}: ${s3Error.message}`,
+          );
+        }
+        throw error;
+      }
     },
     this.logger,
     `Failed to sign up user at ${this.getTimestamp()}`,
