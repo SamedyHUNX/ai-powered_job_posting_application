@@ -61,7 +61,8 @@ export const OrganizationList = ({
       setModalState({
         isOpen: true,
         title: "Organization Banned",
-        message: "This organization has been banned and cannot be accessed.",
+        message:
+          "This organization has been banned. Please contact the support team for further action",
       });
       return;
     }
@@ -72,7 +73,7 @@ export const OrganizationList = ({
         isOpen: true,
         title: "Verification Required",
         message:
-          "This organization is not yet verified and cannot be accessed.",
+          "This organization is not yet verified. Please contact the support team for verification",
       });
       return;
     }
@@ -181,7 +182,9 @@ export const OrganizationList = ({
                 setModalState({ ...modalState, isOpen: open })
               }
               onCancel={closeModal}
-              cancelButtonText="Close"
+              cancelButtonText="Nevermind"
+              href={"/support"}
+              buttonText="Contact Support"
             />
           )}
           {/* Personal Account */}
