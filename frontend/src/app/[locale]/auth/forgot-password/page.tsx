@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input";
 import PublicRoute from "@/routes/PublicRoute";
 import {
   forgotPasswordSchema,
-  ForgotPasswordSchemaData,
 } from "@/schemas/auth/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { Loading } from "@/components/customs/Loading";
@@ -70,7 +69,7 @@ export default function ForgotPasswordPage() {
     return <Loading />;
   }
 
-  const onSubmit = async ({ email }: ForgotPasswordSchemaData) => {
+  const onSubmit = async ({ email }: { email: string }) => {
     forgotPassword({ email, locale });
   };
 

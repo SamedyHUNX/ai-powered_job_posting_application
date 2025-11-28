@@ -54,6 +54,7 @@ export default function ResetPasswordPage() {
 
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordFormSchema),
+    mode: "onChange", // Enable real-time validation
     defaultValues: {
       newPassword: "",
       confirmPassword: "",
@@ -111,7 +112,7 @@ export default function ResetPasswordPage() {
             <FormField
               control={form.control}
               name="newPassword"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
                     {resetPasswordT("newPasswordLabel")}
@@ -122,7 +123,11 @@ export default function ResetPasswordPage() {
                         {...field}
                         type={showPassword ? "text" : "password"}
                         placeholder={resetPasswordT("newPasswordPlaceholder")}
-                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
+                        className={`w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                       <button
                         type="button"
@@ -145,7 +150,7 @@ export default function ResetPasswordPage() {
             <FormField
               control={form.control}
               name="confirmPassword"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
                     {resetPasswordT("confirmPasswordLabel")}
@@ -158,7 +163,11 @@ export default function ResetPasswordPage() {
                         placeholder={resetPasswordT(
                           "confirmPasswordPlaceholder"
                         )}
-                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
+                        className={`w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                       <button
                         type="button"
@@ -179,20 +188,6 @@ export default function ResetPasswordPage() {
                 </FormItem>
               )}
             />
-
-            <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
-              <div className="space-y-2">
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Password must contain:
-                </p>
-                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
-                  <li>At least 8 characters</li>
-                  <li>One uppercase letter</li>
-                  <li>One lowercase letter</li>
-                  <li>One number</li>
-                </ul>
-              </div>
-            </div>
           </div>
 
           <Button
