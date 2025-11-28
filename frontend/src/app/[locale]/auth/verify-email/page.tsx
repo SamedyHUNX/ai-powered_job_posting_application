@@ -76,21 +76,21 @@ export default function VerifyEmailPage() {
           </svg>
         </div>
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {t("title")}
+          {verifyEmailT("title")}
         </h2>
         <p className="mt-4 text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-          {t("description")}
+          {verifyEmailT("description")}
         </p>
       </div>
 
       <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 space-y-3">
         <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-          {t("havingTrouble")}{" "}
+          {verifyEmailT("havingTrouble")}{" "}
           <Link
             href="/support"
             className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
           >
-            {t("contactSupport")}
+            {verifyEmailT("contactSupport")}
           </Link>
         </p>
       </div>

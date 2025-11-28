@@ -14,6 +14,7 @@ export interface AuthResponse {
 }
 
 export interface VerifyEmailResponse {
+  code?: string;
   message: string;
 }
 

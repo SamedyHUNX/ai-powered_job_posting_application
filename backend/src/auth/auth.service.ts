@@ -32,7 +32,7 @@ export class AuthService {
     private jwtService: JwtService,
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -226,8 +226,8 @@ export class AuthService {
       if (!user) {
         this.logger.error('Invalid or expired email verification token used');
         throw new UnauthorizedException({
-          message: 'Invalid or expired token',
           code: 'INVALID_TOKEN',
+          message: 'Invalid or expired token'
         });
       }
 
