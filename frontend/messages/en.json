@@ -39,8 +39,7 @@
     "loadingText": "Signing in...",
     "forgotPassword": "Forgot your password?",
     "dontHaveAnAccount": "Don't have an account?",
-    "signUp": "Sign Up",
-    "invalidEmail": "Invalid email address"
+    "signUp": "Sign Up"
   },
   "signUp": {
     "title": "Create an account",
@@ -69,8 +68,7 @@
     "signIn": "Sign In",
     "buttonText": "Send reset link",
     "invalidEmail": "Invalid email address",
-    "sending": "Sending...",
-    "success": "Password reset link sent successfully"
+    "sending": "Sending..."
   },
   "emailSent": {
     "title": "Check Your Email",
@@ -95,8 +93,7 @@
     "rememberPassword": "Remember your password?",
     "signIn": "Sign In",
     "resetSuccess": "Your password has been reset successfully. You can now sign in with your new password.",
-    "resetError": "An error occurred while resetting your password. Please try again.",
-    "success": "Password reset successfully"
+    "resetError": "An error occurred while resetting your password. Please try again."
   },
   "verifyEmail": {
     "title": "Verifying Your Email",
@@ -156,11 +153,12 @@
     "ORGANIZATION_EXISTS": "An organization with this name already exists.",
     "FETCH_ERROR": "Error fetching data. Please try again."
   },
-  "apiSucccess": {
+  "apiSuccess": {
     "signInSuccess": "Signed in successfully",
     "signUpSuccess": "Please check your email to verify your account",
     "verifyEmailSuccess": "Your email has been verified successfully",
     "resetPasswordSuccess": "Your password has been reset successfully",
-    "forgotPasswordSuccess": "Please check your email for password reset instructions"
+    "forgotPasswordSuccess": "Please check your email for password reset instructions",
+    "createNewOrgSuccess": "Organization created successfully. Please wait for verification from admin"
   }
 }

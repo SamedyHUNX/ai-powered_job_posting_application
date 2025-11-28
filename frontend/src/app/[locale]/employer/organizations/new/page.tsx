@@ -24,8 +24,12 @@ import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
 
 export default function CreateOrganizationForm() {
-  const t = useTranslations("employer.organizations.newPage");
-  const validationT = useTranslations("validations");
+  // Translations
+  const t = useTranslations();
+  const newOrgT = (key: string) => t(`employer.organizations.newPage.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const router = useRouter();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const { getErrorMessage } = useErrorHandler();
@@ -40,6 +44,7 @@ export default function CreateOrganizationForm() {
 
   const form = useForm<z.infer<typeof createOrganizationFormSchema>>({
     resolver: zodResolver(createOrganizationFormSchema),
+    mode: "onChange", // Enable real-time validation
     defaultValues: {
       orgName: "",
       slug: "",
@@ -47,6 +52,7 @@ export default function CreateOrganizationForm() {
     },
   });
 
+  // Error toast state management
   useEffect(() => {
     if (createError) {
       const errorMessage = getErrorMessage(createError);
@@ -57,7 +63,8 @@ export default function CreateOrganizationForm() {
   // Redirect to employer dashboard on success
   useEffect(() => {
     if (createSuccess) {
-      toast.success(t("success"));
+      toast.success(successT("createNewOrgSuccess"));
+      // Redirect to the organization select page
       router.push("/employer/organizations/select");
     }
   }, [createSuccess, router, t]);
@@ -86,7 +93,7 @@ export default function CreateOrganizationForm() {
 
   const handleSubmit = form.handleSubmit((data) => {
     if (!data.image) {
-      toast.error("Please upload a photo");
+      toast.error(validationT("photoRequired"));
       return;
     }
 
@@ -102,7 +109,7 @@ export default function CreateOrganizationForm() {
     <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-0">
       <div className="bg-white rounded-3xl w-full max-w-3xl p-12">
         <h1 className="text-4xl font-bold mb-12 text-black tracking-tighter">
-          {t("title")}
+          {newOrgT("title")}
         </h1>
 
         <Form {...form}>
@@ -111,14 +118,21 @@ export default function CreateOrganizationForm() {
             <FormField
               control={form.control}
               name="image"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
-                    {t("logoLabel")} <span className="text-red-500">*</span>
+                    {newOrgT("logoLabel")}{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="flex items-center gap-4">
-                      <label className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50">
+                      <label
+                        className={`w-32 h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50 ${
+                          fieldState.error
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
+                      >
                         {logoPreview ? (
                           <img
                             src={logoPreview}
@@ -137,7 +151,7 @@ export default function CreateOrganizationForm() {
                       </label>
                       <div>
                         <label className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium cursor-pointer hover:bg-gray-50 transition-colors inline-block">
-                          {t("upload")}
+                          {newOrgT("upload")}
                           <input
                             type="file"
                             accept="image/*"
@@ -146,7 +160,7 @@ export default function CreateOrganizationForm() {
                           />
                         </label>
                         <FormDescription className="mt-2">
-                          {t("uploadDesc")}
+                          {newOrgT("uploadDesc")}
                         </FormDescription>
                       </div>
                     </div>
@@ -160,14 +174,14 @@ export default function CreateOrganizationForm() {
             <FormField
               control={form.control}
               name="orgName"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
-                    {t("nameLabel")}
+                    {newOrgT("nameLabel")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder={t("namePlaceholder")}
+                      placeholder={newOrgT("namePlaceholder")}
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
@@ -175,7 +189,11 @@ export default function CreateOrganizationForm() {
                         const slug = generateSlug(e.target.value);
                         form.setValue("slug", slug);
                       }}
-                      className="text-gray-700"
+                      className={`text-gray-700 ${
+                        fieldState.error
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                          : ""
+                      }`}
                     />
                   </FormControl>
                   <FormMessage />
@@ -187,19 +205,22 @@ export default function CreateOrganizationForm() {
             <FormField
               control={form.control}
               name="slug"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
-                    {t("slug")}
+                    {newOrgT("slug")}
                   </FormLabel>
                   <FormControl>
                     <Input
+                      disabled={true}
                       placeholder="my-organization"
                       {...field}
-                      className="text-gray-700 font-mono"
+                      className={`text-gray-700 font-mono ${
+                        fieldState.error ? "border-red-500" : ""
+                      }`}
                     />
                   </FormControl>
-                  <FormDescription>{t("slugDesc")}</FormDescription>
+                  <FormDescription>{newOrgT("slugDesc")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -228,7 +249,7 @@ export default function CreateOrganizationForm() {
                 disabled={isCreating}
                 className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
               >
-                {isCreating ? "Creating..." : t("buttonText")}
+                {isCreating ? "..." : newOrgT("buttonText")}
               </Button>
             </div>
           </form>

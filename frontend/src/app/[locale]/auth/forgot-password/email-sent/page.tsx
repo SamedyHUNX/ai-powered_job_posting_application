@@ -11,6 +11,7 @@ export default function EmailSentPage() {
   const email = searchParams.get("email");
   const decodedEmail = email ? decodeURIComponent(email) : "";
 
+  // Force return to the forgotPassword page
   if (!email) {
     router.push("/auth/forgot-password");
   }
