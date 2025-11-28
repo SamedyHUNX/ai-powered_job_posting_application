@@ -146,8 +146,8 @@ export const OrganizationList = ({
   if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-12 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-600">Loading organizations...</p>
         </div>
       </div>

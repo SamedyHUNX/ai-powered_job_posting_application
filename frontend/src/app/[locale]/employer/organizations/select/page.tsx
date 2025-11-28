@@ -8,10 +8,10 @@ type Props = {
   searchParams: Promise<{ redirect?: string }>;
 };
 
-export default async function OrganizationSelectPage(props: Props) {
+export default function OrganizationSelectPage({ searchParams }: Props) {
   return (
     <Suspense>
-      <SuspendedPage {...props} />
+      <SuspendedPage searchParams={searchParams} />
     </Suspense>
   );
 }
