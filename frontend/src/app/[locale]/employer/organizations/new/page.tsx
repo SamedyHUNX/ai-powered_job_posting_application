@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export default function CreateOrganizationForm() {
   const t = useTranslations("employer.organizations.newPage");

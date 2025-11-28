@@ -10,7 +10,11 @@ import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/auth/resetPasswordSchema";
 import { SignInRequest } from "@/types/request.auth.type";
 import { useLocale } from "next-intl";
-import { clearOrganizations } from "@/store/slices/organizations-slice";
+import {
+  clearOrganizations,
+  setError,
+  setSuccess,
+} from "@/store/slices/organizations-slice";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -27,9 +31,13 @@ export function useAuth() {
     onSuccess: (data) => {
       dispatch(setCredentials({ token: data.token }));
       dispatch(setUser(data.user));
+      dispatch(setSuccess(data.message));
       localStorage.setItem("access_token", data.token);
 
-      router.push(`/${locale}/`);
+      router.push(`/${locale}`);
+    },
+    onError: (err: any) => {
+      dispatch(setError({ message: err.message, code: err.code }));
     },
   });
 
@@ -95,26 +103,38 @@ export function useAuth() {
     token,
     isAuthenticated,
     isInitialized,
+
+    // Signin
     signIn: signInMutation.mutate,
-    signUp: signUpMutation.mutate,
-    logout,
     signInSuccess: signInMutation.isSuccess,
-    signUpSuccess: signUpMutation.isSuccess,
     isSigningIn: signInMutation.isPending,
-    isSigningUp: signInMutation.isPending,
     signInError: signInMutation.error,
+
+    // Signup
+    signUp: signUpMutation.mutate,
+    signUpSuccess: signUpMutation.isSuccess,
+    isSigningUp: signInMutation.isPending,
     signUpError: signUpMutation.error,
-    forgotPassword: forgotPasswordMutation.mutate,
-    isRequestingForgotPassword: forgotPasswordMutation.isPending,
-    forgotPasswordError: forgotPasswordMutation.error,
-    forgotPasswordSuccess: forgotPasswordMutation.isSuccess,
-    resetPassword: resetPasswordMutation.mutate,
-    isResettingPassword: resetPasswordMutation.isPending,
-    resetPasswordError: resetPasswordMutation.error,
-    resetPasswordSuccess: resetPasswordMutation.isSuccess,
+
+    // Verify email
     verifyEmail: verifyEmailMutation.mutate,
     isVerifyingEmail: verifyEmailMutation.isPending,
     verifyEmailError: verifyEmailMutation.error,
     verifyEmailSuccess: verifyEmailMutation.isSuccess,
+
+    // Forgot password
+    forgotPassword: forgotPasswordMutation.mutate,
+    isRequestingForgotPassword: forgotPasswordMutation.isPending,
+    forgotPasswordError: forgotPasswordMutation.error,
+    forgotPasswordSuccess: forgotPasswordMutation.isSuccess,
+
+    // Reset password
+    resetPassword: resetPasswordMutation.mutate,
+    isResettingPassword: resetPasswordMutation.isPending,
+    resetPasswordError: resetPasswordMutation.error,
+    resetPasswordSuccess: resetPasswordMutation.isSuccess,
+
+    // Signout
+    logout,
   };
 }

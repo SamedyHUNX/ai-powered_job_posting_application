@@ -1,4 +1,6 @@
+import { AuthResponse } from "@/types/response.auth.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { set } from "zod";
 
 export interface User {
   id: string;
@@ -13,6 +15,8 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isInitialized: boolean;
+  message: string | null;
+  code: string | null;
 }
 
 const initialState: AuthState = {
@@ -20,6 +24,8 @@ const initialState: AuthState = {
   token: null,
   isAuthenticated: false,
   isInitialized: false,
+  message: "",
+  code: "",
 };
 
 const authSlice = createSlice({
@@ -46,6 +52,16 @@ const authSlice = createSlice({
     },
     markInitialized: (state) => {
       state.isInitialized = true;
+    },
+    setSuccess: (state, action: PayloadAction<{ message: string }>) => {
+      state.message = action.payload.message;
+    },
+    setError: (
+      state,
+      action: PayloadAction<{ message: string; code: string }>
+    ) => {
+      state.message = action.payload.message;
+      state.code = action.payload.code;
     },
     logout: (state) => {
       state.user = null;

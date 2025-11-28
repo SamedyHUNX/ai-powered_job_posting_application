@@ -9,6 +9,7 @@ export interface AuthResponse {
     isAdmin: string;
     userRole: string;
   };
+  message: string;
   token: string;
 }
 

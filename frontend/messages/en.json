@@ -40,7 +40,7 @@
     "signUp": "Sign Up",
     "invalidEmail": "Invalid email address",
     "passwordRequired": "Password is required",
-    "success": "Sign in successfully"
+    "success": "Signed in successfully"
   },
   "signUp": {
     "title": "Create an account",

@@ -341,6 +341,7 @@ export class AuthService {
       const token = this.generateToken(payload);
 
       return {
+        message: 'Signed in successfully',
         user: {
           id: user.id,
           email: user.email,

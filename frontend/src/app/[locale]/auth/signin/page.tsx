@@ -20,12 +20,17 @@ import { useAuth } from "@/hooks/use-auth";
 import PublicRoute from "@/routes/PublicRoute";
 import Link from "next/link";
 import { useErrorHandler } from "@/utils/errorHandler";
-import { createSignInSchema, SignInFormData } from "@/schemas/auth/signInSchema";
+import {
+  createSignInSchema,
+  SignInFormData,
+} from "@/schemas/auth/signInSchema";
 import { Loading } from "@/components/customs/Loading";
+import { useAppSelector } from "@/store/hooks";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
+  const { message, code } = useAppSelector((state) => state.auth);
   const { getErrorMessage } = useErrorHandler();
 
   const signInFormSchema = useMemo(() => createSignInSchema(t), [t]);
