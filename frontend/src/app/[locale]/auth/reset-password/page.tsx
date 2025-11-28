@@ -24,11 +24,15 @@ import {
   ResetPasswordFormData,
 } from "@/schemas/auth/resetPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
-import Loading from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/Loading";
 
 export default function ResetPasswordPage() {
-  const t = useTranslations("resetPassword");
-  const validationT = useTranslations("validations");
+  // Translations
+  const t = useTranslations();
+  const resetPasswordT = (key: string) => t(`resetPassword.${key}`);
+  const validationT = (key: string) => t(`validations.${key}`);
+  const successT = (key: string) => t(`apiSuccess.${key}`);
+
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { getErrorMessage } = useErrorHandler();
@@ -65,7 +69,7 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     if (resetPasswordSuccess) {
-      toast.success(t("success"));
+      toast.success(successT("resetPasswordSuccess"));
     }
   }, [resetPasswordSuccess, t]);
 
@@ -93,10 +97,10 @@ export default function ResetPasswordPage() {
       {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {t("title")}
+          {resetPasswordT("title")}
         </h2>
         <p className="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-          {t("titleDesc")}
+          {resetPasswordT("titleDesc")}
         </p>
       </div>
 
@@ -110,14 +114,14 @@ export default function ResetPasswordPage() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
-                    {t("newPasswordLabel")}
+                    {resetPasswordT("newPasswordLabel")}
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
                         {...field}
                         type={showPassword ? "text" : "password"}
-                        placeholder={t("newPasswordPlaceholder")}
+                        placeholder={resetPasswordT("newPasswordPlaceholder")}
                         className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                       />
                       <button
@@ -144,14 +148,16 @@ export default function ResetPasswordPage() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300 font-medium">
-                    {t("confirmPasswordLabel")}
+                    {resetPasswordT("confirmPasswordLabel")}
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
                         {...field}
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder={t("confirmPasswordPlaceholder")}
+                        placeholder={resetPasswordT(
+                          "confirmPasswordPlaceholder"
+                        )}
                         className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 h-11 pr-10"
                       />
                       <button
@@ -216,20 +222,20 @@ export default function ResetPasswordPage() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                {t("resettingText")}
+                {resetPasswordT("resettingText")}
               </span>
             ) : (
-              t("buttonText")
+              resetPasswordT("buttonText")
             )}
           </Button>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-            {t("rememberPassword")}{" "}
+            {resetPasswordT("rememberPassword")}{" "}
             <Link
               href="/auth/signin"
               className="font-medium text-blue-500 hover:text-blue-400 transition-colors"
             >
-              {t("signIn")}
+              {resetPasswordT("signIn")}
             </Link>
           </p>
         </form>

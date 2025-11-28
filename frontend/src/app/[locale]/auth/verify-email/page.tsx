@@ -12,7 +12,6 @@ export default function VerifyEmailPage() {
   // Translations
   const t = useTranslations();
   const verifyEmailT = (key: string) => t(`verifyEmail.${key}`);
-  const validationT = (key: string) => t(`validations.${key}`);
   const successT = (key: string) => t(`apiSuccess.${key}`);
 
   const router = useRouter();
