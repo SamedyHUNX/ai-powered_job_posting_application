@@ -27,7 +27,7 @@ import {
 import { Loading } from "@/components/customs/Loading";
 
 export default function SigninPage() {
-  const t = useTranslations("signIn");
+  const signInT = useTranslations("signIn");
   const validationT = useTranslations("validations");
   const successT = useTranslations("apiSuccess");
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
@@ -57,7 +57,7 @@ export default function SigninPage() {
     if (signInSuccess) {
       toast.success(successT("signInSuccess"));
     }
-  }, [signInSuccess, t]);
+  }, [signInSuccess, signInT]);
 
   if (isSigningIn) {
     return <Loading />;
@@ -73,10 +73,10 @@ export default function SigninPage() {
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {t("title")}
+            {signInT("title")}
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {t("titleDesc")}
+            {signInT("titleDesc")}
           </p>
         </div>
 
@@ -90,13 +90,13 @@ export default function SigninPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
-                      {t("emailLabel")}
+                      {signInT("emailLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="email"
-                        placeholder={t("emailPlaceholder")}
+                        placeholder={signInT("emailPlaceholder")}
                         className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -111,13 +111,13 @@ export default function SigninPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
-                      {t("passwordLabel")}
+                      {signInT("passwordLabel")}
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="password"
-                        placeholder={t("passwordPlaceholder")}
+                        placeholder={signInT("passwordPlaceholder")}
                         className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </FormControl>
@@ -131,7 +131,7 @@ export default function SigninPage() {
                   href="/auth/forgot-password"
                   className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
                 >
-                  {t("forgotPassword")}
+                  {signInT("forgotPassword")}
                 </Link>
               </div>
             </div>
@@ -141,17 +141,17 @@ export default function SigninPage() {
               disabled={isSigningIn}
               className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2.5 transition-colors"
             >
-              {isSigningIn ? t("loadingText") : t("buttonText")}
+              {isSigningIn ? signInT("loadingText") : signInT("buttonText")}
             </Button>
 
             <div className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {t("dontHaveAnAccount")}{" "}
+                {signInT("dontHaveAnAccount")}{" "}
                 <Link
                   href="/auth/signup"
                   className="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
                 >
-                  {t("signUp")}
+                  {signInT("signUp")}
                 </Link>
               </p>
             </div>
