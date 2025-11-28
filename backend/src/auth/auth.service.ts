@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { DrizzleService } from '@/drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { UserTable } from '@/drizzle/schema';
+import { User, UserTable } from '@/drizzle/schema';
 import { and, eq, gt, or } from 'drizzle-orm';
 import { S3Service } from '@/s3/s3.service';
 import { AppService } from '@/app.service';
@@ -22,6 +22,7 @@ import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { Redis } from 'ioredis';
 import { REDIS_CLIENT } from '@/redis/redis.module';
 import { catchAsync } from '@/utils/catchAsync';
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AppService.name);

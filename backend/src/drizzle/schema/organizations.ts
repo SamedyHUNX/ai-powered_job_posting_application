@@ -3,7 +3,6 @@ import { id } from '../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 import { JobListingTable } from './job-listings';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
-import { timestamp } from 'drizzle-orm/pg-core';
 import { integer } from 'drizzle-orm/pg-core';
 import { createdAt, updatedAt } from '../utils/schema-helpers';
 
@@ -11,7 +10,7 @@ export const OrganizationTable = pgTable('organizations', {
   id,
   orgName: varchar('org_name').notNull(),
   imageUrl: varchar('image_url'),
-  slug: varchar('slug').unique(),
+  slug: varchar('slug').unique().notNull(),
   hasImage: boolean('has_image').default(false),
   isVerified: boolean('is_verified').default(false),
   isBanned: boolean('is_banned').default(false),

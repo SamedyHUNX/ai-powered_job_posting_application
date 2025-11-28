@@ -63,7 +63,7 @@ export class OrganizationsService {
       file: Express.Multer.File,
       userId: string,
     ) => {
-      const { orgName } = dto;
+      const { orgName, slug } = dto;
 
       // Check if organization with same orgName already exists
       const existingOrg = await this.dbServer
@@ -97,6 +97,8 @@ export class OrganizationsService {
         .values({
           orgName,
           imageUrl: imageUrl || dto.imageUrl,
+          slug,
+          hasImage: imageUrl || dto.imageUrl ? true : false,
         })
         .returning();
 
@@ -112,8 +114,8 @@ export class OrganizationsService {
       );
 
       return {
-        success: true,
-        organization,
+        message:
+          'Organization created successfully. Please wait for verification.',
       };
     },
     this.logger,

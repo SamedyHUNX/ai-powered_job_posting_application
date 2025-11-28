@@ -11,6 +11,16 @@ import { OrganizationTable } from './organizations';
 import { createdAt, updatedAt } from '../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 
+export type OrganizationUserSettingsTable = {
+  userId: string;
+  organizationId: string;
+  role: string;
+  newApplicationEmailNotifications: boolean;
+  minimumRating: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export const OrganizationUserSettingsTable = pgTable(
   'organization_user_settings',
   {

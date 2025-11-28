@@ -8,6 +8,10 @@ export class CreateOrganizationDto {
   @IsString()
   @IsOptional()
   imageUrl?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  slug: string;
 }
 
 export class UpdateOrganizationDto {
