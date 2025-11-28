@@ -114,7 +114,7 @@ export const OrganizationList = ({
 
   if (isLoading || isFetchingCurrentUser) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading organizations...</p>
@@ -124,10 +124,10 @@ export const OrganizationList = ({
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-8 py-4">
-      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden">
+    <div className="min-h-[calc(100vh-68px)] bg-black flex items-center justify-center px-8">
+      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="text-center px-8 py-12 border-b border-gray-200">
+        <div className="text-center px-8 py-12 border-b border-gray-200 flex-shrink-0">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-6">
             <div className="w-8 h-8 bg-white rounded-full"></div>
           </div>
@@ -139,8 +139,8 @@ export const OrganizationList = ({
           </p>
         </div>
 
-        {/* Account List */}
-        <div className="divide-y divide-gray-200">
+        {/* Account List - Scrollable */}
+        <div className="divide-y divide-gray-200 overflow-y-auto flex-1 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {/* Personal Account */}
           {!hidePersonal && currentUser && (
             <div
@@ -269,7 +269,7 @@ export const OrganizationList = ({
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-6 border-t border-gray-200">
+        <div className="px-8 py-6 border-t border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-center gap-2 text-gray-500">
             <span>Secured by</span>
             <span className="text-gray-900 font-semibold">JobXHub</span>
