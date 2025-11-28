@@ -14,6 +14,7 @@ import { SidebarOrganizationButton } from "@/features/organizations/components/S
 import { useOrganization } from "@/hooks/use-organization";
 
 import { Loading } from "@/components/customs/Loading";
+import { NavBar } from "@/components/customs/Navbar";
 
 export default function EmployerDashboardLayout({
   children,
@@ -72,6 +73,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         }
         footerButton={<SidebarOrganizationButton />}
       >
+        <NavBar />
         {children}
       </AppSidebar>
     </>

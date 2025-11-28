@@ -106,14 +106,14 @@ export default function CreateOrganizationForm() {
   });
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 pt-0">
+    <div className="min-h-[calc(100vh-68px)] bg-black flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl w-full max-w-3xl p-12">
         <h1 className="text-4xl font-bold mb-12 text-black tracking-tighter">
           {newOrgT("title")}
         </h1>
 
         <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit}>
             {/* Logo Upload Section */}
             <FormField
               control={form.control}
