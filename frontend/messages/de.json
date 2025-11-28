@@ -12,7 +12,8 @@
     "confirmPasswordRequired": "Bestätigung des Passworts ist erforderlich",
     "passwordsMustMatch": "Die Passwörter müssen übereinstimmen",
     "organizationNameRequired": "Der Name der Organisation ist erforderlich",
-    "slugRequired": "Die URL der Organisation ist erforderlich"
+    "slugRequired": "Die URL der Organisation ist erforderlich",
+    "passwordRequired": "Passwort ist erforderlich"
   },
   "authLayout": {
     "title": "Willkommen bei JobXHub",
@@ -38,9 +39,7 @@
     "forgotPassword": "Passwort vergessen?",
     "dontHaveAnAccount": "Kein Konto?",
     "signUp": "Anmelden",
-    "invalidEmail": "Ungültige E-Mail",
-    "passwordRequired": "Passwort ist erforderlich",
-    "success": "Erfolgreich angemeldet"
+    "invalidEmail": "Ungültige E-Mail"
   },
   "signUp": {
     "title": "JobPosting-Konto erstellen",
@@ -156,5 +155,8 @@
     "ERR_BAD_REQUEST": "Ungültige Anfrage. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
     "ORGANIZATION_EXISTS": "Eine Organisation mit diesem Namen existiert bereits.",
     "FETCH_ERROR": "Fehler beim Abrufen der Daten. Bitte versuchen Sie es erneut."
+  },
+  "apiSuccess": {
+    "signInSuccess": "Erfolgreich angemeldet"
   }
 }

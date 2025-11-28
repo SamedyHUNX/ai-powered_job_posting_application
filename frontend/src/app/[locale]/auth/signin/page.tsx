@@ -25,15 +25,18 @@ import {
   SignInFormData,
 } from "@/schemas/auth/signInSchema";
 import { Loading } from "@/components/customs/Loading";
-import { useAppSelector } from "@/store/hooks";
 
 export default function SigninPage() {
   const t = useTranslations("signIn");
+  const validationT = useTranslations("validations");
+  const successT = useTranslations("apiSuccess");
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
-  const { message, code } = useAppSelector((state) => state.auth);
   const { getErrorMessage } = useErrorHandler();
 
-  const signInFormSchema = useMemo(() => createSignInSchema(t), [t]);
+  const signInFormSchema = useMemo(
+    () => createSignInSchema(validationT),
+    [validationT]
+  );
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
@@ -52,7 +55,7 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (signInSuccess) {
-      toast.success(t("success"));
+      toast.success(successT("signInSuccess"));
     }
   }, [signInSuccess, t]);
 

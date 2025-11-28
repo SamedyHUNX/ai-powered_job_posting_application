@@ -12,7 +12,8 @@
     "confirmPasswordRequired": "Confirm password is required",
     "passwordsMustMatch": "Passwords must match",
     "organizationNameRequired": "Organization name is required",
-    "slugRequired": "Organization URL is required"
+    "slugRequired": "Organization URL is required",
+    "passwordRequired": "Password is required"
   },
   "authLayout": {
     "title": "Welcome to JobXHub",
@@ -38,9 +39,7 @@
     "forgotPassword": "Forgot your password?",
     "dontHaveAnAccount": "Don't have an account?",
     "signUp": "Sign Up",
-    "invalidEmail": "Invalid email address",
-    "passwordRequired": "Password is required",
-    "success": "Signed in successfully"
+    "invalidEmail": "Invalid email address"
   },
   "signUp": {
     "title": "Create an account",
@@ -156,5 +155,8 @@
     "ERR_BAD_REQUEST": "Bad request. Please check your input and try again.",
     "ORGANIZATION_EXISTS": "An organization with this name already exists.",
     "FETCH_ERROR": "Error fetching data. Please try again."
+  },
+  "apiSucccess": {
+    "signInSuccess": "Signed in successfully"
   }
 }

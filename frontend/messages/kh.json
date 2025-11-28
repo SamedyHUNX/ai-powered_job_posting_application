@@ -12,7 +12,8 @@
     "confirmPasswordRequired": "ត្រូវការបញ្ជាក់ពាក្យសម្ង្ងាត់",
     "passwordsMustMatch": "ពាក្យសម្ងាត់ត្រូវតែត្រូវគ្នា",
     "organizationNameRequired": "ត្រូវការឈ្មោះអង្គភាព",
-    "slugRequired": "ត្រូវការ URL អង្គភាព"
+    "slugRequired": "ត្រូវការ URL អង្គភាព",
+    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់"
   },
   "authLayout": {
     "title": "សូមស្វាគមន៍មកកាន់ JobXHub",
@@ -38,9 +39,7 @@
     "forgotPassword": "ភ្លេចពាក្យសម្ងាត់របស់អ្នក?",
     "dontHaveAnAccount": "មិនទាន់មានគណនីទេ?",
     "signUp": "បង្កើតគណនី",
-    "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ",
-    "passwordRequired": "ត្រូវការពាក្យសម្ងាត់",
-    "success": "ចូលដោយជោគជ័យ"
+    "invalidEmail": "អ៊ីមែលមិនត្រឹមត្រូវ"
   },
   "signUp": {
     "title": "បង្កើតគណនី",
@@ -155,5 +154,8 @@
     "ERR_BAD_REQUEST": "សំណើមិនត្រឹមត្រូវ សូមពិនិត្យការបញ្ចូលរបស់អ្នក ហើយព្យាយាមម្តងទៀត",
     "ORGANIZATION_EXISTS": "អង្គភាពដែលមានឈ្មោះនេះមានរួចហើយ",
     "FETCH_ERROR": "កំហុសក្នុងការទាញយកទិន្នន័យ សូមព្យាយាមម្តងទៀត"
+  },
+  "apiSuccess": {
+    "signInSuccess": "ចូលដោយជោគជ័យ"
   }
 }
