@@ -26,7 +26,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -164,11 +164,11 @@ export class OrganizationsService {
       organizations = await baseQuery;
     }
 
-    return { success: true, organizations, count: organizations.length };
+    return { organizations, count: organizations.length };
   }, this.logger);
 
   // Get organizations by user ID
-  findByUser = catchAsync(
+  indByUser = catchAsync(
     async (userId: string) => {
       const organizations = await this.dbServer
         .select({
@@ -177,34 +177,32 @@ export class OrganizationsService {
           imageUrl: OrganizationTable.imageUrl,
           slug: OrganizationTable.slug,
           hasImage: OrganizationTable.hasImage,
-          isVerified: OrganizationTable.isVerified,
-          isBanned: OrganizationTable.isBanned,
           membersCount: OrganizationTable.membersCount,
-          pendingInvitationsCount: OrganizationTable.pendingInvitationsCount,
-          adminDeleteEnabled: OrganizationTable.adminDeleteEnabled,
-          maxAllowedMemberships: OrganizationTable.maxAllowedMemberships,
           jobsCount: OrganizationTable.jobsCount,
           createdAt: OrganizationTable.createdAt,
           updatedAt: OrganizationTable.updatedAt,
+          role: OrganizationUserSettingsTable.role,
         })
         .from(OrganizationTable)
         .innerJoin(
           OrganizationUserSettingsTable,
-          eq(
-            OrganizationTable.id,
-            OrganizationUserSettingsTable.organizationId,
-          ),
+          eq(OrganizationTable.id, OrganizationUserSettingsTable.organizationId),
         )
-        .where(eq(OrganizationUserSettingsTable.userId, userId));
+        .where(
+          and(
+            eq(OrganizationUserSettingsTable.userId, userId),
+            eq(OrganizationTable.isVerified, true),
+            eq(OrganizationTable.isBanned, false),
+          ),
+        );
 
       return {
-        success: true,
         organizations,
         count: organizations.length,
       };
     },
     this.logger,
-    'Failed to fetch user organizations',
+    "Failed to fetch user organizations",
   );
 
   // Get a single organization by ID

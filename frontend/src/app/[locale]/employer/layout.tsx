@@ -15,6 +15,7 @@ import { useOrganization } from "@/hooks/use-organization";
 
 import { Loading } from "@/components/customs/Loading";
 import { NavBar } from "@/components/customs/Navbar";
+import { BackHomeButton } from "@/components/customs/CustomButtons";
 
 export default function EmployerDashboardLayout({
   children,
@@ -29,49 +30,40 @@ export default function EmployerDashboardLayout({
 }
 
 function DashboardLayoutContent({ children }: { children: ReactNode }) {
-  const {
-    selectedOrganization,
-    isFetchingOrganizations,
-    isFetchingOrganizationsError,
-  } = useOrganization();
-
-  if (isFetchingOrganizations) {
-    return <Loading />;
-  }
-
-  if (isFetchingOrganizationsError) {
-    return <div className="error">Error: {isFetchingOrganizationsError}</div>;
-  }
-
+  const { selectedOrganization } = useOrganization();
   return (
     <>
       <AppSidebar
         content={
-          selectedOrganization ? (
-            <>
-              <SidebarGroup>
-                <SidebarGroupLabel>Create Organization</SidebarGroupLabel>
-                <SidebarGroupAction title="Add Job Listing" asChild>
-                  <Link href={"/employer/organizations/new"}>
-                    <PlusIcon />
-                    <span className="sr-only">Add Organization</span>
-                  </Link>
-                </SidebarGroupAction>
-              </SidebarGroup>
-              <SidebarNavMenuGroup
-                className="mt-auto"
-                items={[
-                  {
-                    href: "/",
-                    icon: <ClipboardListIcon />,
-                    label: "Job Board",
-                  },
-                ]}
-              />
-            </>
-          ) : undefined
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>Create Organization</SidebarGroupLabel>
+              <SidebarGroupAction title="Add Job Listing" asChild>
+                <Link href={"/employer/organizations/new"}>
+                  <PlusIcon />
+                  <span className="sr-only">Add Organization</span>
+                </Link>
+              </SidebarGroupAction>
+            </SidebarGroup>
+            <SidebarNavMenuGroup
+              className="mt-auto"
+              items={[
+                {
+                  href: "/",
+                  icon: <ClipboardListIcon />,
+                  label: "Job Board",
+                },
+              ]}
+            />
+          </>
         }
-        footerButton={<SidebarOrganizationButton />}
+        footerButton={
+          selectedOrganization ? (
+            <SidebarOrganizationButton />
+          ) : (
+            <BackHomeButton variant="destructive" />
+          )
+        }
       >
         <NavBar />
         {children}

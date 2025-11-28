@@ -10,7 +10,6 @@ export interface OrganizationResponse {
 }
 
 export interface OrganizationsListResponse {
-  success: boolean;
   organizations: Organization[];
   count: number;
 }

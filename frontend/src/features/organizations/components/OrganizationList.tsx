@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
@@ -15,7 +15,7 @@ interface OrganizationListProps {
     elements?: Record<string, string>;
     variables?: Record<string, string>;
   };
-  fallback?: React.ReactNode;
+  fallback?: ReactNode;
   hidePersonal?: boolean;
   hideSlug?: boolean;
   skipInvitationScreen?: boolean;
@@ -33,8 +33,8 @@ export const OrganizationList = ({
   const router = useRouter();
   const {
     fetchOrganizationsByUser,
+    isFetchingOrganizationsByUser,
     organizations,
-    isLoading,
     selectOrganization,
   } = useOrganization();
 
@@ -50,8 +50,13 @@ export const OrganizationList = ({
       return;
     }
 
+    if (!org.isVerified) {
+      alert("This organization is not yet verified and cannot be accessed.");
+      return;
+    }
+
     // Save selected organization to Redux
-    selectOrganization(org.id);
+    selectOrganization(org);
 
     if (afterSelectOrganizationUrl) {
       const url =
@@ -60,7 +65,6 @@ export const OrganizationList = ({
           : afterSelectOrganizationUrl;
       router.push(url);
     } else {
-      // Changed from /organization/${org.slug || org.id} to:
       router.push(`/employer/organizations/${org.id}`);
     }
   };
@@ -108,11 +112,11 @@ export const OrganizationList = ({
     return colors[index % colors.length];
   };
 
-  if (isLoading && fallback) {
+  if (isFetchingOrganizationsByUser && fallback) {
     return <>{fallback}</>;
   }
 
-  if (isLoading || isFetchingCurrentUser) {
+  if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-12 text-center">
@@ -150,7 +154,7 @@ export const OrganizationList = ({
               <div className="flex-shrink-0">
                 <img
                   src={currentUser.image}
-                  alt={currentUser.name}
+                  alt={currentUser.username}
                   className="w-14 h-14 rounded-full object-cover"
                 />
               </div>
@@ -170,11 +174,10 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
-                org.isBanned
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
                   ? "opacity-50 cursor-not-allowed hover:bg-red-50"
                   : "hover:bg-gray-50"
-              }`}
+                }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">
@@ -221,6 +224,11 @@ export const OrganizationList = ({
                       Banned
                     </span>
                   )}
+                  {!org.isVerified && !org.isBanned && (
+                    <span className="px-2 py-0.5 text-xs font-medium text-orange-700 bg-orange-100 rounded">
+                      Unverified
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-3 mt-1">
                   {org.userRole && (
@@ -243,7 +251,7 @@ export const OrganizationList = ({
 
               {/* Action */}
               <div className="flex-shrink-0">
-                {!org.isBanned && (
+                {!org.isBanned && org.isVerified && (
                   <ArrowRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-colors" />
                 )}
               </div>

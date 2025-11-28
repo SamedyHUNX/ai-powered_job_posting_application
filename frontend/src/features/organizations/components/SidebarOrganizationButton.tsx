@@ -13,7 +13,7 @@ export const SidebarOrganizationButton = () => {
 };
 
 function SidebarOrganizationSuspense() {
-  const { selectedOrganization, isLoading, error } = useOrganization();
+  const { selectedOrganization, isLoading } = useOrganization();
   const { currentUser } = useProfile();
 
   // Handle loading state
@@ -22,7 +22,7 @@ function SidebarOrganizationSuspense() {
   }
 
   // Handle no selected organization
-  if (!currentUser || error) {
+  if (!currentUser || !selectedOrganization) {
     return <BackHomeButton variant="destructive" />;
   }
 

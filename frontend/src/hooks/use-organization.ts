@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -12,8 +13,6 @@ import {
   setSuccess,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
-import { UpdateOrganizationDto } from "@/types/organization.type";
-import { is } from "zod/v4/locales";
 
 export function useOrganization() {
   const dispatch = useAppDispatch();
@@ -21,6 +20,21 @@ export function useOrganization() {
   const token = useAppSelector((state) => state.auth.token);
   const { organizations, selectedOrganization, isLoading, count } =
     useAppSelector((state) => state.organizations);
+
+  // Restore selected organization from localStorage on mount
+  useEffect(() => {
+    if (!selectedOrganization) {
+      const stored = localStorage.getItem("selectedOrganization");
+      if (stored) {
+        try {
+          const org = JSON.parse(stored);
+          dispatch(setSelectedOrganization(org));
+        } catch (e) {
+          localStorage.removeItem("selectedOrganization");
+        }
+      }
+    }
+  }, [dispatch]);
 
   // Fetch all organizations
   //   const fetchOrganizationsQuery = useQuery({
@@ -54,10 +68,6 @@ export function useOrganization() {
           count: data.count,
         })
       );
-      // Automatically select the first organization if available
-      if (data.organizations.length > 0) {
-        dispatch(setSelectedOrganization(data.organizations[0]));
-      }
     },
     onError: (err: any) => {
       dispatch(setError(err.message || "Failed to fetch user organizations"));
@@ -116,19 +126,19 @@ export function useOrganization() {
   // });
 
   // Delete organization mutation
-  const deleteOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
-      if (!token) throw new Error("Authentication required");
-      return organizationsApi.remove(id, token);
-    },
-    onSuccess: (_, id) => {
-      dispatch(removeOrganization(id));
-      queryClient.invalidateQueries({ queryKey: ["organizations"] });
-    },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to delete organization"));
-    },
-  });
+  // const deleteOrganizationMutation = useMutation({
+  //   mutationFn: (id: string) => {
+  //     if (!token) throw new Error("Authentication required");
+  //     return organizationsApi.remove(id, token);
+  //   },
+  //   onSuccess: (_, id) => {
+  //     dispatch(removeOrganization(id));
+  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
+  //   },
+  //   onError: (err: any) => {
+  //     dispatch(setError(err.message || "Failed to delete organization"));
+  //   },
+  // });
 
   // Verify organization mutation
   // const verifyOrganizationMutation = useMutation({
@@ -185,22 +195,30 @@ export function useOrganization() {
   // });
 
   // Select organization
-  const selectOrganization = (id: string) => {
-    const org = organizations.find((o) => o.id === id);
-    if (org) {
-      dispatch(setSelectedOrganization(org));
+  const selectOrganization = useCallback((orgOrId: string | import("@/types/organization.type").Organization) => {
+    if (typeof orgOrId === "string") {
+      const org = organizations.find((o) => o.id === orgOrId);
+      if (org) {
+        dispatch(setSelectedOrganization(org));
+        localStorage.setItem("selectedOrganization", JSON.stringify(org));
+      }
+    } else {
+      dispatch(setSelectedOrganization(orgOrId));
+      localStorage.setItem("selectedOrganization", JSON.stringify(orgOrId));
     }
-  };
+  }, [dispatch, organizations]);
 
   // Clear selected organization
-  const clearSelectedOrganization = () => {
+  const clearSelectedOrganization = useCallback(() => {
     dispatch(setSelectedOrganization(null));
-  };
+    localStorage.removeItem("selectedOrganization");
+  }, [dispatch]);
 
   // Clear all organizations
-  const clearAllOrganizations = () => {
+  const clearAllOrganizations = useCallback(() => {
     dispatch(clearOrganizations());
-  };
+    localStorage.removeItem("selectedOrganization");
+  }, [dispatch]);
 
   return {
     // State
@@ -211,9 +229,6 @@ export function useOrganization() {
 
     // Queries
     fetchOrganizations,
-    fetchOrganizationsByUser: fetchOrganizationByUserMutation.mutate,
-    isFetchingOrganizations: fetchOrganizationByUserMutation.isPending,
-    isFetchingOrganizationsError: fetchOrganizationByUserMutation.error,
     fetchOrganizationQuery,
 
     // Create organization
@@ -221,6 +236,12 @@ export function useOrganization() {
     isCreating: createOrganizationMutation.isPending,
     createSuccess: createOrganizationMutation.isSuccess,
     createError: createOrganizationMutation.error,
+
+    // Fetch organizations by userId
+    fetchOrganizationsByUser: fetchOrganizationByUserMutation.mutate,
+    isFetchingOrganizationsByUser: fetchOrganizationByUserMutation.isPending,
+    fetchOrganizationsByUserSuccess: fetchOrganizationByUserMutation.isSuccess,
+    isFetchingOrganizationsByUserError: fetchOrganizationByUserMutation.error,
 
     // Mutations
     // updateOrganization: updateOrganizationMutation.mutate,
