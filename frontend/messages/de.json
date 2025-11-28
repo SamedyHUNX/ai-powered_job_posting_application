@@ -160,6 +160,7 @@
     "signInSuccess": "Erfolgreich angemeldet",
     "signUpSuccess": "Bitte überprüfen Sie Ihre E-Mails, um Ihr Konto zu verifizieren",
     "verifyEmailSuccess": "Ihre E-Mail wurde erfolgreich verifiziert",
-    "resetPasswordSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt"
+    "resetPasswordSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt",
+    "forgotPasswordSuccess": "Bitte überprüfen Sie Ihre E-Mails für Anweisungen zum Zurücksetzen des Passworts"
   }
 }
