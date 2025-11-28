@@ -17,7 +17,7 @@ import {
   UpdateOrganizationDto,
 } from './dtos/organization.dto';
 import { S3Service } from '@/s3/s3.service';
-import { catchAsync } from '@/utils/catchAsync';
+import { catchAsync } from '@/utils/catch-async';
 
 @Injectable()
 export class OrganizationsService {

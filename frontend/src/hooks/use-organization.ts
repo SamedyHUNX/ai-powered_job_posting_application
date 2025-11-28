@@ -9,18 +9,17 @@ import {
   setLoading,
   setError,
   clearOrganizations,
+  setSuccess,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
-import {
-  UpdateOrganizationDto,
-} from "@/types/organization.type";
+import { UpdateOrganizationDto } from "@/types/organization.type";
 import { is } from "zod/v4/locales";
 
 export function useOrganization() {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const token = useAppSelector((state) => state.auth.token);
-  const { organizations, selectedOrganization, isLoading, error, count } =
+  const { organizations, selectedOrganization, isLoading, count } =
     useAppSelector((state) => state.organizations);
 
   // Fetch all organizations
@@ -80,9 +79,9 @@ export function useOrganization() {
       return organizationsApi.create(formData, token);
     },
     onSuccess: (data) => {
-      dispatch(addOrganization(data.organization));
-      // Automatically select the newly created organization
-      dispatch(setSelectedOrganization(data.organization));
+      // dispatch(addOrganization(data.organization));
+      // dispatch(setSelectedOrganization(data.organization));
+      dispatch(setSuccess(data.message));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: any) => {
@@ -91,30 +90,30 @@ export function useOrganization() {
   });
 
   // Update organization mutation
-  const updateOrganizationMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-      file,
-    }: {
-      id: string;
-      dto: UpdateOrganizationDto;
-      file?: File;
-    }) => {
-      if (!token) throw new Error("Authentication required");
-      return organizationsApi.update(id, dto, token, file);
-    },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
-      queryClient.invalidateQueries({ queryKey: ["organizations"] });
-      queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
-      });
-    },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to update organization"));
-    },
-  });
+  // const updateOrganizationMutation = useMutation({
+  //   mutationFn: ({
+  //     id,
+  //     dto,
+  //     file,
+  //   }: {
+  //     id: string;
+  //     dto: UpdateOrganizationDto;
+  //     file?: File;
+  //   }) => {
+  //     if (!token) throw new Error("Authentication required");
+  //     return organizationsApi.update(id, dto, token, file);
+  //   },
+  //   onSuccess: (data) => {
+  //     dispatch(updateOrganization(data.organization));
+  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["organization", data.organization.id],
+  //     });
+  //   },
+  //   onError: (err: any) => {
+  //     dispatch(setError(err.message || "Failed to update organization"));
+  //   },
+  // });
 
   // Delete organization mutation
   const deleteOrganizationMutation = useMutation({
@@ -132,58 +131,58 @@ export function useOrganization() {
   });
 
   // Verify organization mutation
-  const verifyOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
-      if (!token) throw new Error("Authentication required");
-      return organizationsApi.verify(id, token);
-    },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
-      queryClient.invalidateQueries({ queryKey: ["organizations"] });
-      queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
-      });
-    },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to verify organization"));
-    },
-  });
+  // const verifyOrganizationMutation = useMutation({
+  //   mutationFn: (id: string) => {
+  //     if (!token) throw new Error("Authentication required");
+  //     return organizationsApi.verify(id, token);
+  //   },
+  //   onSuccess: (data) => {
+  //     dispatch(updateOrganization(data.organization));
+  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["organization", data.organization.id],
+  //     });
+  //   },
+  //   onError: (err: any) => {
+  //     dispatch(setError(err.message || "Failed to verify organization"));
+  //   },
+  // });
 
   // Ban organization mutation
-  const banOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
-      if (!token) throw new Error("Authentication required");
-      return organizationsApi.ban(id, token);
-    },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
-      queryClient.invalidateQueries({ queryKey: ["organizations"] });
-      queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
-      });
-    },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to ban organization"));
-    },
-  });
+  // const banOrganizationMutation = useMutation({
+  //   mutationFn: (id: string) => {
+  //     if (!token) throw new Error("Authentication required");
+  //     return organizationsApi.ban(id, token);
+  //   },
+  //   onSuccess: (data) => {
+  //     dispatch(updateOrganization(data.organization));
+  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["organization", data.organization.id],
+  //     });
+  //   },
+  //   onError: (err: any) => {
+  //     dispatch(setError(err.message || "Failed to ban organization"));
+  //   },
+  // });
 
   // Unban organization mutation
-  const unbanOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
-      if (!token) throw new Error("Authentication required");
-      return organizationsApi.unban(id, token);
-    },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
-      queryClient.invalidateQueries({ queryKey: ["organizations"] });
-      queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
-      });
-    },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to unban organization"));
-    },
-  });
+  // const unbanOrganizationMutation = useMutation({
+  //   mutationFn: (id: string) => {
+  //     if (!token) throw new Error("Authentication required");
+  //     return organizationsApi.unban(id, token);
+  //   },
+  //   onSuccess: (data) => {
+  //     dispatch(updateOrganization(data.organization));
+  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["organization", data.organization.id],
+  //     });
+  //   },
+  //   onError: (err: any) => {
+  //     dispatch(setError(err.message || "Failed to unban organization"));
+  //   },
+  // });
 
   // Select organization
   const selectOrganization = (id: string) => {
@@ -208,7 +207,6 @@ export function useOrganization() {
     organizations,
     selectedOrganization,
     isLoading,
-    error,
     count,
 
     // Queries
@@ -218,35 +216,37 @@ export function useOrganization() {
     isFetchingOrganizationsError: fetchOrganizationByUserMutation.error,
     fetchOrganizationQuery,
 
-    // Mutations
+    // Create organization
     createOrganization: createOrganizationMutation.mutate,
-    updateOrganization: updateOrganizationMutation.mutate,
-    deleteOrganization: deleteOrganizationMutation.mutate,
-    verifyOrganization: verifyOrganizationMutation.mutate,
-    banOrganization: banOrganizationMutation.mutate,
-    unbanOrganization: unbanOrganizationMutation.mutate,
+    isCreating: createOrganizationMutation.isPending,
+    createSuccess: createOrganizationMutation.isSuccess,
+    createError: createOrganizationMutation.error,
+
+    // Mutations
+    // updateOrganization: updateOrganizationMutation.mutate,
+    // deleteOrganization: deleteOrganizationMutation.mutate,
+    // verifyOrganization: verifyOrganizationMutation.mutate,
+    // banOrganization: banOrganizationMutation.mutate,
+    // unbanOrganization: unbanOrganizationMutation.mutate,
 
     // Mutation states
-    isCreating: createOrganizationMutation.isPending,
-    isUpdating: updateOrganizationMutation.isPending,
-    isDeleting: deleteOrganizationMutation.isPending,
-    isVerifying: verifyOrganizationMutation.isPending,
-    isBanning: banOrganizationMutation.isPending,
-    isUnbanning: unbanOrganizationMutation.isPending,
+    // isUpdating: updateOrganizationMutation.isPending,
+    // isDeleting: deleteOrganizationMutation.isPending,
+    // isVerifying: verifyOrganizationMutation.isPending,
+    // isBanning: banOrganizationMutation.isPending,
+    // isUnbanning: unbanOrganizationMutation.isPending,
 
-    createSuccess: createOrganizationMutation.isSuccess,
-    updateSuccess: updateOrganizationMutation.isSuccess,
-    deleteSuccess: deleteOrganizationMutation.isSuccess,
-    verifySuccess: verifyOrganizationMutation.isSuccess,
-    banSuccess: banOrganizationMutation.isSuccess,
-    unbanSuccess: unbanOrganizationMutation.isSuccess,
+    // updateSuccess: updateOrganizationMutation.isSuccess,
+    // deleteSuccess: deleteOrganizationMutation.isSuccess,
+    // verifySuccess: verifyOrganizationMutation.isSuccess,
+    // banSuccess: banOrganizationMutation.isSuccess,
+    // unbanSuccess: unbanOrganizationMutation.isSuccess,
 
-    createError: createOrganizationMutation.error,
-    updateError: updateOrganizationMutation.error,
-    deleteError: deleteOrganizationMutation.error,
-    verifyError: verifyOrganizationMutation.error,
-    banError: banOrganizationMutation.error,
-    unbanError: unbanOrganizationMutation.error,
+    // updateError: updateOrganizationMutation.error,
+    // deleteError: deleteOrganizationMutation.error,
+    // verifyError: verifyOrganizationMutation.error,
+    // banError: banOrganizationMutation.error,
+    // unbanError: unbanOrganizationMutation.error,
 
     // Utility functions
     selectOrganization,

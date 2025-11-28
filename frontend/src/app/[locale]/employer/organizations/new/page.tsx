@@ -22,7 +22,6 @@ import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
-import { useProfile } from "@/hooks/use-profile";
 
 export default function CreateOrganizationForm() {
   const t = useTranslations("employer.organizations.newPage");
@@ -59,7 +58,7 @@ export default function CreateOrganizationForm() {
   useEffect(() => {
     if (createSuccess) {
       toast.success(t("success"));
-      router.push("/employer/dashboard");
+      router.push("/employer/organizations/select");
     }
   }, [createSuccess, router, t]);
 

@@ -12,6 +12,7 @@ import {
   Query,
   HttpCode,
   HttpStatus,
+  UseFilters,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OrganizationsService } from './organizations.service';
@@ -21,6 +22,7 @@ import {
 } from './dtos/organization.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
+import { MulterExceptionFilter } from '@/utils/multer-global-handling';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -40,6 +42,7 @@ export class OrganizationsController {
       },
     }),
   )
+  @UseFilters(MulterExceptionFilter)
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createOrganizationDto: CreateOrganizationDto,

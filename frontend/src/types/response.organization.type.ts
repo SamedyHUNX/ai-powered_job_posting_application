@@ -1,5 +1,9 @@
 import { Organization } from "./organization.type";
 
+export interface CreateOrganizationResponse {
+  message: string;
+}
+
 export interface OrganizationResponse {
   success: boolean;
   organization: Organization;

@@ -5,7 +5,8 @@ interface OrganizationsState {
   organizations: Organization[];
   selectedOrganization: Organization | null;
   isLoading: boolean;
-  error: string | null;
+  status: "idle" | "loading" | "success" | "error";
+  message: string | null;
   count: number;
 }
 
@@ -13,7 +14,8 @@ const initialState: OrganizationsState = {
   organizations: [],
   selectedOrganization: null,
   isLoading: false,
-  error: null,
+  status: "idle",
+  message: null,
   count: 0,
 };
 
@@ -28,7 +30,8 @@ const organizationsSlice = createSlice({
       state.organizations = action.payload.organizations;
       state.count = action.payload.count;
       state.isLoading = false;
-      state.error = null;
+      state.status = "success";
+      state.message = "Organizations loaded successfully";
     },
     setSelectedOrganization: (
       state,
@@ -39,6 +42,8 @@ const organizationsSlice = createSlice({
     addOrganization: (state, action: PayloadAction<Organization>) => {
       state.organizations.push(action.payload);
       state.count += 1;
+      state.status = "success";
+      state.message = "Organization added successfully";
     },
     updateOrganization: (state, action: PayloadAction<Organization>) => {
       const index = state.organizations.findIndex(
@@ -50,6 +55,8 @@ const organizationsSlice = createSlice({
       if (state.selectedOrganization?.id === action.payload.id) {
         state.selectedOrganization = action.payload;
       }
+      state.status = "success";
+      state.message = "Organization updated successfully";
     },
     removeOrganization: (state, action: PayloadAction<string>) => {
       state.organizations = state.organizations.filter(
@@ -59,22 +66,35 @@ const organizationsSlice = createSlice({
       if (state.selectedOrganization?.id === action.payload) {
         state.selectedOrganization = null;
       }
+      state.status = "success";
+      state.message = "Organization removed successfully";
+    },
+    setSuccess: (state, action: PayloadAction<string | null>) => {
+      state.isLoading = false;
+      state.status = "success";
+      state.message = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+      state.status = action.payload ? "loading" : "idle";
+      if (action.payload) state.message = null;
     },
     setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
       state.isLoading = false;
+      state.status = "error";
+      state.message = action.payload;
     },
     clearOrganizations: (state) => {
       state.organizations = [];
       state.selectedOrganization = null;
       state.count = 0;
-      state.error = null;
+      state.status = "idle";
+      state.message = null;
     },
   },
 });
+
+
 
 export const {
   setOrganizations,
@@ -82,6 +102,7 @@ export const {
   addOrganization,
   updateOrganization,
   removeOrganization,
+  setSuccess,
   setLoading,
   setError,
   clearOrganizations,

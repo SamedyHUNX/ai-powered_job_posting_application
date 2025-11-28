@@ -9,5 +9,8 @@ export const store = configureStore({
   },
 });
 
+export const selectOrganizationMessage = (state: RootState) =>
+  state.organizations.message;
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

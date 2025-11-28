@@ -21,7 +21,7 @@ import { capitalizeString } from '@/utils/utils';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { Redis } from 'ioredis';
 import { REDIS_CLIENT } from '@/redis/redis.module';
-import { catchAsync } from '@/utils/catchAsync';
+import { catchAsync } from '@/utils/catch-async';
 
 @Injectable()
 export class AuthService {

@@ -135,7 +135,7 @@
         "logoPlaceholder": "Logo Ihrer Organisation hochladen",
         "buttonText": "Organisation erstellen",
         "creatingText": "Organisation wird erstellt...",
-        "success": "Organisation erfolgreich erstellt",
+        "success": "Organisation erfolgreich erstellt. Bitte warten Sie auf die Verifizierung durch den Admin.",
         "slug": "Organisations-URL (eindeutiger Bezeichner)",
         "slugDesc": "Dies wird in der URL Ihrer Organisation verwendet. Es sind nur Kleinbuchstaben, Zahlen und Bindestriche erlaubt."
       }

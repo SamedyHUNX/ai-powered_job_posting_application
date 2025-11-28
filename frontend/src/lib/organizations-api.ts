@@ -8,6 +8,7 @@ import {
   OrganizationResponse,
   OrganizationsListResponse,
   OrganizationDeleteResponse,
+  CreateOrganizationResponse,
 } from "@/types/response.organization.type";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
@@ -24,8 +25,8 @@ export const organizationsApi = {
   create: async (
     formData: FormData,
     token: string
-  ): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  ): Promise<CreateOrganizationResponse> => {
+    const { data } = await api.post<CreateOrganizationResponse>(
       "/organizations",
       formData,
       {
