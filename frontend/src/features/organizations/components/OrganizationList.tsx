@@ -155,8 +155,8 @@ export const OrganizationList = ({
   }
 
   return (
-    <div className="min-h-[calc(100vh-68px)] bg-black flex items-center justify-center px-8">
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="min-h-[calc(100vh-68px)] bg-[#fdfbf7] dark:bg-black flex items-center justify-center px-8 ">
+      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh] border-1 border-gray-300">
         {/* Header */}
         <div className="text-center px-8 py-12 border-b border-gray-200 flex-shrink-0">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-6">
@@ -216,11 +216,10 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
-                org.isBanned || !org.isVerified
-                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
-                  : "hover:bg-gray-50"
-              }`}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
+                ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                : "hover:bg-gray-50"
+                }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">
