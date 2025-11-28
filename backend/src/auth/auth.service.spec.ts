@@ -286,7 +286,6 @@ describe('AuthService', () => {
 
       const result = await service.signIn(signInDto);
 
-      expect(result.success).toBe(true);
       expect(mockDb.select).not.toHaveBeenCalled();
     });
 

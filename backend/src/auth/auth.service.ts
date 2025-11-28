@@ -173,6 +173,7 @@ export class AuthService {
           fullName: `${firstName} ${lastName}`,
           password: hashedPassword,
           imageUrl,
+          userRole: 'USER', // Explicity set the userRole to 'USER' for security
           verificationToken: hashedVerificationToken,
           verificationExpires: verificationExpires,
         })
@@ -198,7 +199,7 @@ export class AuthService {
       };
     },
     this.logger,
-    'Failed to sign up user',
+    `Failed to sign up user at ${this.getTimestamp()}`,
   );
 
   verifyEmail = catchAsync(
@@ -208,8 +209,6 @@ export class AuthService {
         .createHash('sha256')
         .update(token)
         .digest('hex');
-
-      console.log('hased token', hashedToken);
 
       // Find user by verification token and check expiration
       const [user] = await this.dbServer
@@ -231,8 +230,6 @@ export class AuthService {
         });
       }
 
-      console.log('checking', user.verificationToken, hashedToken);
-
       // Update user's verified status and clear verification token fields
       await this.dbServer
         .update(UserTable)
@@ -244,7 +241,7 @@ export class AuthService {
         .where(eq(UserTable.id, user.id));
 
       this.logger.log(`Email successfully verified for user ID: ${user.id}`);
-      return { success: true, message: 'Email has been verified successfully' };
+      return { message: 'Email has been verified successfully' };
     },
     this.logger,
     'Failed to verify email',
@@ -326,7 +323,7 @@ export class AuthService {
 
       if (!isPasswordValid) {
         this.logger.error(
-          `User with ${email} trying to signin with invalid password`,
+          `User with ${email} trying to signin with invalid password at ${this.getTimestamp()}`,
         );
         throw new UnauthorizedException({
           code: 'INVALID_CREDENTIALS',
@@ -345,8 +342,8 @@ export class AuthService {
       return {
         user: {
           id: user.id,
-          username: user.username,
           email: user.email,
+          username: user.username,
           imageUrl: user.imageUrl,
           userRole: user.userRole,
         },
