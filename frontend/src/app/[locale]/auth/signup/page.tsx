@@ -47,6 +47,7 @@ export default function SignUpPage() {
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
+    mode: "onChange", // Enable real-time validation
     defaultValues: {
       name: "",
       firstName: "",
@@ -125,7 +126,10 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field: { onChange, value, ...field } }) => (
+                render={({
+                  field: { onChange, value, ...field },
+                  fieldState,
+                }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("profile")}
@@ -142,7 +146,13 @@ export default function SignUpPage() {
                           </div>
                         )}
                         <label className="w-full cursor-pointer">
-                          <div className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors">
+                          <div
+                            className={`flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-800 border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors ${
+                              fieldState.error
+                                ? "border-red-500 dark:border-red-500"
+                                : "border-gray-300 dark:border-gray-700"
+                            }`}
+                          >
                             <Upload className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                             <span className="text-gray-700 dark:text-gray-300">
                               {preview
@@ -169,7 +179,7 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("username")}
@@ -179,7 +189,11 @@ export default function SignUpPage() {
                         {...field}
                         type="text"
                         placeholder={signUpT("username")}
-                        className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
@@ -191,7 +205,7 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="firstName"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("firstName")}
@@ -201,7 +215,11 @@ export default function SignUpPage() {
                         {...field}
                         type="text"
                         placeholder={signUpT("firstName")}
-                        className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
@@ -213,7 +231,7 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="lastName"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("lastName")}
@@ -223,7 +241,11 @@ export default function SignUpPage() {
                         {...field}
                         type="text"
                         placeholder={signUpT("lastName")}
-                        className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
@@ -235,7 +257,7 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("emailLabel")}
@@ -245,7 +267,11 @@ export default function SignUpPage() {
                         {...field}
                         type="email"
                         placeholder={signUpT("emailPlaceholder")}
-                        className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
@@ -257,7 +283,7 @@ export default function SignUpPage() {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signUpT("passwordLabel")}
@@ -267,7 +293,11 @@ export default function SignUpPage() {
                         {...field}
                         type="password"
                         placeholder={signUpT("passwordPlaceholder")}
-                        className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
