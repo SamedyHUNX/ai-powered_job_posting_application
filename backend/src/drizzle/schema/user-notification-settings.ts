@@ -6,11 +6,13 @@ import { relations } from 'drizzle-orm';
 export const UserNotificationSettingsTable = pgTable(
   'user_notification_settings',
   {
-    userId: uuid('userId')
+    userId: uuid('user_id')
       .primaryKey()
       .references(() => UserTable.id),
-    newJobEmailNotifications: boolean().notNull().default(false),
-    aiPrompt: varchar(),
+    newJobEmailNotifications: boolean('new_job_email_notifications')
+      .notNull()
+      .default(false),
+    aiPrompt: varchar('ai_prompt'),
     createdAt,
     updatedAt,
   },

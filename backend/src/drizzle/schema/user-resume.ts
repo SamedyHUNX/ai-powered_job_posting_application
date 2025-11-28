@@ -4,12 +4,12 @@ import { createdAt, updatedAt } from '../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 
 export const UserResumeTable = pgTable('user_resumes', {
-  userId: uuid('userId')
+  userId: uuid('user_id')
     .primaryKey()
     .references(() => UserTable.id),
-  resumeFileUrl: varchar().notNull(),
-  resumeFileKey: varchar().notNull(),
-  aiSummary: varchar(),
+  resumeFileUrl: varchar('resume_file_url').notNull(),
+  resumeFileKey: varchar('resume_file_key').notNull(),
+  aiSummary: varchar('ai_summary'),
   createdAt,
   updatedAt,
 });

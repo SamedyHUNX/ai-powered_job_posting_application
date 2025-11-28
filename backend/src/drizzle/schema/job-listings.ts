@@ -56,7 +56,7 @@ export const JobListingTable = pgTable(
   'job-listings',
   {
     id,
-    organizationId: uuid('organizationId')
+    organizationId: uuid('organization_id')
       .references(() => OrganizationTable.id, {
         onDelete: 'cascade',
       })
@@ -64,12 +64,12 @@ export const JobListingTable = pgTable(
     title: varchar().notNull(),
     description: text().notNull(),
     wage: integer(),
-    wageInterval: wageIntervalEnum(),
-    stateAbbreviation: varchar(),
+    wageInterval: wageIntervalEnum('wage_interval'),
+    stateAbbreviation: varchar('state_abbreviation'),
     city: varchar(),
-    isFeatured: boolean().notNull().default(false),
-    locationRequirement: locationRequirementEnum().notNull(),
-    experienceLevel: experienceLevelEnum().notNull(),
+    isFeatured: boolean('is_featured').notNull().default(false),
+    locationRequirement: locationRequirementEnum('localRequirement').notNull(),
+    experienceLevel: experienceLevelEnum('experience_level').notNull(),
     status: jobListingStatusEnum().notNull().default('draft'),
     type: jobListingTypeEnum().notNull(),
     postedAt: timestamp({ withTimezone: true }),

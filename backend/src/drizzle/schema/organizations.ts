@@ -5,6 +5,7 @@ import { JobListingTable } from './job-listings';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
 import { timestamp } from 'drizzle-orm/pg-core';
 import { integer } from 'drizzle-orm/pg-core';
+import { createdAt, updatedAt } from '../utils/schema-helpers';
 
 export const OrganizationTable = pgTable('organizations', {
   id,
@@ -18,11 +19,9 @@ export const OrganizationTable = pgTable('organizations', {
   pendingInvitationsCount: integer('pending_invitations_count').default(0),
   adminDeleteEnabled: boolean('admin_delete_enabled').default(false),
   maxAllowedMemberships: integer('max_allowed_memberships').default(5),
-  jobsCount: varchar('jobs_count').default('0'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at')
-    .defaultNow()
-    .$onUpdate(() => new Date()),
+  jobsCount: integer('jobs_count').default(0),
+  createdAt,
+  updatedAt,
 });
 
 export const OrganizationRelations = relations(
