@@ -1,11 +1,12 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
 import { Organization } from "@/types/organization.type";
 import { useProfile } from "@/hooks/use-profile";
+import { CustomDialog } from "@/components/customs/CustomDialog";
 
 interface OrganizationListProps {
   afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
@@ -30,6 +31,15 @@ export const OrganizationList = ({
   skipInvitationScreen = false,
 }: OrganizationListProps) => {
   const { currentUser, isFetchingCurrentUser } = useProfile();
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+  });
   const router = useRouter();
   const {
     fetchOrganizationsByUser,
@@ -37,6 +47,7 @@ export const OrganizationList = ({
     organizations,
     selectOrganization,
   } = useOrganization();
+  let title: string;
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -46,12 +57,23 @@ export const OrganizationList = ({
 
   const handleSelectOrganization = (org: Organization) => {
     if (org.isBanned) {
-      alert("This organization has been banned and cannot be accessed.");
+      title = "The organization has been banned";
+      setModalState({
+        isOpen: true,
+        title: "Organization Banned",
+        message: "This organization has been banned and cannot be accessed.",
+      });
       return;
     }
 
     if (!org.isVerified) {
-      alert("This organization is not yet verified and cannot be accessed.");
+      title = "The organization has not been verified yet";
+      setModalState({
+        isOpen: true,
+        title: "Verification Required",
+        message:
+          "This organization is not yet verified and cannot be accessed.",
+      });
       return;
     }
 
@@ -67,6 +89,10 @@ export const OrganizationList = ({
     } else {
       router.push(`/employer/organizations/${org.id}`);
     }
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, title: "", message: "" });
   };
 
   const handleSelectPersonal = () => {
@@ -145,6 +171,19 @@ export const OrganizationList = ({
 
         {/* Account List - Scrollable */}
         <div className="divide-y divide-gray-200 overflow-y-auto flex-1 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {/* Modal with Transparent Background */}
+          {modalState.isOpen && (
+            <CustomDialog
+              title={modalState.title}
+              description={modalState.message}
+              open={modalState.isOpen}
+              onOpenChange={(open) =>
+                setModalState({ ...modalState, isOpen: open })
+              }
+              onCancel={closeModal}
+              cancelButtonText="Close"
+            />
+          )}
           {/* Personal Account */}
           {!hidePersonal && currentUser && (
             <div
@@ -174,10 +213,11 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
+                org.isBanned || !org.isVerified
                   ? "opacity-50 cursor-not-allowed hover:bg-red-50"
                   : "hover:bg-gray-50"
-                }`}
+              }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">
