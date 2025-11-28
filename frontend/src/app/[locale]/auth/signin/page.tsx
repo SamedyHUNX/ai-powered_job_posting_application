@@ -43,6 +43,7 @@ export default function SigninPage() {
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
+    mode: "onChange", // Enable real-time validation
     defaultValues: {
       email: "",
       password: "",
@@ -90,7 +91,7 @@ export default function SigninPage() {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signInT("emailLabel")}
@@ -100,7 +101,11 @@ export default function SigninPage() {
                         {...field}
                         type="email"
                         placeholder={signInT("emailPlaceholder")}
-                        className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
@@ -111,7 +116,7 @@ export default function SigninPage() {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel className="text-gray-700 dark:text-gray-300">
                       {signInT("passwordLabel")}
@@ -121,7 +126,11 @@ export default function SigninPage() {
                         {...field}
                         type="password"
                         placeholder={signInT("passwordPlaceholder")}
-                        className="w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500"
+                        className={`w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 ${
+                          fieldState.error
+                            ? "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500"
+                            : ""
+                        }`}
                       />
                     </FormControl>
                     <FormMessage className="text-red-500 dark:text-red-400" />
