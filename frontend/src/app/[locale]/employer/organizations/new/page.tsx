@@ -127,10 +127,11 @@ export default function CreateOrganizationForm() {
                   <FormControl>
                     <div className="flex items-center gap-4">
                       <label
-                        className={`w-32 h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50 ${fieldState.error
-                          ? "border-red-500"
-                          : "border-gray-300"
-                          }`}
+                        className={`w-32 h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors bg-gray-50 ${
+                          fieldState.error
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
                       >
                         {logoPreview ? (
                           <img
@@ -183,15 +184,28 @@ export default function CreateOrganizationForm() {
                       placeholder={newOrgT("namePlaceholder")}
                       {...field}
                       onChange={(e) => {
-                        field.onChange(e);
-                        // Auto-generate slug when name changes
-                        const slug = generateSlug(e.target.value);
+                        const value = e.target.value;
+
+                        // Capitalize first letter of each word
+                        const capitalized = value
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ");
+
+                        field.onChange(capitalized);
+
+                        // Auto-generate slug from normalized value
+                        const slug = generateSlug(capitalized);
                         form.setValue("slug", slug);
                       }}
-                      className={`text-gray-700 ${fieldState.error
-                        ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                        : ""
-                        }`}
+                      className={`text-gray-700 ${
+                        fieldState.error
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                          : ""
+                      }`}
                     />
                   </FormControl>
                   <FormMessage />
@@ -213,8 +227,9 @@ export default function CreateOrganizationForm() {
                       disabled={true}
                       placeholder="my-organization"
                       {...field}
-                      className={`text-gray-700 font-mono ${fieldState.error ? "border-red-500" : ""
-                        }`}
+                      className={`text-gray-700 font-mono ${
+                        fieldState.error ? "border-red-500" : ""
+                      }`}
                     />
                   </FormControl>
                   <FormDescription>{newOrgT("slugDesc")}</FormDescription>
@@ -234,7 +249,7 @@ export default function CreateOrganizationForm() {
             {createSuccess && (
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-green-600">
-                  Organization created successfully!
+                  {successT("createNewOrgSuccess")}
                 </p>
               </div>
             )}

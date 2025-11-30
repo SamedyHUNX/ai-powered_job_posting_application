@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { DrizzleService } from '@/drizzle/drizzle.service';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { User, UserTable } from '@/drizzle/schema';
+import { UserTable } from '@/drizzle/schema';
 import { and, eq, gt, or } from 'drizzle-orm';
 import { S3Service } from '@/s3/s3.service';
 import { AppService } from '@/app.service';
@@ -32,7 +32,7 @@ export class AuthService {
     private jwtService: JwtService,
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) { }
+  ) {}
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -242,7 +242,7 @@ export class AuthService {
         this.logger.error('Invalid or expired email verification token used');
         throw new UnauthorizedException({
           code: 'INVALID_TOKEN',
-          message: 'Invalid or expired token'
+          message: 'Invalid or expired token',
         });
       }
 

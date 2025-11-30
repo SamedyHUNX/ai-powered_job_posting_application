@@ -30,7 +30,6 @@ function SuspendedPage({ searchParams }: Props) {
   return (
     <OrganizationList
       hidePersonal
-      hideSlug
       afterSelectOrganizationUrl={redirect}
       afterCreateOrganizationUrl={redirect ?? "/employer/organizations/:slug"}
     />
