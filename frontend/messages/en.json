@@ -196,6 +196,7 @@
     }
   },
   "jobSeeker": {
+    "loading": "Fetching your profile...",
     "sidebar": {
       "navMenuGroups": {
         "findJobs": "Find Jobs",

@@ -199,6 +199,7 @@
     }
   },
   "jobSeeker": {
+    "loading": "កំពុងយកប្រវត្តិរូបរបស់អ្នក...",
     "sidebar": {
       "navMenuGroups": {
         "findJobs": "ស្វែងរកការងារ",

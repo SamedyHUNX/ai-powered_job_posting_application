@@ -91,9 +91,10 @@ export function useAuth() {
 
   // Logout
   const logout = () => {
-    dispatch(logoutAction());
     dispatch(clearOrganizations());
+    dispatch(logoutAction());
     localStorage.removeItem("access_token");
+    localStorage.removeItem("selectedOrganization");
     queryClient.clear();
     router.push("/auth/signin");
   };

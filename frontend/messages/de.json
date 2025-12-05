@@ -199,6 +199,7 @@
     }
   },
   "jobSeeker": {
+    "loading": "Ihr Profil wird abgerufen...",
     "sidebar": {
       "navMenuGroups": {
         "findJobs": "Jobs finden",
