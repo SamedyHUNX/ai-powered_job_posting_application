@@ -1,26 +1,49 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { useOrganization } from "@/hooks/use-organization";
-import { Organization } from "@/types/organization.type";
+import {
+  Organization,
+  OrganizationListProps,
+  OrganizationListTranslations,
+} from "@/types/organization.type";
 import { useProfile } from "@/hooks/use-profile";
 import { CustomDialog } from "@/components/customs/CustomDialog";
 
-interface OrganizationListProps {
-  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
-  appearance?: {
-    elements?: Record<string, string>;
-    variables?: Record<string, string>;
-  };
-  fallback?: ReactNode;
-  hidePersonal?: boolean;
-  hideSlug?: boolean;
-  skipInvitationScreen?: boolean;
-}
+const defaultTranslations: OrganizationListTranslations = {
+  title: "Choose an account",
+  subTitle: "Select the account with which you wish to continue.",
+  loadingText: "Loading organizations...",
+  createOrganization: "Create organization",
+  securedBy: "Secured by",
+  contactSupport: "Contact Support",
+  nevermind: "Nevermind",
+  organizationBanned: {
+    title: "Organization Banned",
+    message:
+      "This organization has been banned. Please contact the support team for further action",
+  },
+  verificationRequired: {
+    title: "Verification Required",
+    message:
+      "This organization is not yet verified. Please contact the support team for verification",
+  },
+  badges: {
+    banned: "Banned",
+    unverified: "Unverified",
+    verified: "Verified",
+  },
+  memberCount: {
+    singular: "member",
+    plural: "members",
+  },
+  jobCount: {
+    singular: "job",
+    plural: "jobs",
+  },
+};
 
 export const OrganizationList = ({
   afterSelectOrganizationUrl,
@@ -29,6 +52,7 @@ export const OrganizationList = ({
   hidePersonal = false,
   hideSlug = false,
   skipInvitationScreen = false,
+  translations = defaultTranslations,
 }: OrganizationListProps) => {
   const { currentUser, isFetchingCurrentUser } = useProfile();
   const [modalState, setModalState] = useState<{
@@ -57,23 +81,19 @@ export const OrganizationList = ({
 
   const handleSelectOrganization = (org: Organization) => {
     if (org.isBanned) {
-      title = "The organization has been banned";
       setModalState({
         isOpen: true,
-        title: "Organization Banned",
-        message:
-          "This organization has been banned. Please contact the support team for further action",
+        title: translations.organizationBanned.title,
+        message: translations.organizationBanned.message,
       });
       return;
     }
 
     if (!org.isVerified) {
-      title = "The organization has not been verified yet";
       setModalState({
         isOpen: true,
-        title: "Verification Required",
-        message:
-          "This organization is not yet verified. Please contact the support team for verification",
+        title: translations.verificationRequired.title,
+        message: translations.verificationRequired.message,
       });
       return;
     }
@@ -146,9 +166,9 @@ export const OrganizationList = ({
   if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <div className="relative">
+        <div className="relative flex">
           <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-          <p className="mt-4 text-gray-600">Loading organizations...</p>
+          <p className="mt-4 text-gray-600">{translations.loadingText}</p>
         </div>
       </div>
     );
@@ -163,11 +183,9 @@ export const OrganizationList = ({
             <div className="w-8 h-8 bg-white rounded-full"></div>
           </div>
           <h1 className="text-4xl font-bold text-black mb-3 tracking-tighter">
-            Choose an account
+            {translations.title}
           </h1>
-          <p className="text-gray-500 text-lg">
-            Select the account with which you wish to continue.
-          </p>
+          <p className="text-gray-500 text-lg">{translations.subTitle}</p>
         </div>
 
         {/* Account List - Scrollable */}
@@ -182,9 +200,9 @@ export const OrganizationList = ({
                 setModalState({ ...modalState, isOpen: open })
               }
               onCancel={closeModal}
-              cancelButtonText="Nevermind"
+              cancelButtonText={translations.nevermind}
               href={"/support"}
-              buttonText="Contact Support"
+              buttonText={translations.contactSupport}
             />
           )}
           {/* Personal Account */}
@@ -216,10 +234,11 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
-                ? "opacity-50 cursor-not-allowed hover:bg-red-50"
-                : "hover:bg-gray-50"
-                }`}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
+                org.isBanned || !org.isVerified
+                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                  : "hover:bg-gray-50"
+              }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">
@@ -263,12 +282,12 @@ export const OrganizationList = ({
                   </div>
                   {org.isBanned && (
                     <span className="px-2 py-0.5 text-xs font-medium text-red-700 bg-red-100 rounded">
-                      Banned
+                      {translations.badges.banned}
                     </span>
                   )}
                   {!org.isVerified && !org.isBanned && (
                     <span className="px-2 py-0.5 text-xs font-medium text-orange-700 bg-orange-100 rounded">
-                      Unverified
+                      {translations.badges.unverified}
                     </span>
                   )}
                 </div>
@@ -280,12 +299,16 @@ export const OrganizationList = ({
                   )}
                   <span className="text-sm text-gray-400">
                     {org.membersCount}{" "}
-                    {parseInt(org.membersCount) === 1 ? "member" : "members"}
+                    {parseInt(org.membersCount) === 1
+                      ? translations.memberCount.singular
+                      : translations.memberCount.plural}
                   </span>
                   {parseInt(org.jobsCount) > 0 && (
                     <span className="text-sm text-gray-400">
                       {org.jobsCount}{" "}
-                      {parseInt(org.jobsCount) === 1 ? "job" : "jobs"}
+                      {parseInt(org.jobsCount) === 1
+                        ? translations.jobCount.singular
+                        : translations.jobCount.plural}
                     </span>
                   )}
                 </div>
@@ -312,7 +335,7 @@ export const OrganizationList = ({
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-lg font-semibold text-black tracking-tighter">
-                Create organization
+                {translations.createOrganization}
               </div>
             </div>
           </div>
@@ -321,7 +344,7 @@ export const OrganizationList = ({
         {/* Footer */}
         <div className="px-8 py-6 border-t border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-center gap-2 text-gray-500">
-            <span>Secured by</span>
+            <span>{translations.securedBy}</span>
             <span className="text-gray-900 font-semibold">JobXHub</span>
           </div>
         </div>

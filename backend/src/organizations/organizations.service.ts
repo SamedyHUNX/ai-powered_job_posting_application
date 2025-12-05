@@ -26,7 +26,7 @@ export class OrganizationsService {
   constructor(
     private dbService: DrizzleService,
     private s3Service: S3Service,
-  ) { }
+  ) {}
 
   private getTimestamp(): string {
     return new Date().toISOString();
@@ -186,7 +186,7 @@ export class OrganizationsService {
   }, this.logger);
 
   // Get organizations by user ID
-  indByUser = catchAsync(
+  findByUser = catchAsync(
     async (userId: string) => {
       const organizations = await this.dbServer
         .select({
@@ -204,7 +204,10 @@ export class OrganizationsService {
         .from(OrganizationTable)
         .innerJoin(
           OrganizationUserSettingsTable,
-          eq(OrganizationTable.id, OrganizationUserSettingsTable.organizationId),
+          eq(
+            OrganizationTable.id,
+            OrganizationUserSettingsTable.organizationId,
+          ),
         )
         .where(
           and(
@@ -220,7 +223,7 @@ export class OrganizationsService {
       };
     },
     this.logger,
-    "Failed to fetch user organizations",
+    'Failed to fetch user organizations',
   );
 
   // Get a single organization by ID

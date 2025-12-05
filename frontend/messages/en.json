@@ -160,5 +160,39 @@
     "resetPasswordSuccess": "Your password has been reset successfully",
     "forgotPasswordSuccess": "Please check your email for password reset instructions",
     "createNewOrgSuccess": "Organization created successfully. Please wait for verification from admin"
+  },
+  "organizationsList": {
+    "chooseAccount": {
+      "title": "Choose an organization",
+      "subTitle": "Select the organization with which you wish to continue"
+    },
+    "contactSupport": "Contact Support",
+    "loading": "Loading...",
+    "createOrganization": "Create an Organization",
+    "securedBy": "Secured by",
+    "nevermind": "Nevermind",
+    "errors": {
+      "banned": {
+        "title": "Organization Banned",
+        "message": "This organization has been banned. Please contact support for more information."
+      },
+      "unverified": {
+        "title": "Organization Not Verified",
+        "message": "This organization has not been verified yet. Please contact support for verification."
+      }
+    },
+    "badges": {
+      "verified": "Verified",
+      "unverified": "Unverified",
+      "banned": "Banned"
+    },
+    "memberCount": {
+      "singular": "member",
+      "plural": "members"
+    },
+    "jobCount": {
+      "singular": "job",
+      "plural": "jobs"
+    }
   }
 }

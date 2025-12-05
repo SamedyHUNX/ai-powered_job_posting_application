@@ -163,5 +163,39 @@
     "resetPasswordSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt",
     "forgotPasswordSuccess": "Bitte überprüfen Sie Ihre E-Mails für Anweisungen zum Zurücksetzen des Passworts",
     "createNewOrgSuccess": "Organisation erfolgreich erstellt. Bitte warten Sie auf die Verifizierung durch den Admin."
+  },
+  "organizationsList": {
+    "chooseAccount": {
+      "title": "Wählen Sie eine Organisation",
+      "subTitle": "Wählen Sie die Organisation aus, mit der Sie fortfahren möchten"
+    },
+    "contactSupport": "Kontaktieren den Support",
+    "loading": "Läuft...",
+    "createOrganization": "Organisation erstellen",
+    "securedBy": "Gesichert von",
+    "nevermind": "Nie mehr",
+    "errors": {
+      "banned": {
+        "title": "Zugriff verweigert",
+        "message": "Ihr Zugriff auf diese Organisation wurde eingeschränkt. Bitte kontaktieren Sie den Support für weitere Informationen."
+      },
+      "unverified": {
+        "title": "Verifizierung erforderlich",
+        "message": "Diese Organisation ist noch nicht verifiziert. Bitte warten Sie auf die Verifizierung durch den Administrator."
+      }
+    },
+    "badges": {
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert",
+      "banned": "Gesperrt"
+    },
+    "memberCount": {
+      "singular": "Mitglied",
+      "plural": "Mitglieder"
+    },
+    "jobCount": {
+      "singular": "Stelle",
+      "plural": "Stellen"
+    }
   }
 }

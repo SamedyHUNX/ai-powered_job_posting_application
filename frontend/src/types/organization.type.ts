@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Organization {
   id: string;
   orgName: string;
@@ -12,6 +14,52 @@ export interface Organization {
   userRole?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface OrganizationListTranslations {
+  title: string;
+  subTitle: string;
+  loadingText: string;
+  createOrganization: string;
+  securedBy: string;
+  contactSupport: string;
+  nevermind: string;
+  organizationBanned: {
+    title: string;
+    message: string;
+  };
+  verificationRequired: {
+    title: string;
+    message: string;
+  };
+  badges: {
+    banned: string;
+    unverified: string;
+    verified: string;
+  };
+  memberCount: {
+    singular: string;
+    plural: string;
+  };
+  jobCount: {
+    singular: string;
+    plural: string;
+  };
+}
+
+export interface OrganizationListProps {
+  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
+  appearance?: {
+    elements?: Record<string, string>;
+    variables?: Record<string, string>;
+  };
+  fallback?: ReactNode;
+  hidePersonal?: boolean;
+  hideSlug?: boolean;
+  skipInvitationScreen?: boolean;
+  translations?: OrganizationListTranslations;
 }
 
 export interface CreateOrganizationDto {

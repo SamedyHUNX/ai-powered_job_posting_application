@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense, use, useEffect } from "react";
-import { OrganizationList } from "@/features/organizations/components/OrganizationList";
 import { useOrganization } from "@/hooks/use-organization";
+import { OrganizationListWithTranslation } from "@/features/organizations/components/OrganizationListWithTranslation";
 
 type Props = {
   searchParams: Promise<{ redirect?: string }>;
@@ -28,7 +28,7 @@ function SuspendedPage({ searchParams }: Props) {
   }, [clearSelectedOrganization]);
 
   return (
-    <OrganizationList
+    <OrganizationListWithTranslation
       hidePersonal
       afterSelectOrganizationUrl={redirect}
       afterCreateOrganizationUrl={redirect ?? "/employer/organizations/:slug"}
