@@ -35,6 +35,14 @@ export type OrganizationJSON = {
   updatedAt: string;
 };
 
+type WebhookData<T> = {
+  data: {
+    data: T;
+    raw: string;
+    headers: Record<string, string>;
+  };
+};
+
 export type Events = {
   'jobxhub/user.created': {
     data: UserCreatedData;
@@ -48,7 +56,7 @@ export type Events = {
   'jobxhub/job.posted': {
     data: JobPostedData;
   };
-  // 'jobxhub/organization.created', {
-  //   data: OrganizationJSON
-  // }
+  'jobxhub/organization.created': {
+    data: OrganizationJSON;
+  };
 };
