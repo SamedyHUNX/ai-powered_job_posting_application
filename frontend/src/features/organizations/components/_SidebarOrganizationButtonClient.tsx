@@ -22,9 +22,9 @@ import {
   UserRoundCogIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
 import { User } from "@/store/slices/auth-slice";
+import { SignOutButton } from "@/components/customs/CustomButtons";
 
 export function SidebarOrganizationButtonClient({
   user,

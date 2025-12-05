@@ -1,6 +1,21 @@
-import { SignedIn as CustomSignedIn } from "@/services/auth/components/SignedIn";
-import { SignedOut as CustomSignedOut } from "@/services/auth/components/SignedOut";
+import { useAuth } from "@/hooks/use-auth";
 import { ReactNode, Suspense } from "react";
+
+function CustomSignedIn({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) return null;
+
+  return <Suspense>{children}</Suspense>;
+}
+
+function CustomSignedOut({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) return null;
+
+  return <Suspense>{children}</Suspense>;
+}
 
 export const SignedOut = ({ children }: { children: ReactNode }) => {
   return (

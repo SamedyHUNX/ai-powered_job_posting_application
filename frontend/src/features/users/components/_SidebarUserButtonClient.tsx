@@ -1,5 +1,6 @@
 "use client";
 
+import { SignOutButton } from "@/components/customs/CustomButtons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import { ChevronsUpDown, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { SignOutButton } from "@/services/auth/components/AuthButtons";
 import { useRouter } from "next/navigation";
 
 type User = {
