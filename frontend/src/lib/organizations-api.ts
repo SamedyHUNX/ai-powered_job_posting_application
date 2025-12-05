@@ -1,7 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
 import {
-  CreateOrganizationDto,
   UpdateOrganizationDto,
 } from "@/types/organization.type";
 import {
@@ -39,9 +38,7 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Get all organizations with optional filtering
-   */
+  // Get all organizations with optional filtering
   findAll: async (
     search?: string,
     isVerified?: boolean
@@ -57,9 +54,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Get organizations by user ID
-   */
+
+  // Get organizations by user ID
   findByUser: async (userId: string): Promise<OrganizationsListResponse> => {
     const { data } = await api.get<OrganizationsListResponse>(
       `/organizations/user/${userId}`
@@ -67,9 +63,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Get a single organization by ID
-   */
+
+  // Get a single organization by ID
   findOne: async (id: string): Promise<OrganizationResponse> => {
     const { data } = await api.get<OrganizationResponse>(
       `/organizations/${id}`
@@ -77,9 +72,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Update an organization
-   */
+
+  // Update an organization
   update: async (
     id: string,
     dto: UpdateOrganizationDto,
@@ -110,9 +104,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Delete an organization
-   */
+
+  // Delete an organization
   remove: async (
     id: string,
     token: string
@@ -128,9 +121,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Verify an organization
-   */
+
+  // Verify an organization
   verify: async (id: string, token: string): Promise<OrganizationResponse> => {
     const { data } = await api.post<OrganizationResponse>(
       `/organizations/${id}/verify`,
@@ -144,9 +136,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Ban an organization
-   */
+
+  // Ban an organization
   ban: async (id: string, token: string): Promise<OrganizationResponse> => {
     const { data } = await api.post<OrganizationResponse>(
       `/organizations/${id}/ban`,
@@ -160,9 +151,8 @@ export const organizationsApi = {
     return data;
   },
 
-  /**
-   * Unban an organization
-   */
+
+  // Unban an organization
   unban: async (id: string, token: string): Promise<OrganizationResponse> => {
     const { data } = await api.post<OrganizationResponse>(
       `/organizations/${id}/unban`,
