@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 export default function EmployerHomepage() {
   return (
@@ -28,6 +29,10 @@ export default function EmployerHomepage() {
 }
 
 function SuspendedPage() {
+  // Translations
+  const orgT = useTranslations("orgPage");
+  const jobListingT = useTranslations("orgPage.jobListings");
+
   const {
     isLoading,
     fetchOrganizationsByUser,
@@ -74,7 +79,7 @@ function SuspendedPage() {
   };
 
   if (isLoading || isLoadingJobs)
-    return <Loading message="Fetching job listings..." />;
+    return <Loading message={jobListingT("loading")} />;
 
   const publishedCount = jobListings.filter(
     (j) => j.status === "published"
@@ -92,13 +97,13 @@ function SuspendedPage() {
                 {selectedOrganization?.orgName}
               </h1>
               <p className="text-muted-foreground text-lg">
-                Manage your organization and job listings
+                {orgT("titleDesc")}
               </p>
             </div>
             <Button asChild size="lg" className="gap-2">
               <Link href="/employer/job-listings/new">
                 <PlusCircleIcon className="h-5 w-5" />
-                Create Job Listing
+                {orgT("buttonText")}
               </Link>
             </Button>
           </div>
@@ -108,21 +113,23 @@ function SuspendedPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Total Listings
+                  {orgT("card1.title")}
                 </CardTitle>
                 <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{count}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  All job postings
+                  {orgT("card1.description")}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Published</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {orgT("card2.title")}
+                </CardTitle>
                 <Users2Icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -130,14 +137,16 @@ function SuspendedPage() {
                   {publishedCount}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Live on job board
+                  {orgT("card2.description")}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Drafts</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {orgT("card3.title")}
+                </CardTitle>
                 <ClockIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -145,7 +154,7 @@ function SuspendedPage() {
                   {draftCount}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Pending publication
+                  {orgT("card3.description")}
                 </p>
               </CardContent>
             </Card>
@@ -154,22 +163,21 @@ function SuspendedPage() {
 
         {/* Job Listings Section */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">Job Listings</h2>
+          <h2 className="text-2xl font-bold mb-6">{jobListingT("title")}</h2>
           {jobListings.length === 0 ? (
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-16 px-4">
                 <BriefcaseIcon className="h-16 w-16 text-muted-foreground/50 mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
-                  No job listings yet
+                  {jobListingT("noJobs")}
                 </h3>
                 <p className="text-muted-foreground text-center mb-6 max-w-md">
-                  Get started by creating your first job listing to attract top
-                  talent to your organization.
+                  {jobListingT("noJobsDesc")}
                 </p>
                 <Button asChild size="lg" className="gap-2">
                   <Link href="/employer/job-listings/new">
                     <PlusCircleIcon className="h-5 w-5" />
-                    Create Your First Job Listing
+                    {jobListingT("buttonText")}
                   </Link>
                 </Button>
               </CardContent>

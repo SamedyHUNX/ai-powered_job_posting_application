@@ -208,5 +208,31 @@
         "employerDashboard": "Employer Dashboard"
       }
     }
+  },
+  "orgPage": {
+    "titleDesc": "Manage your organization's profile and job listings",
+    "buttonText": "Create Job Listing",
+    "card1": {
+      "title": "Total Job Listings",
+      "description": "Number of job listings created"
+    },
+    "card2": {
+      "title": "Published",
+      "description": "Number of job listings currently published"
+    },
+    "card3": {
+      "title": "Draft Listings",
+      "description": "Number of job listings saved as drafts"
+    },
+    "jobListings": {
+      "title": "Job Listings",
+      "loading": "Fetching job listings...",
+      "noJobs": "No job listings found",
+      "noJobsDesc": "Get started by creating your first job listing to attract top talent to your organization.",
+      "buttonText": "Create Job Listing"
+    },
+    "members": {
+      "noMembers": "No members found"
+    }
   }
 }

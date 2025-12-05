@@ -211,5 +211,31 @@
         "employerDashboard": "Arbeitgeber-Dashboard"
       }
     }
+  },
+  "orgPage": {
+    "titleDesc": "Verwalten Sie das Profil und die Stellenanzeigen Ihrer Organisation",
+    "buttonText": "Stellenanzeige erstellen",
+    "card1": {
+      "title": "Gesamtzahl der Stellenangebote",
+      "description": "Anzahl der erstellten Stellenanzeigen"
+    },
+    "card2": {
+      "title": "Veröffentlichte Stellenangebote",
+      "description": "Anzahl der veröffentlichten Stellenanzeigen"
+    },
+    "card3": {
+      "title": "Entwürfe",
+      "description": "Anzahl der gespeicherten Entwürfe"
+    },
+    "jobListings": {
+      "title": "Stellenangebote",
+      "loading": "Jobanzeigen werden abgerufen...",
+      "noJobs": "Keine Jobanzeigen für diese Organisation gefunden.",
+      "noJobsDesc": "Beginnen Sie, indem Sie Ihre erste Stellenanzeige erstellen, um Top-Talente für Ihre Organisation zu gewinnen.",
+      "buttonText": "Stellenanzeige erstellen"
+    },
+    "members": {
+      "noMembers": "Keine Mitglieder für diese Organisation gefunden."
+    }
   }
 }
