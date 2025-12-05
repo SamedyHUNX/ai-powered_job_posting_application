@@ -43,7 +43,15 @@ function SuspendedPage() {
   const { currentUser } = useProfile();
   const router = useRouter();
   const noOrganizations = organizations.length === 0;
-  const [dialogOpen, setDialogOpen] = useState(noOrganizations);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && noOrganizations) {
+      setDialogOpen(true);
+    } else {
+      setDialogOpen(false);
+    }
+  }, [isLoading, noOrganizations]);
 
   useEffect(() => {
     if (currentUser?.id) fetchOrganizationsByUser(currentUser.id);
@@ -248,7 +256,7 @@ function SuspendedPage() {
         </div>
       </div>
 
-      {noOrganizations && (
+      {!isLoading && noOrganizations && (
         <NoOrganizationDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
