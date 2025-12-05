@@ -9,6 +9,7 @@ import { createWinstonConfig } from './logger/winston.config';
 import { InngestModule } from './inngest/inngest.module';
 import { RedisModule } from './redis/redis.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { JobListingsModule } from './job-listings/job-listings.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
     RedisModule,
     AuthModule,
     OrganizationsModule,
+    JobListingsModule,
     S3Module,
     InngestModule,
     ConfigModule.forRoot({
