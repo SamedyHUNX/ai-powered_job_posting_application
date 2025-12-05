@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { Loading } from "@/components/customs/Loading";
 import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
 import { useOrganization } from "@/hooks/use-organization";
 import { useJobListing } from "@/hooks/use-job-listing";
@@ -33,38 +32,26 @@ function SuspendedPage() {
   const orgT = useTranslations("orgPage");
   const jobListingT = useTranslations("orgPage.jobListings");
 
-  const {
-    isLoading,
-    fetchOrganizationsByUser,
-    organizations,
-    selectedOrganization,
-  } = useOrganization();
-  const {
-    fetchJobListingsByOrganization,
-    jobListings,
-    isLoading: isLoadingJobs,
-    count,
-  } = useJobListing();
+  const { fetchOrganizationsByUser, organizations, selectedOrganization } =
+    useOrganization();
+  const { fetchJobListingsByOrganization, jobListings, count } =
+    useJobListing();
   const { currentUser } = useProfile();
   const router = useRouter();
   const noOrganizations = organizations.length === 0;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && noOrganizations) {
+    if (noOrganizations) {
       setDialogOpen(true);
     } else {
       setDialogOpen(false);
     }
-  }, [isLoading, noOrganizations]);
+  }, [noOrganizations]);
 
   useEffect(() => {
     if (currentUser?.id) fetchOrganizationsByUser(currentUser.id);
   }, [currentUser?.id, fetchOrganizationsByUser]);
-
-  useEffect(() => {
-    setDialogOpen(noOrganizations);
-  }, [noOrganizations]);
 
   // Fetch job listings when selectedOrganization changes
   useEffect(() => {
@@ -77,9 +64,6 @@ function SuspendedPage() {
     setDialogOpen(false);
     router.push("/");
   };
-
-  if (isLoading || isLoadingJobs)
-    return <Loading message={jobListingT("loading")} />;
 
   const publishedCount = jobListings.filter(
     (j) => j.status === "published"
@@ -264,7 +248,7 @@ function SuspendedPage() {
         </div>
       </div>
 
-      {!isLoading && noOrganizations && (
+      {noOrganizations && (
         <NoOrganizationDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
