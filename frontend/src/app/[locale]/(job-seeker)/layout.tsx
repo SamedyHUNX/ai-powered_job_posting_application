@@ -14,6 +14,7 @@ import { useOrganization } from "@/hooks/use-organization";
 import { useTranslations } from "next-intl";
 import { useProfile } from "@/hooks/use-profile";
 import { Loading } from "@/components/customs/Loading";
+import PrivateRoute from "@/routes/PrivateRoute";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
@@ -30,34 +31,36 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
     : "/employer/organizations/select";
 
   return (
-    <AppSidebar
-      content={
-        <SidebarNavMenuGroup
-          className="mt-auto"
-          items={[
-            {
-              href: "/",
-              icon: <ClipboardListIcon />,
-              label: sidebarT("findJobs"),
-            },
-            {
-              href: "/ai-search",
-              icon: <BrainCircuitIcon />,
-              label: sidebarT("aiSearch"),
-            },
-            {
-              href,
-              icon: <LayoutDashboard />,
-              label: sidebarT("employerDashboard"),
-              authStatus: currentUser ? "signedIn" : "signedOut",
-            },
-          ]}
-        />
-      }
-      footerButton={<SidebarUserButton />}
-    >
-      <NavBar />
-      {children}
-    </AppSidebar>
+    <PrivateRoute>
+      <AppSidebar
+        content={
+          <SidebarNavMenuGroup
+            className="mt-auto"
+            items={[
+              {
+                href: "/",
+                icon: <ClipboardListIcon />,
+                label: sidebarT("findJobs"),
+              },
+              {
+                href: "/ai-search",
+                icon: <BrainCircuitIcon />,
+                label: sidebarT("aiSearch"),
+              },
+              {
+                href,
+                icon: <LayoutDashboard />,
+                label: sidebarT("employerDashboard"),
+                authStatus: currentUser ? "signedIn" : "signedOut",
+              },
+            ]}
+          />
+        }
+        footerButton={<SidebarUserButton />}
+      >
+        <NavBar />
+        {children}
+      </AppSidebar>
+    </PrivateRoute>
   );
 }
