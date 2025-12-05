@@ -1,10 +1,9 @@
 "use client";
 
 import { ReactNode } from "react";
-import { LanguageSwitcher } from "@/components/customs/LanguageSwitcher";
-import { ThemeToggle } from "@/components/customs/ThemeToggle";
 import { useTranslations } from "next-intl";
 import PublicRoute from "@/routes/PublicRoute";
+import { NavBar } from "@/components/customs/Navbar";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   const t = useTranslations("authLayout");
@@ -21,8 +20,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="hidden lg:flex lg:flex-1 relative h-screen">
           {/* Top right controls - Language Switcher and Theme Toggle */}
           <div className="absolute top-6 right-6 z-10 flex items-center gap-3">
-            <ThemeToggle />
-            <LanguageSwitcher />
+            <NavBar />
           </div>
 
           {/* Gradient Overlay */}
