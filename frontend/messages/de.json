@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Lädt..."
+  },
   "validations": {
     "imageRequired": "Bitte laden Sie Ihr Foto hoch",
     "nameRequired": "Bitte geben Sie den Benutzernamen ein",

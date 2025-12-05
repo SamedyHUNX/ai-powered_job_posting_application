@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "កំពុងដំណើរការ..."
+  },
   "validations": {
     "imageRequired": "សូមបង្ហោះរូបថត",
     "nameRequired": "សូមបំពេញឈ្មោះអ្នកប្រើប្រាស់",

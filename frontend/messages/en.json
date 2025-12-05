@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Loading..."
+  },
   "validations": {
     "imageRequired": "Missing photo upload",
     "nameRequired": "Missing username",
