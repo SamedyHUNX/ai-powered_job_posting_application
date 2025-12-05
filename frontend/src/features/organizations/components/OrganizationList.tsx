@@ -123,7 +123,7 @@ export const OrganizationList = ({
           : afterSelectPersonalUrl;
       router.push(url);
     } else {
-      router.push("/employer/organizations/dashboard");
+      router.push("/");
     }
   };
 

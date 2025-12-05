@@ -65,7 +65,8 @@ function SuspendedPage() {
     router.push("/");
   };
 
-  if (isLoading) return <Loading message="Fetching job listings..." />;
+  if (isLoading || isLoadingJobs)
+    return <Loading message="Fetching job listings..." />;
 
   const publishedCount = jobListings.filter(
     (j) => j.status === "published"
@@ -146,11 +147,7 @@ function SuspendedPage() {
         {/* Job Listings Section */}
         <div>
           <h2 className="text-2xl font-bold mb-6">Job Listings</h2>
-          {isLoadingJobs ? (
-            <div className="flex items-center justify-center py-16">
-              <Loading />
-            </div>
-          ) : jobListings.length === 0 ? (
+          {jobListings.length === 0 ? (
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-16 px-4">
                 <BriefcaseIcon className="h-16 w-16 text-muted-foreground/50 mb-4" />
