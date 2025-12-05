@@ -1,16 +1,7 @@
-import { Suspense } from "react";
 import { useProfile } from "@/hooks/use-profile";
 import { SidebarUserButtonClient } from "./_SidebarUserButtonClient";
 
 export const SidebarUserButton = () => {
-  return (
-    <Suspense>
-      <SidebarUserSuspense />
-    </Suspense>
-  );
-};
-
-function SidebarUserSuspense() {
   const { currentUser, isFetchingCurrentUser, currentUserError } = useProfile();
 
   // Handle loading state
@@ -35,4 +26,4 @@ function SidebarUserSuspense() {
       imageUrl={currentUser.imageUrl}
     />
   );
-}
+};

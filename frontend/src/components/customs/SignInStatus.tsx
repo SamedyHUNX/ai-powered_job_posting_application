@@ -1,12 +1,12 @@
 import { useAuth } from "@/hooks/use-auth";
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 
 function CustomSignedIn({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) return null;
 
-  return <Suspense>{children}</Suspense>;
+  return <>{children}</>;
 }
 
 function CustomSignedOut({ children }: { children: ReactNode }) {
@@ -14,21 +14,13 @@ function CustomSignedOut({ children }: { children: ReactNode }) {
 
   if (isAuthenticated) return null;
 
-  return <Suspense>{children}</Suspense>;
+  return <>{children}</>;
 }
 
 export const SignedOut = ({ children }: { children: ReactNode }) => {
-  return (
-    <Suspense>
-      <CustomSignedOut>{children}</CustomSignedOut>
-    </Suspense>
-  );
+  return <CustomSignedOut>{children}</CustomSignedOut>;
 };
 
 export const SignedIn = ({ children }: { children: ReactNode }) => {
-  return (
-    <Suspense>
-      <CustomSignedIn>{children}</CustomSignedIn>
-    </Suspense>
-  );
+  return <CustomSignedIn>{children}</CustomSignedIn>;
 };

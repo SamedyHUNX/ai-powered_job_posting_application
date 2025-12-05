@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAppSelector } from "@/store/hooks";
@@ -14,11 +13,7 @@ export function GlobalLoadingProvider({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {isGlobalLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-          <Loading message="Loading..." />
-        </div>
-      )}
+      {isGlobalLoading && <Loading />}
       {children}
     </>
   );

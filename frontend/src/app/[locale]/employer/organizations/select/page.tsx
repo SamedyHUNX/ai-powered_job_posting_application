@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { useOrganization } from "@/hooks/use-organization";
 import { OrganizationListWithTranslation } from "@/features/organizations/components/OrganizationListWithTranslation";
 
@@ -9,14 +9,6 @@ type Props = {
 };
 
 export default function OrganizationSelectPage({ searchParams }: Props) {
-  return (
-    <Suspense>
-      <SuspendedPage searchParams={searchParams} />
-    </Suspense>
-  );
-}
-
-function SuspendedPage({ searchParams }: Props) {
   const { clearSelectedOrganization } = useOrganization();
 
   // Clear any previously selected org when landing here

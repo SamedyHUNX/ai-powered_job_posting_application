@@ -14,7 +14,7 @@ export function useProfile() {
     {
       revalidateOnFocus: false, // Don't refetch on window focus
       shouldRetryOnError: false, // Similar to retry: false in React Query
-      onError: (err) => {
+      onError: () => {
         dispatch(logout());
         dispatch(clearOrganizations());
         localStorage.removeItem("access_token");
