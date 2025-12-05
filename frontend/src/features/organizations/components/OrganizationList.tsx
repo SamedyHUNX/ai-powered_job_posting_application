@@ -124,7 +124,7 @@ export const OrganizationList = ({
           : afterSelectPersonalUrl;
       router.push(url);
     } else {
-      router.push("/organizations/dashboard");
+      router.push("/employer/organizations/dashboard");
     }
   };
 
@@ -166,7 +166,7 @@ export const OrganizationList = ({
   if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <div className="relative flex">
+        <div className="relative flex flex-col items-center">
           <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-600">{translations.loadingText}</p>
         </div>
@@ -234,11 +234,10 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
-                org.isBanned || !org.isVerified
-                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
-                  : "hover:bg-gray-50"
-              }`}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
+                ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                : "hover:bg-gray-50"
+                }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">

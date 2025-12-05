@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { CustomDialog } from "@/components/customs/CustomDialog";
-import { useRouter } from "next/navigation";
 
 interface NoOrganizationDialogProps {
   open: boolean;
@@ -17,7 +16,6 @@ export function NoOrganizationDialog({
   onCancel,
 }: NoOrganizationDialogProps) {
   const customDialT = useTranslations("employer.customDialog");
-  const router = useRouter();
 
   const benefits = useMemo(
     () =>

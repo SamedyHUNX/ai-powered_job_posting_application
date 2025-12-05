@@ -130,7 +130,7 @@ function OrganizationInfo({
         </AvatarFallback>
       </Avatar>
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
-        <span className="truncate text-sm font-semibold">{`${displayName}'s org`}</span>
+        <span className="truncate text-sm font-semibold">{displayName}</span>
         <span className="truncate text-sm font-medium">{user.email}</span>
       </div>
     </div>

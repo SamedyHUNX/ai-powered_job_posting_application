@@ -199,6 +199,8 @@ export class OrganizationsService {
           jobsCount: OrganizationTable.jobsCount,
           createdAt: OrganizationTable.createdAt,
           updatedAt: OrganizationTable.updatedAt,
+          isVerified: OrganizationTable.isVerified,
+          isBanned: OrganizationTable.isBanned,
           role: OrganizationUserSettingsTable.role,
         })
         .from(OrganizationTable)
@@ -212,8 +214,8 @@ export class OrganizationsService {
         .where(
           and(
             eq(OrganizationUserSettingsTable.userId, userId),
-            eq(OrganizationTable.isVerified, true),
-            eq(OrganizationTable.isBanned, false),
+            // eq(OrganizationTable.isVerified, true),
+            // eq(OrganizationTable.isBanned, true),
           ),
         );
 
