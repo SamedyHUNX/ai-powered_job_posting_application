@@ -6,14 +6,15 @@ import { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 
 export function GlobalLoadingProvider({ children }: { children: ReactNode }) {
-  // Only check slices that have isLoading property
+  // Check all slices that have isLoading property
+  const authLoading = useAppSelector((state) => state.auth.isLoading);
   const orgsLoading = useAppSelector((state) => state.organizations.isLoading);
   const jobsLoading = useAppSelector((state) => state.jobListings.isLoading);
 
   // Get translated loading message
   const t = useTranslations("common");
 
-  const isGlobalLoading = orgsLoading || jobsLoading;
+  const isGlobalLoading = authLoading || orgsLoading || jobsLoading;
 
   return (
     <>

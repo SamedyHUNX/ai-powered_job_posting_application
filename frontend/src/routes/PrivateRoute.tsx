@@ -14,14 +14,6 @@ export default function PrivateRoute({ children }: { children: ReactNode }) {
     }
   }, [isAuthenticated, isInitialized, router]);
 
-  // Show nothing while checking auth state
-  if (!isInitialized) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   // Only render children if authenticated
   return <>{isAuthenticated && children}</>;

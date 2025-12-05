@@ -13,21 +13,15 @@ import { NavBar } from "@/components/customs/Navbar";
 import { useOrganization } from "@/hooks/use-organization";
 import { useTranslations } from "next-intl";
 import { useProfile } from "@/hooks/use-profile";
-import { Loading } from "@/components/customs/Loading";
 import PrivateRoute from "@/routes/PrivateRoute";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
-  const { currentUser, isFetchingCurrentUser } = useProfile();
-  const jobSeekerT = useTranslations("jobSeeker");
+  const { currentUser } = useProfile();
   const sidebarT = useTranslations("jobSeeker.sidebar.navMenuGroups");
 
-  if (isFetchingCurrentUser) {
-    return <Loading message={jobSeekerT("loading")} />;
-  }
-
   const href = selectedOrganization
-    ? `/employer/organizations/${selectedOrganization.orgName}`
+    ? `/employer/organizations/${selectedOrganization.slug}`
     : "/employer/organizations/select";
 
   return (

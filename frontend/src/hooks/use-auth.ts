@@ -4,6 +4,7 @@ import {
   setCredentials,
   logout as logoutAction,
   setUser,
+  setLoading,
 } from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
@@ -18,9 +19,8 @@ import {
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, token, isAuthenticated, isInitialized } = useAppSelector(
-    (state) => state.auth
-  );
+  const { user, token, isAuthenticated, isInitialized, isLoading } =
+    useAppSelector((state) => state.auth);
   const queryClient = useQueryClient();
   const router = useRouter();
   const locale = useLocale();
@@ -104,6 +104,7 @@ export function useAuth() {
     token,
     isAuthenticated,
     isInitialized,
+    isLoading,
 
     // Signin
     signIn: signInMutation.mutate,

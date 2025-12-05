@@ -162,16 +162,16 @@ export const OrganizationList = ({
     return <>{fallback}</>;
   }
 
-  if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <div className="relative flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-          <p className="mt-4 text-gray-600">{translations.loadingText}</p>
-        </div>
-      </div>
-    );
-  }
+  // if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
+  //   return (
+  //     <div className="min-h-screen bg-black flex items-center justify-center px-4">
+  //       <div className="relative flex flex-col items-center">
+  //         <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+  //         <p className="mt-4 text-gray-600">{translations.loadingText}</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-[calc(100vh-68px)] bg-[#fdfbf7] dark:bg-black flex items-center justify-center px-8 ">
