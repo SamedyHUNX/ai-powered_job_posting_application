@@ -23,15 +23,6 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
       <AppSidebar
         content={
           <>
-            <SidebarGroup>
-              <SidebarGroupLabel>Create Organization</SidebarGroupLabel>
-              <SidebarGroupAction title="Add Job Listing" asChild>
-                <Link href={"/employer/organizations/new"}>
-                  <PlusIcon />
-                  <span className="sr-only">Add Organization</span>
-                </Link>
-              </SidebarGroupAction>
-            </SidebarGroup>
             <SidebarNavMenuGroup
               className="mt-auto"
               items={[

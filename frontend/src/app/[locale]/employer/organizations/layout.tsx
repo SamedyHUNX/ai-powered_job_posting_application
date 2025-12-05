@@ -8,6 +8,7 @@ import {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupLabel,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
@@ -24,9 +25,9 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
         content={
           <>
             <SidebarGroup>
-              <SidebarGroupLabel>Create Organization</SidebarGroupLabel>
+              <SidebarGroupLabel>Add Job Listing</SidebarGroupLabel>
               <SidebarGroupAction title="Add Job Listing" asChild>
-                <Link href={"/employer/organizations/new"}>
+                <Link href={"/employer/job-listings/new"}>
                   <PlusIcon />
                   <span className="sr-only">Add Organization</span>
                 </Link>
