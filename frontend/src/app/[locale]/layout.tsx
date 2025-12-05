@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { SWRConfig } from "swr";
 import "./globals.css";
 

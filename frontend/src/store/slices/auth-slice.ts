@@ -1,6 +1,4 @@
-import { AuthResponse } from "@/types/response.auth.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { set } from "zod";
 
 export interface User {
   id: string;
@@ -8,6 +6,7 @@ export interface User {
   username: string;
   imageUrl: string;
   userRole: string;
+  isLoading?: boolean
 }
 
 interface AuthState {

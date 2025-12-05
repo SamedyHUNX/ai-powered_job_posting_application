@@ -4,11 +4,9 @@ import { useState, useEffect, ReactNode, Suspense } from "react";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "@/store/store";
-import {
-  initializeAuth,
-  markInitialized,
-} from "@/store/slices/auth-slice";
+import { initializeAuth, markInitialized } from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
+import { GlobalLoadingProvider } from "@/providers/GlobalLoadingProvider";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
@@ -55,7 +53,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <Suspense>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <GlobalLoadingProvider>{children}</GlobalLoadingProvider>
         </QueryClientProvider>
       </Provider>
     </Suspense>
