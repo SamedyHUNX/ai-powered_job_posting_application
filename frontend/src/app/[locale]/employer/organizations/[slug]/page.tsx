@@ -6,8 +6,18 @@ import { NoOrganizationDialog } from "@/features/employers/components/NoOrganiza
 import { useOrganization } from "@/hooks/use-organization";
 import { useJobListing } from "@/hooks/use-job-listing";
 import { useProfile } from "@/hooks/use-profile";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  BriefcaseIcon,
+  MapPinIcon,
+  DollarSignIcon,
+  ClockIcon,
+  PlusCircleIcon,
+  Users2Icon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function EmployerHomepage() {
   return (
@@ -32,8 +42,6 @@ function SuspendedPage() {
   } = useJobListing();
   const { currentUser } = useProfile();
   const router = useRouter();
-  const { slug } = useParams() as { slug: string };
-
   const noOrganizations = organizations.length === 0;
   const [dialogOpen, setDialogOpen] = useState(noOrganizations);
 
@@ -57,88 +65,190 @@ function SuspendedPage() {
     router.push("/");
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading message="Fetching job listings..." />;
+
+  const publishedCount = jobListings.filter(
+    (j) => j.status === "published"
+  ).length;
+  const draftCount = jobListings.filter((j) => j.status === "draft").length;
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">
-          {selectedOrganization?.orgName}
-        </h1>
-        <p className="text-muted-foreground">
-          Manage your organization and job listings
-        </p>
-      </div>
-
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Job Listings ({count})</h2>
-        {isLoadingJobs ? (
-          <div className="flex items-center justify-center py-8">
-            <Loading />
-          </div>
-        ) : jobListings.length === 0 ? (
-          <div className="text-center py-8 border rounded-lg bg-muted/50">
-            <p className="text-muted-foreground">
-              No job listings yet
-              <Link
-                href="/employer/job-listing/new"
-                className="text-blue-500 hover:underline"
-              >
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Header Section */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight mb-2">
+                {selectedOrganization?.orgName}
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Manage your organization and job listings
+              </p>
+            </div>
+            <Button asChild size="lg" className="gap-2">
+              <Link href="/employer/job-listings/new">
+                <PlusCircleIcon className="h-5 w-5" />
                 Create Job Listing
               </Link>
-            </p>
+            </Button>
           </div>
-        ) : (
-          <div className="grid gap-4">
-            {jobListings.map((job) => (
-              <div
-                key={job.id}
-                className="border rounded-lg p-4 hover:bg-accent transition-colors"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{job.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                      {job.description}
-                    </p>
-                    <div className="flex gap-2 mt-3 flex-wrap">
-                      <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        {job.type}
-                      </span>
-                      <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        {job.locationRequirement}
-                      </span>
-                      <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">
-                        {job.experienceLevel}
-                      </span>
-                      <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                          job.status === "published"
-                            ? "bg-green-50 text-green-700 ring-green-600/20"
-                            : job.status === "draft"
-                            ? "bg-gray-50 text-gray-700 ring-gray-600/20"
-                            : "bg-red-50 text-red-700 ring-red-600/20"
-                        }`}
-                      >
-                        {job.status}
-                      </span>
-                    </div>
-                  </div>
-                  {job.wage && (
-                    <div className="text-right ml-4">
-                      <p className="font-semibold">
-                        ${job.wage.toLocaleString()}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        /{job.wageInterval}
-                      </p>
-                    </div>
-                  )}
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Listings
+                </CardTitle>
+                <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{count}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  All job postings
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Published</CardTitle>
+                <Users2Icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  {publishedCount}
                 </div>
-              </div>
-            ))}
+                <p className="text-xs text-muted-foreground mt-1">
+                  Live on job board
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Drafts</CardTitle>
+                <ClockIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-amber-600">
+                  {draftCount}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Pending publication
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        )}
+        </div>
+
+        {/* Job Listings Section */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Job Listings</h2>
+          {isLoadingJobs ? (
+            <div className="flex items-center justify-center py-16">
+              <Loading />
+            </div>
+          ) : jobListings.length === 0 ? (
+            <Card className="border-dashed">
+              <CardContent className="flex flex-col items-center justify-center py-16 px-4">
+                <BriefcaseIcon className="h-16 w-16 text-muted-foreground/50 mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  No job listings yet
+                </h3>
+                <p className="text-muted-foreground text-center mb-6 max-w-md">
+                  Get started by creating your first job listing to attract top
+                  talent to your organization.
+                </p>
+                <Button asChild size="lg" className="gap-2">
+                  <Link href="/employer/job-listings/new">
+                    <PlusCircleIcon className="h-5 w-5" />
+                    Create Your First Job Listing
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-6">
+              {jobListings.map((job) => (
+                <Card
+                  key={job.id}
+                  className="hover:shadow-lg transition-all duration-200 cursor-pointer group"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">
+                              {job.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                              {job.description}
+                            </p>
+                          </div>
+                          {job.wage && (
+                            <div className="text-right ml-4 flex-shrink-0">
+                              <div className="flex items-center gap-1 text-lg font-bold text-green-600">
+                                <DollarSignIcon className="h-5 w-5" />
+                                {job.wage.toLocaleString()}
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                per {job.wageInterval}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {/* Type Badge */}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-950 px-3 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10 dark:ring-blue-300/20">
+                            <BriefcaseIcon className="h-3 w-3" />
+                            {job.type}
+                          </span>
+
+                          {/* Location Badge */}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-950 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-600/20 dark:ring-green-300/20">
+                            <MapPinIcon className="h-3 w-3" />
+                            {job.locationRequirement}
+                          </span>
+
+                          {/* Experience Badge */}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 dark:bg-purple-950 px-3 py-1 text-xs font-medium text-purple-700 dark:text-purple-300 ring-1 ring-inset ring-purple-700/10 dark:ring-purple-300/20">
+                            {job.experienceLevel}
+                          </span>
+
+                          {/* Status Badge */}
+                          <span
+                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${
+                              job.status === "published"
+                                ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 ring-green-600/20 dark:ring-green-300/20"
+                                : job.status === "draft"
+                                ? "bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 ring-gray-600/20 dark:ring-gray-300/20"
+                                : "bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 ring-red-600/20 dark:ring-red-300/20"
+                            }`}
+                          >
+                            <span
+                              className={`h-1.5 w-1.5 rounded-full ${
+                                job.status === "published"
+                                  ? "bg-green-600 dark:bg-green-400"
+                                  : job.status === "draft"
+                                  ? "bg-gray-600 dark:bg-gray-400"
+                                  : "bg-red-600 dark:bg-red-400"
+                              }`}
+                            />
+                            {job.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {noOrganizations && (
