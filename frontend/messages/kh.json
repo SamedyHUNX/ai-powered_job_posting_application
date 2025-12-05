@@ -197,5 +197,18 @@
       "singular": "ការងារ",
       "plural": "ការងារ"
     }
+  },
+  "jobSeeker": {
+    "sidebar": {
+      "navMenuGroups": {
+        "findJobs": "ស្វែងរកការងារ",
+        "applications": "ពាក្យស្នើសុំ",
+        "savedJobs": "ការងារដែលបានរក្សាទុក",
+        "profile": "ប្រវត្តិរូប",
+        "settings": "ការកំណត់",
+        "aiSearch": "ការស្វែងរក AI",
+        "employerDashboard": "ផ្ទាំងគ្រប់គ្រងនិយោជក"
+      }
+    }
   }
 }

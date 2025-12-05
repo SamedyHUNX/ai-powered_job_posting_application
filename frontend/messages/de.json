@@ -197,5 +197,18 @@
       "singular": "Stelle",
       "plural": "Stellen"
     }
+  },
+  "jobSeeker": {
+    "sidebar": {
+      "navMenuGroups": {
+        "findJobs": "Jobs finden",
+        "applications": "Bewerbungen",
+        "profile": "Profil",
+        "settings": "Einstellungen",
+        "aiSearch": "KI Suche",
+        "savedJobs": "Gespeicherte Jobs",
+        "employerDashboard": "Arbeitgeber-Dashboard"
+      }
+    }
   }
 }

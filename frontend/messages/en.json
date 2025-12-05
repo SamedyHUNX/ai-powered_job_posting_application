@@ -194,5 +194,18 @@
       "singular": "job",
       "plural": "jobs"
     }
+  },
+  "jobSeeker": {
+    "sidebar": {
+      "navMenuGroups": {
+        "findJobs": "Find Jobs",
+        "applications": "Applications",
+        "savedJobs": "Saved Jobs",
+        "profile": "Profile",
+        "settings": "Settings",
+        "aiSearch": "AI Search",
+        "employerDashboard": "Employer Dashboard"
+      }
+    }
   }
 }

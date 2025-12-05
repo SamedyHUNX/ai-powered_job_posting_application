@@ -11,9 +11,11 @@ import { SidebarUserButton } from "@/features/users/components/SidebarUserButton
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
 import { NavBar } from "@/components/customs/Navbar";
 import { useOrganization } from "@/hooks/use-organization";
+import { useTranslations } from "next-intl";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
+  const sidebarT = useTranslations("jobSeeker.sidebar.navMenuGroups");
 
   let href = "";
   if (selectedOrganization) {
@@ -31,17 +33,17 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
             {
               href: "/",
               icon: <ClipboardListIcon />,
-              label: "Find Jobs",
+              label: sidebarT("findJobs"),
             },
             {
               href: "/ai-search",
               icon: <BrainCircuitIcon />,
-              label: "AI Search",
+              label: sidebarT("aiSearch"),
             },
             {
               href,
               icon: <LayoutDashboard />,
-              label: "Employer Dashboard",
+              label: sidebarT("employerDashboard"),
               authStatus: "signedIn",
             },
           ]}
