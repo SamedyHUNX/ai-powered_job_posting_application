@@ -71,7 +71,6 @@ export const OrganizationList = ({
     organizations,
     selectOrganization,
   } = useOrganization();
-  let title: string;
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -108,7 +107,7 @@ export const OrganizationList = ({
           : afterSelectOrganizationUrl;
       router.push(url);
     } else {
-      router.push(`/employer/organizations/${org.id}`);
+      router.push(`/employer/organizations/${org.slug}`);
     }
   };
 
@@ -234,10 +233,11 @@ export const OrganizationList = ({
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
-                ? "opacity-50 cursor-not-allowed hover:bg-red-50"
-                : "hover:bg-gray-50"
-                }`}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
+                org.isBanned || !org.isVerified
+                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                  : "hover:bg-gray-50"
+              }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">

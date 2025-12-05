@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { Loading } from "@/components/customs/Loading";
 import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
 import { useOrganization } from "@/hooks/use-organization";
 import { useJobListing } from "@/hooks/use-job-listing";
 import { useProfile } from "@/hooks/use-profile";
 import { useParams, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function EmployerHomepage() {
   return (
@@ -17,8 +18,12 @@ export default function EmployerHomepage() {
 }
 
 function SuspendedPage() {
-  const { isLoading, fetchOrganizationsByUser, organizations, selectedOrganization } =
-    useOrganization();
+  const {
+    isLoading,
+    fetchOrganizationsByUser,
+    organizations,
+    selectedOrganization,
+  } = useOrganization();
   const {
     fetchJobListingsByOrganization,
     jobListings,
@@ -27,7 +32,7 @@ function SuspendedPage() {
   } = useJobListing();
   const { currentUser } = useProfile();
   const router = useRouter();
-  const { organization } = useParams() as { organization: string };
+  const { slug } = useParams() as { slug: string };
 
   const noOrganizations = organizations.length === 0;
   const [dialogOpen, setDialogOpen] = useState(noOrganizations);
@@ -58,7 +63,7 @@ function SuspendedPage() {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">
-          {selectedOrganization?.orgName || organization}
+          {selectedOrganization?.orgName}
         </h1>
         <p className="text-muted-foreground">
           Manage your organization and job listings
@@ -66,9 +71,7 @@ function SuspendedPage() {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">
-          Job Listings ({count})
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4">Job Listings ({count})</h2>
         {isLoadingJobs ? (
           <div className="flex items-center justify-center py-8">
             <Loading />
@@ -76,7 +79,13 @@ function SuspendedPage() {
         ) : jobListings.length === 0 ? (
           <div className="text-center py-8 border rounded-lg bg-muted/50">
             <p className="text-muted-foreground">
-              No job listings yet. Create your first job listing to get started.
+              No job listings yet
+              <Link
+                href="/employer/job-listing/new"
+                className="text-blue-500 hover:underline"
+              >
+                Create Job Listing
+              </Link>
             </p>
           </div>
         ) : (
@@ -103,12 +112,13 @@ function SuspendedPage() {
                         {job.experienceLevel}
                       </span>
                       <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${job.status === "published"
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                          job.status === "published"
                             ? "bg-green-50 text-green-700 ring-green-600/20"
                             : job.status === "draft"
-                              ? "bg-gray-50 text-gray-700 ring-gray-600/20"
-                              : "bg-red-50 text-red-700 ring-red-600/20"
-                          }`}
+                            ? "bg-gray-50 text-gray-700 ring-gray-600/20"
+                            : "bg-red-50 text-red-700 ring-red-600/20"
+                        }`}
                       >
                         {job.status}
                       </span>

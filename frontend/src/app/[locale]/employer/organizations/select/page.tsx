@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, use, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useOrganization } from "@/hooks/use-organization";
 import { OrganizationListWithTranslation } from "@/features/organizations/components/OrganizationListWithTranslation";
 
@@ -17,12 +17,9 @@ export default function OrganizationSelectPage({ searchParams }: Props) {
 }
 
 function SuspendedPage({ searchParams }: Props) {
-  const params = use(searchParams);
-  const redirect = params?.redirect;
   const { clearSelectedOrganization } = useOrganization();
 
-  // Whenever the user reaches this page
-  // Clear the selected organization
+  // Clear any previously selected org when landing here
   useEffect(() => {
     clearSelectedOrganization();
   }, [clearSelectedOrganization]);
@@ -30,8 +27,7 @@ function SuspendedPage({ searchParams }: Props) {
   return (
     <OrganizationListWithTranslation
       hidePersonal
-      afterSelectOrganizationUrl={redirect}
-      afterCreateOrganizationUrl={redirect ?? "/employer/organizations/:slug"}
+      afterCreateOrganizationUrl="/de/employer/organizations/select"
     />
   );
 }
