@@ -260,7 +260,7 @@ export default function CreateOrganizationForm() {
               <Button
                 type="submit"
                 disabled={isCreating}
-                className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+                className="bg-gray-900 text-white px-8 py-3.5 rounded-xl w-full font-medium hover:bg-gray-800 transition-colors"
               >
                 <LoadingSwap isLoading={isCreating}>
                   {newOrgT("buttonText")}
