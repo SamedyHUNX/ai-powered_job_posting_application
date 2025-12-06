@@ -24,6 +24,7 @@ import {
   SignInFormData,
 } from "@/schemas/auth/signInSchema";
 import { Loading } from "@/components/customs/Loading";
+import { LoadingSwap } from "@/components/customs/LoadingSwap";
 
 export default function SigninPage() {
   // Translations
@@ -61,10 +62,6 @@ export default function SigninPage() {
       toast.success(successT("signInSuccess"));
     }
   }, [signInSuccess, signInT]);
-
-  if (isSigningIn) {
-    return <Loading />;
-  }
 
   const onSubmit = (data: SignInFormData) => {
     signIn(data);
@@ -151,7 +148,9 @@ export default function SigninPage() {
             disabled={isSigningIn}
             className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2.5 transition-colors"
           >
-            {isSigningIn ? signInT("loadingText") : signInT("buttonText")}
+            <LoadingSwap isLoading={isSigningIn}>
+              {signInT("buttonText")}
+            </LoadingSwap>
           </Button>
 
           <div className="text-center">

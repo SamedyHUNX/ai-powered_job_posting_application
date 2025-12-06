@@ -25,6 +25,7 @@ import {
   SignUpFormData,
 } from "@/schemas/auth/signUpSchema";
 import { Loading } from "@/components/customs/Loading";
+import { LoadingSwap } from "@/components/customs/LoadingSwap";
 
 export default function SignUpPage() {
   const locale = useLocale();
@@ -322,7 +323,9 @@ export default function SignUpPage() {
             disabled={isSigningUp}
             className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-blue-800 font-medium py-2.5 shadow-lg hover:shadow-xl transition-all"
           >
-            {isSigningUp ? signUpT("buttonLoading") : signUpT("signUp")}
+            <LoadingSwap isLoading={isSigningUp}>
+              {signUpT("signUp")}
+            </LoadingSwap>
           </Button>
         </form>
       </Form>
