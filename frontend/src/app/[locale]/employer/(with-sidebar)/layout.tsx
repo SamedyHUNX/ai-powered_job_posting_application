@@ -10,10 +10,12 @@ import { NavBar } from "@/components/customs/Navbar";
 import { BackHomeButton } from "@/components/customs/CustomButtons";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLocale } from "next-intl";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
   const isMobile = useIsMobile();
+  const locale = useLocale();
   return (
     <PrivateRoute>
       <AppSidebar
@@ -35,7 +37,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
           selectedOrganization ? (
             <SidebarOrganizationButton />
           ) : (
-            <BackHomeButton variant="destructive" />
+            <BackHomeButton variant="destructive" locale={locale}/>
           )
         }
       >

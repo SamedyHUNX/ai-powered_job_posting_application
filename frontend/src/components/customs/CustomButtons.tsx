@@ -13,12 +13,20 @@ type CustomButtonProps = {
     | "secondary"
     | "destructive";
   buttonText?: string;
+  locale?: string;
+};
+
+const translations: Record<string, string> = {
+  en: "Back Home",
+  de: "Zurück",
+  kh: "ត្រឡប់ទៅផ្ទះ",
 };
 
 export const BackHomeButton = ({
   className,
   variant,
   buttonText,
+  locale,
 }: CustomButtonProps) => {
   const router = useRouter();
   return (
@@ -29,7 +37,7 @@ export const BackHomeButton = ({
         router.push("/");
       }}
     >
-      {buttonText ? buttonText : "Nevermind"}
+      {buttonText ? buttonText : translations[locale || "en"] || "Back Home"}
     </Button>
   );
 };
