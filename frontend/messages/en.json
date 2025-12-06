@@ -290,5 +290,23 @@
     "members": {
       "noMembers": "No members found"
     }
+  },
+  "jobListings": {
+    "newJobListing": {
+      "title": "Create New Job Listing",
+      "description": "This does not post the listing yet. It just saves a draft."
+    },
+    "form": {
+      "title": "Create New Job Listing",
+      "wage": "Wage",
+      "wageDesc": "Optional: Specify the wage for this position",
+      "city": "City",
+      "state": "State",
+      "type": "Job Type",
+      "experienceLevel": "Experience Level",
+      "locationRequirement": "Location Requirement",
+      "buttonText": "Create Job Listing",
+      "creatingText": "Creating job listing..."
+    }
   }
 }

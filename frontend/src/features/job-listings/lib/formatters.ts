@@ -8,9 +8,9 @@ import {
 export function formatWageInterval(interval: WageInterval) {
   switch (interval) {
     case "hourly":
-      return "Hour";
+      return "Hourly";
     case "yearly":
-      return "Year";
+      return "Yearly";
     default:
       throw new Error(`Invalid wage interval: ${interval satisfies never}`);
   }

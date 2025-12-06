@@ -63,8 +63,8 @@ export default function EmployerHomepage() {
   const draftCount = jobListings.filter((j) => j.status === "draft").length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="min-h-screen w-full bg-gradient-to-b from-background to-muted/20">
+      <div className="container mx-auto px-4 py-8 w-[95%]">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
@@ -210,20 +210,22 @@ export default function EmployerHomepage() {
 
                           {/* Status Badge */}
                           <span
-                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${job.status === "published"
-                              ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 ring-green-600/20 dark:ring-green-300/20"
-                              : job.status === "draft"
+                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${
+                              job.status === "published"
+                                ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 ring-green-600/20 dark:ring-green-300/20"
+                                : job.status === "draft"
                                 ? "bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 ring-gray-600/20 dark:ring-gray-300/20"
                                 : "bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 ring-red-600/20 dark:ring-red-300/20"
-                              }`}
+                            }`}
                           >
                             <span
-                              className={`h-1.5 w-1.5 rounded-full ${job.status === "published"
-                                ? "bg-green-600 dark:bg-green-400"
-                                : job.status === "draft"
+                              className={`h-1.5 w-1.5 rounded-full ${
+                                job.status === "published"
+                                  ? "bg-green-600 dark:bg-green-400"
+                                  : job.status === "draft"
                                   ? "bg-gray-600 dark:bg-gray-400"
                                   : "bg-red-600 dark:bg-red-400"
-                                }`}
+                              }`}
                             />
                             {job.status}
                           </span>

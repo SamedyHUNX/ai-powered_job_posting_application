@@ -251,5 +251,23 @@
     "members": {
       "noMembers": "Keine Mitglieder für diese Organisation gefunden."
     }
+  },
+  "jobListings": {
+    "newJobListing": {
+      "title": "Neue Stellenanzeige erstellen",
+      "description": "Erstellen Sie eine neue Stellenanzeige für Ihre Organisation"
+    },
+    "form": {
+      "title": "Neue Stellenanzeige erstellen",
+      "wage": "Gehalt",
+      "wageDesc": "Optional: Geben Sie das Gehalt für diese Position an",
+      "city": "Stadt",
+      "state": "Bundesland",
+      "type": "Art der Anstellung",
+      "experienceLevel": "Erfahrungsstufe",
+      "locationRequirement": "Standortanforderung",
+      "buttonText": "Stellenanzeige erstellen",
+      "creatingText": "Stellenanzeige wird erstellt..."
+    }
   }
 }
