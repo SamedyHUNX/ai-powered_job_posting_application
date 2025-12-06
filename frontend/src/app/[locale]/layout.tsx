@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Providers } from "@/providers/Providers";
 import { SWRConfig } from "swr";
 import "./globals.css";
+import "@mdxeditor/editor/style.css";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

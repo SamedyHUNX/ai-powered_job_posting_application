@@ -17,7 +17,18 @@
     "organizationNameRequired": "Der Name der Organisation ist erforderlich",
     "slugRequired": "Die URL der Organisation ist erforderlich",
     "passwordRequired": "Passwort ist erforderlich",
-    "photoRequired": "Bitte laden Sie ein Foto hoch"
+    "photoRequired": "Bitte laden Sie ein Foto hoch",
+    "newPasswordRequired": "Neues Passwort ist erforderlich",
+    "confirmNewPasswordRequired": "Bestätigung des neuen Passworts ist erforderlich",
+    "jobListings": {
+      "jobTitleRequired": "Jobtitel ist erforderlich",
+      "descriptionRequired": "Jobbeschreibung ist erforderlich",
+      "jobDescriptionMinLength": "Die Jobbeschreibung muss mindestens 10 Zeichen lang sein",
+      "locationRequirementRequired": "Standortanforderung ist erforderlich",
+      "experienceLevelRequired": "Erfahrungsstufe ist erforderlich",
+      "jobTypeRequired": "Jobtyp ist erforderlich",
+      "nonRemoteRequired": "Bitte geben Sie den Ort ein"
+    }
   },
   "authLayout": {
     "title": "Willkommen bei JobXHub",

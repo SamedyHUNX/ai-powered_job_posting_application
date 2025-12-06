@@ -115,11 +115,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  /* --sonner-bg: #ffffff;
-  --sonner-success-bg: #22c55e;
-  --sonner-error-bg: #ef4444;
-  --sonner-warning-bg: #f59e0b;
-  --sonner-info-bg: #3b82f6; */
 }
 
 @layer base {
@@ -128,5 +123,25 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .mdxeditor-root-contenteditable {
+    @apply border-input has-focus-visible:border-ring has-focus-visible:ring-ring/50 dark:bg-input/30 rounded-md rounded-t-none border bg-transparent px-3 shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 overflow-hidden;
+
+    & * {
+      outline: none;
+    }
+  }
+
+  .mdxeditor-toolbar {
+    @apply bg-card border-card rounded-md !rounded-b-none shadow-sm flex-wrap;
+  }
+
+  .mdxeditor-popup-container {
+    @apply !z-50;
+  }
+
+  .dark-theme {
+    --basePageBg: var(--muted) !important;
   }
 }

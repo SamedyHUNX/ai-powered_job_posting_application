@@ -17,7 +17,22 @@
     "organizationNameRequired": "Organization name is required",
     "slugRequired": "Organization URL is required",
     "passwordRequired": "Password is required",
-    "photoRequired": "Please upload a photo"
+    "photoRequired": "Please upload a photo",
+    "jobTitleRequired": "Job title is required",
+    "jobDescriptionMinLength": "Job description must be at least 10 characters",
+    "locationRequirementRequired": "Location requirement is required",
+    "experienceLevelRequired": "Experience level is required",
+    "jobTypeRequired": "Job type is required",
+    "organizationRequired": "Please select an organization first",
+    "jobListings": {
+      "jobTitleRequired": "Job title is required",
+      "descriptionRequired": "Job description is required",
+      "jobDescriptionMinLength": "Job description must be at least 10 characters",
+      "locationRequirementRequired": "Location requirement is required",
+      "experienceLevelRequired": "Experience level is required",
+      "jobTypeRequired": "Job type is required",
+      "nonRemoteRequired": "City is required for non-remote jobs"
+    }
   },
   "authLayout": {
     "title": "Welcome to JobXHub",
@@ -138,6 +153,43 @@
         "slug": "Organization Slug (Unique Identifier)",
         "slugDesc": "This will be used in your organization's URL. Only lowercase letters, numbers, and hyphens are allowed."
       }
+    },
+    "jobListings": {
+      "newPage": {
+        "title": "Create New Job Listing",
+        "titleLabel": "Job Title",
+        "titlePlaceholder": "e.g. Senior Software Engineer",
+        "descriptionLabel": "Job Description",
+        "descriptionPlaceholder": "Describe the role, responsibilities, and requirements...",
+        "descriptionDesc": "Provide a detailed description of the position (minimum 10 characters)",
+        "typeLabel": "Job Type",
+        "typePlaceholder": "Select job type",
+        "typeInternship": "Internship",
+        "typePartTime": "Part-time",
+        "typeFullTime": "Full-time",
+        "locationLabel": "Location Requirement",
+        "locationPlaceholder": "Select location requirement",
+        "locationInOffice": "In-office",
+        "locationHybrid": "Hybrid",
+        "locationRemote": "Remote",
+        "experienceLabel": "Experience Level",
+        "experiencePlaceholder": "Select experience level",
+        "experienceJunior": "Junior",
+        "experienceMidLevel": "Mid-level",
+        "experienceSenior": "Senior",
+        "wageLabel": "Wage (Optional)",
+        "wagePlaceholder": "e.g. 50000",
+        "wageIntervalLabel": "Wage Interval",
+        "wageIntervalPlaceholder": "Select interval",
+        "wageIntervalHourly": "Hourly",
+        "wageIntervalYearly": "Yearly",
+        "cityLabel": "City (Optional)",
+        "cityPlaceholder": "e.g. San Francisco",
+        "stateLabel": "State (Optional)",
+        "statePlaceholder": "e.g. CA",
+        "stateDesc": "Use 2-letter state abbreviation",
+        "buttonText": "Create Job Listing"
+      }
     }
   },
   "apiErrors": {
@@ -162,7 +214,8 @@
     "verifyEmailSuccess": "Your email has been verified successfully",
     "resetPasswordSuccess": "Your password has been reset successfully",
     "forgotPasswordSuccess": "Please check your email for password reset instructions",
-    "createNewOrgSuccess": "Organization created successfully. Please wait for verification from admin"
+    "createNewOrgSuccess": "Organization created successfully. Please wait for verification from admin",
+    "createJobListingSuccess": "Job listing created successfully as a draft"
   },
   "organizationsList": {
     "chooseAccount": {

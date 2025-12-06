@@ -2,14 +2,8 @@
 
 import { ReactNode } from "react";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
-import { ClipboardListIcon, PlusIcon } from "lucide-react";
+import { ClipboardListIcon } from "lucide-react";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
-import {
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupLabel,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
 import { NavBar } from "@/components/customs/Navbar";

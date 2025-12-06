@@ -12,7 +12,7 @@ const config: Config = {
       // your existing theme extensions
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography"), require("tw-animate-css")],
 };
 
 export default config;

@@ -17,7 +17,18 @@
     "organizationNameRequired": "ត្រូវការឈ្មោះអង្គភាព",
     "slugRequired": "ត្រូវការ URL អង្គភាព",
     "passwordRequired": "ត្រូវការពាក្យសម្ងាត់",
-    "photoRequired": "សូមបង្ហោះរូបថត"
+    "photoRequired": "សូមបង្ហោះរូបថត",
+    "newPasswordRequired": "ត្រូវការពាក្យសម្ងាត់ថ្មី",
+    "confirmNewPasswordRequired": "ត្រូវការបញ្ជាក់ពាក្យសម្ងាត់ថ្មី",
+    "jobListings": {
+      "jobTitleRequired": "ត្រូវការឈ្មោះការងារ",
+      "jobDescriptionRequired": "ត្រូវការពិពណ៌នាការងារ",
+      "descriptionMinLength": "ពិពណ៌នាការងារត្រូវតែមានយ៉ាងហោចណាស់ 10 តួអក្សរ",
+      "locationRequirementRequired": "ត្រូវការទាមទារទីតាំង",
+      "experienceLevelRequired": "ត្រូវការកម្រិតបទពិសោធន៍",
+      "jobTypeRequired": "ត្រូវការប្រភេទការងារ",
+      "nonRemoteRequired": "សូមបញ្ចូលទីតាំងសម្រាប់ការងារ non-remote"
+    }
   },
   "authLayout": {
     "title": "សូមស្វាគមន៍មកកាន់ JobXHub",

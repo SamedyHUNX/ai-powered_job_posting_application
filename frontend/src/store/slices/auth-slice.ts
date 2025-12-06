@@ -6,7 +6,7 @@ export interface User {
   username: string;
   imageUrl: string;
   userRole: string;
-  isLoading?: boolean
+  isLoading?: boolean;
 }
 
 interface AuthState {
@@ -52,9 +52,10 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.isInitialized = true;
-      state.isLoading = false;
+      state.isLoading = true;
       if (action.payload.user) {
         state.user = action.payload.user;
+        state.isLoading = false;
       }
     },
     markInitialized: (state) => {
