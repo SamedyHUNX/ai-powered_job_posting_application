@@ -39,6 +39,7 @@ import {
   wageIntervals,
 } from "@/types/job-listing.type";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LoadingSwap } from "@/components/customs/LoadingSwap";
 
 const NONE_SELECT_VALUE = "__none__";
 
@@ -508,15 +509,15 @@ export function JobListingForm({
           <div className={cn("pt-4 mt-4", showBorder && "border-t")}>
             <Button
               type="submit"
-              disabled={form.formState.isSubmitting || isLoading}
+              disabled={form.formState.isSubmitting}
               className={cn(
                 "w-full bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors",
                 buttonClassName
               )}
             >
-              {form.formState.isSubmitting || isLoading
-                ? submittingText
-                : submitButtonText}
+              <LoadingSwap isLoading={form.formState.isSubmitting}>
+                {submitButtonText}
+              </LoadingSwap>
             </Button>
           </div>
         )}

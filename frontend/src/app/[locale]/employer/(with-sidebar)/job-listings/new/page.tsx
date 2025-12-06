@@ -58,7 +58,10 @@ export default function NewJobListingPage() {
     },
   };
 
-  const handleSubmit = (data: any) => console.log(data);
+  const handleSubmit = async (data: any) => {
+    console.log(data);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  };
 
   return (
     <div className="w-[95%] mx-auto px-4 pt-8 h-fit flex flex-col">
