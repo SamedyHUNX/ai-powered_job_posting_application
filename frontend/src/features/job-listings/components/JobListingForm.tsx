@@ -21,14 +21,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  CreateJobListingFormData,
-  createJobListingSchema,
-  experienceLevels,
-  jobListingTypes,
-  locationRequirements,
-  wageIntervals,
-} from "@/schemas/job-listings/createJobListingSchema";
-import {
   formatExperienceLevel,
   formatJobType,
   formatLocationRequirement,
@@ -36,6 +28,16 @@ import {
 } from "../lib/formatters";
 import { StateSelectItems } from "@/components/customs/StateSelectItem";
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
+import {
+  CreateJobListingFormData,
+  createJobListingSchema,
+} from "@/schemas/job-listings/createJobListingSchema";
+import {
+  experienceLevels,
+  jobListingTypes,
+  locationRequirements,
+  wageIntervals,
+} from "@/types/job-listing.type";
 
 const NONE_SELECT_VALUE = "__none__";
 
@@ -53,6 +55,13 @@ interface JobListingFormProps {
     buttons?: {
       submit?: string;
       submitting?: string;
+    };
+    options?: {
+      wageIntervals?: Record<string, string>;
+      locationRequirements?: Record<string, string>;
+      jobTypes?: Record<string, string>;
+      experienceLevels?: Record<string, string>;
+      clearState?: string;
     };
   };
 
@@ -124,6 +133,26 @@ export function JobListingForm({
 
   const isFieldDisabled = (field: keyof CreateJobListingFormData) =>
     fields?.disabled?.[field] ?? false;
+
+  // Option translation helpers
+  const getWageIntervalLabel = (interval: (typeof wageIntervals)[number]) =>
+    translations?.options?.wageIntervals?.[interval] ??
+    formatWageInterval(interval);
+
+  const getLocationRequirementLabel = (
+    requirement: (typeof locationRequirements)[number]
+  ) =>
+    translations?.options?.locationRequirements?.[requirement] ??
+    formatLocationRequirement(requirement);
+
+  const getJobTypeLabel = (type: (typeof jobListingTypes)[number]) =>
+    translations?.options?.jobTypes?.[type] ?? formatJobType(type);
+
+  const getExperienceLevelLabel = (level: (typeof experienceLevels)[number]) =>
+    translations?.options?.experienceLevels?.[level] ??
+    formatExperienceLevel(level);
+
+  const getClearStateLabel = () => translations?.options?.clearState ?? "Clear";
 
   async function handleSubmit(data: CreateJobListingFormData) {
     await onSubmit(data);
@@ -214,7 +243,7 @@ export function JobListingForm({
                                 <SelectContent>
                                   {wageIntervals.map((interval) => (
                                     <SelectItem key={interval} value={interval}>
-                                      {formatWageInterval(interval)}
+                                      {getWageIntervalLabel(interval)}
                                     </SelectItem>
                                   ))}
                                 </SelectContent>
@@ -289,7 +318,7 @@ export function JobListingForm({
                             value={NONE_SELECT_VALUE}
                             className="text-muted-foreground"
                           >
-                            Clear
+                            {getClearStateLabel()}
                           </SelectItem>
                         )}
                         <StateSelectItems />
@@ -328,7 +357,7 @@ export function JobListingForm({
                       <SelectContent>
                         {locationRequirements.map((lr) => (
                           <SelectItem key={lr} value={lr}>
-                            {formatLocationRequirement(lr)}
+                            {getLocationRequirementLabel(lr)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -368,7 +397,7 @@ export function JobListingForm({
                       <SelectContent>
                         {jobListingTypes.map((type) => (
                           <SelectItem key={type} value={type}>
-                            {formatJobType(type)}
+                            {getJobTypeLabel(type)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -406,7 +435,7 @@ export function JobListingForm({
                       <SelectContent>
                         {experienceLevels.map((experience) => (
                           <SelectItem key={experience} value={experience}>
-                            {formatExperienceLevel(experience)}
+                            {getExperienceLevelLabel(experience)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -433,11 +462,18 @@ export function JobListingForm({
                     {getLabel("description", "Description")}
                   </FormLabel>
                   <FormControl>
-                    <MarkdownEditor
-                      {...field}
-                      markdown={field.value}
-                      className="min-h-[200px]"
-                    />
+                    <div
+                      className={cn(
+                        isFieldDisabled("description") &&
+                          "opacity-50 pointer-events-none"
+                      )}
+                    >
+                      <MarkdownEditor
+                        {...field}
+                        markdown={field.value}
+                        className="min-h-[200px]"
+                      />
+                    </div>
                   </FormControl>
                   {getDescription("description") && (
                     <FormDescription>

@@ -298,6 +298,7 @@
     },
     "form": {
       "title": "Create New Job Listing",
+      "description": "Job Description",
       "wage": "Wage",
       "wageDesc": "Optional: Specify the wage for this position",
       "city": "City",
@@ -306,7 +307,35 @@
       "experienceLevel": "Experience Level",
       "locationRequirement": "Location Requirement",
       "buttonText": "Create Job Listing",
-      "creatingText": "Creating job listing..."
+      "creatingText": "Creating job listing...",
+      "options": {
+        "wageIntervals": {
+          "hourly": "Hourly",
+          "yearly": "Yearly",
+          "monthly": "Monthly"
+        },
+        "locationRequirements": {
+          "inOffice": "In-office",
+          "hybrid": "Hybrid",
+          "remote": "Remote"
+        },
+        "jobTypes": {
+          "fullTime": "Full-time",
+          "partTime": "Part-time",
+          "internship": "Internship",
+          "contract": "Contract",
+          "freelance": "Freelance"
+        },
+        "experienceLevels": {
+          "junior": "Junior",
+          "mid": "Mid-level",
+          "senior": "Senior",
+          "lead": "Lead",
+          "manager": "Manager",
+          "ceo": "CEO",
+          "director": "Director"
+        }
+      }
     }
   }
 }

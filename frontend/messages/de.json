@@ -264,10 +264,39 @@
       "city": "Stadt",
       "state": "Bundesland",
       "type": "Art der Anstellung",
+      "description": "Stellenbeschreibung",
       "experienceLevel": "Erfahrungsstufe",
       "locationRequirement": "Standortanforderung",
       "buttonText": "Stellenanzeige erstellen",
-      "creatingText": "Stellenanzeige wird erstellt..."
+      "creatingText": "Stellenanzeige wird erstellt...",
+      "options": {
+        "wageIntervals": {
+          "yearly": "Jährlich",
+          "hourly": "Stündlich",
+          "monthly": "Monatlich"
+        },
+        "locationRequirements": {
+          "inOffice": "Im Büro",
+          "remote": "Remote",
+          "hybrid": "Hybrid"
+        },
+        "jobTypes": {
+          "fullTime": "Vollzeit",
+          "partTime": "Teilzeit",
+          "internship": "Praktikum",
+          "contract": "Vertrag",
+          "freelance": "Freiberuflich"
+        },
+        "experienceLevels": {
+          "junior": "Junior/Juniorin",
+          "mid": "Mid-Level",
+          "senior": "Senior/Seniorin",
+          "lead": "Lead",
+          "manager": "Manager/Managerin",
+          "ceo": "CEO",
+          "director": "Direktor/Direktorin"
+        }
+      }
     }
   }
 }

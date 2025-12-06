@@ -1,20 +1,9 @@
+import {
+  experienceLevels,
+  jobListingTypes,
+  wageIntervals,
+} from "@/types/job-listing.type";
 import { z } from "zod";
-
-export const wageIntervals = ["hourly", "yearly"] as const;
-export const locationRequirements = ["in-office", "hybrid", "remote"] as const;
-export const experienceLevels = ["junior", "mid-level", "senior"] as const;
-export const jobListingStatuses = ["draft", "published", "delisted"] as const;
-export const jobListingTypes = [
-  "internship",
-  "part-time",
-  "full-time",
-] as const;
-
-// type WageInterval = (typeof wageIntervals)[number];
-// type LocationRequirement = (typeof locationRequirements)[number];
-// type ExperienceLevel = (typeof experienceLevels)[number];
-// type JobListingStatus = (typeof jobListingStatuses)[number];
-// type JobListingType = (typeof jobListingTypes)[number];
 
 export const createJobListingSchema = (t: (key: string) => string) => {
   return z

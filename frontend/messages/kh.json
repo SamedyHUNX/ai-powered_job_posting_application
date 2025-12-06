@@ -264,10 +264,39 @@
       "city": "ទីក្រុង",
       "state": "រដ្ឋ",
       "type": "ប្រភេទការងារ",
+      "description": "ការពិពណ៌នាការងារ",
       "experienceLevel": "កម្រិតបទពិសោធន៍",
       "locationRequirement": "តម្រូវការទីតាំង",
       "buttonText": "បង្កើតបញ្ជីការងារ",
-      "creatingText": "កំពុងបង្កើតបញ្ជីការងារ..."
+      "creatingText": "កំពុងបង្កើតបញ្ជីការងារ...",
+      "options": {
+        "wageIntervals": {
+          "hourly": "ប្រចាំម៉ោង",
+          "monthly": "ប្រចាំខែ",
+          "yearly": "ប្រចាំឆ្នាំ"
+        },
+        "locationRequirements": {
+          "inOffice": "នៅការិយាល័យ",
+          "remote": "ចម្ងាយ",
+          "hybrid": "ផ្សំគ្នា"
+        },
+        "jobTypes": {
+          "fullTime": "ពេញម៉ោង",
+          "partTime": "ក្រៅម៉ោង",
+          "internship": "ហាត់ការងារ",
+          "contract": "កុងត្រា",
+          "freelance": "ឯករាជ្យ"
+        },
+        "experienceLevels": {
+          "junior": "ចាប់ផ្តើម",
+          "mid": "មធ្យម",
+          "senior": "ជាន់ខ្ពស់",
+          "lead": "ដឹកនាំ",
+          "manager": "អ្នកគ្រប់គ្រង",
+          "ceo": "ស៊ីអ៊ីអូ",
+          "director": "នាយក"
+        }
+      }
     }
   }
 }

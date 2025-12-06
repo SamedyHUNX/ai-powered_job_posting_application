@@ -11,6 +11,8 @@ export function formatWageInterval(interval: WageInterval) {
       return "Hourly";
     case "yearly":
       return "Yearly";
+    case "monthly":
+      return "Monthly";
     default:
       throw new Error(`Invalid wage interval: ${interval satisfies never}`);
   }
@@ -37,10 +39,18 @@ export function formatExperienceLevel(experienceLevel: ExperienceLevel) {
   switch (experienceLevel) {
     case "junior":
       return "Junior";
-    case "mid-level":
+    case "mid":
       return "Mid-Level";
     case "senior":
       return "Senior";
+    case "lead":
+      return "Lead";
+    case "manager":
+      return "Manager";
+    case "ceo":
+      return "CEO";
+    case "director":
+      return "Director";
     default:
       throw new Error(
         `Unknown experience level: ${experienceLevel satisfies never}`
@@ -56,6 +66,10 @@ export function formatJobType(type: JobListingType) {
       return "Part-Time";
     case "full-time":
       return "Full-Time";
+    case "contract":
+      return "Contract";
+    case "freelance":
+      return "Freelance";
     default:
       throw new Error(`Unknown job type: ${type satisfies never}`);
   }
