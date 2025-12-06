@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,6 +22,7 @@ export const LanguageSwitcher = () => {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Normalize the locale
   const normalizedLocale = locale.toLowerCase().split("-")[0];
@@ -55,8 +56,13 @@ export const LanguageSwitcher = () => {
       pathWithoutLocale = `/${pathWithoutLocale}`;
     }
 
+    // Preserve query parameters
+    const queryString = searchParams.toString();
+    const newPath = `/${newLocale}${pathWithoutLocale}${queryString ? `?${queryString}` : ""
+      }`;
+
     // Navigate to the new locale path
-    router.push(`/${newLocale}${pathWithoutLocale}`);
+    router.push(newPath);
 
     // Force a refresh to ensure the layout re-renders with new locale
     // router.refresh();
@@ -82,9 +88,8 @@ export const LanguageSwitcher = () => {
           <DropdownMenuItem
             key={language.code}
             onClick={() => switchLanguage(language.code)}
-            className={`cursor-pointer ${
-              normalizedLocale === language.code ? "bg-accent" : ""
-            }`}
+            className={`cursor-pointer ${normalizedLocale === language.code ? "bg-accent" : ""
+              }`}
           >
             <span className="text-lg mr-2">{language.flag}</span>
             <span>{language.name}</span>
