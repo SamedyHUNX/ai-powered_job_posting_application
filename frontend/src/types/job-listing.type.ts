@@ -1,5 +1,3 @@
-// Job Listing Type Definitions
-
 export type WageInterval = "hourly" | "yearly" | "monthly";
 export type LocationRequirement = "in-office" | "hybrid" | "remote";
 export type ExperienceLevel =
