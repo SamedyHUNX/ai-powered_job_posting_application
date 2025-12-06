@@ -162,20 +162,9 @@ export const OrganizationList = ({
     return <>{fallback}</>;
   }
 
-  // if (isFetchingOrganizationsByUser || isFetchingCurrentUser) {
-  //   return (
-  //     <div className="min-h-screen bg-black flex items-center justify-center px-4">
-  //       <div className="relative flex flex-col items-center">
-  //         <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-  //         <p className="mt-4 text-gray-600">{translations.loadingText}</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className="min-h-[calc(100vh-68px)] bg-[#fdfbf7] dark:bg-black flex items-center justify-center px-8 ">
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh] border-1 border-gray-300">
+    <div className="min-h-[calc(100vh-68px)] bg-[#fdfbf7] dark:bg-black flex items-center justify-center px-8 w-full">
+      <div className="w-[95%] bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col max-h-[90vh] border-1 border-gray-300">
         {/* Header */}
         <div className="text-center px-8 py-12 border-b border-gray-200 flex-shrink-0">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-700 rounded-2xl mb-6">

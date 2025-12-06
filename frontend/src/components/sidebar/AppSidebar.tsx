@@ -42,7 +42,7 @@ export const AppSidebar = ({
             </SidebarFooter>
           </SignedIn>
         </Sidebar>
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full">{children}</main>
       </AppSidebarClient>
     </SidebarProvider>
   );
