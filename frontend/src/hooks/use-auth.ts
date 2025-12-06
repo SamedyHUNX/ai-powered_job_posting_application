@@ -32,6 +32,7 @@ export function useAuth() {
       dispatch(setCredentials({ token: data.token }));
       dispatch(setUser(data.user));
       dispatch(setSuccess(data.message));
+      dispatch(clearOrganizations());
       localStorage.setItem("access_token", data.token);
 
       router.push(`/${locale}`);
