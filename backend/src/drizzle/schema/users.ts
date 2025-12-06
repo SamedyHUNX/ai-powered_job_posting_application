@@ -11,28 +11,6 @@ import { UserNotificationSettingsTable } from './user-notification-settings';
 import { UserResumeTable } from './user-resume';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
 
-export type User = {
-  id: string;
-  username: string;
-  imageUrl: string;
-  password: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  fullName?: string;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
-  tokenVersion: number;
-  isBanned: boolean;
-  isVerified: boolean;
-  isDisabled: boolean;
-  verificationToken?: string;
-  userRole: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  verificationExpires?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export const UserTable = pgTable('users', {
   id,
   username: varchar('username').notNull(),

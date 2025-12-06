@@ -14,21 +14,24 @@ import { OrganizationTable } from './organizations';
 import { relations } from 'drizzle-orm';
 import { JobListingApplicationTable } from './job-listing-application';
 
-export const wageIntervals = ['hourly', 'yearly'] as const;
+export const wageIntervals = ['hourly', 'yearly', 'monthly'] as const;
 export const locationRequirements = ['in-office', 'hybrid', 'remote'] as const;
-export const experienceLevels = ['junior', 'mid-level', 'senior'] as const;
+export const experienceLevels = [
+  'junior',
+  'mid',
+  'senior',
+  'lead',
+  'ceo',
+  'director',
+] as const;
 export const jobListingStatuses = ['draft', 'published', 'delisted'] as const;
 export const jobListingTypes = [
   'internship',
   'part-time',
   'full-time',
+  'freelance',
+  'contract',
 ] as const;
-
-// type WageInterval = (typeof wageIntervals)[number];
-// type LocationRequirement = (typeof locationRequirements)[number];
-// type ExperienceLevel = (typeof experienceLevels)[number];
-// type JobListingStatus = (typeof jobListingStatuses)[number];
-// type JobListingType = (typeof jobListingTypes)[number];
 
 export const wageIntervalEnum = pgEnum(
   'job_listings_wage_interval',
