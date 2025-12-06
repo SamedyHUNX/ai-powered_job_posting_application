@@ -1,14 +1,12 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
 import {
-  UpdateOrganizationDto,
-} from "@/types/organization.type";
-import {
+  CreateOrganizationResponse,
+  OrganizationDeleteResponse,
   OrganizationResponse,
   OrganizationsListResponse,
-  OrganizationDeleteResponse,
-  CreateOrganizationResponse,
-} from "@/types/response.organization.type";
+  UpdateOrganizationDto,
+} from "@/types/organization.type";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -54,7 +52,6 @@ export const organizationsApi = {
     return data;
   },
 
-
   // Get organizations by user ID
   findByUser: async (userId: string): Promise<OrganizationsListResponse> => {
     const { data } = await api.get<OrganizationsListResponse>(
@@ -63,7 +60,6 @@ export const organizationsApi = {
     return data;
   },
 
-
   // Get a single organization by ID
   findOne: async (id: string): Promise<OrganizationResponse> => {
     const { data } = await api.get<OrganizationResponse>(
@@ -71,7 +67,6 @@ export const organizationsApi = {
     );
     return data;
   },
-
 
   // Update an organization
   update: async (
@@ -104,7 +99,6 @@ export const organizationsApi = {
     return data;
   },
 
-
   // Delete an organization
   remove: async (
     id: string,
@@ -121,7 +115,6 @@ export const organizationsApi = {
     return data;
   },
 
-
   // Verify an organization
   verify: async (id: string, token: string): Promise<OrganizationResponse> => {
     const { data } = await api.post<OrganizationResponse>(
@@ -136,7 +129,6 @@ export const organizationsApi = {
     return data;
   },
 
-
   // Ban an organization
   ban: async (id: string, token: string): Promise<OrganizationResponse> => {
     const { data } = await api.post<OrganizationResponse>(
@@ -150,7 +142,6 @@ export const organizationsApi = {
     );
     return data;
   },
-
 
   // Unban an organization
   unban: async (id: string, token: string): Promise<OrganizationResponse> => {

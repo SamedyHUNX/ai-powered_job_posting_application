@@ -1,15 +1,6 @@
 import axios from 'axios';
 import { env } from '@/data/env/client';
-import {
-    CreateJobListingDto,
-    UpdateJobListingDto,
-} from '@/types/request.job-listing.type';
-import {
-    JobListingResponse,
-    JobListingsListResponse,
-    JobListingDeleteResponse,
-    CreateJobListingResponse,
-} from '@/types/response.job-listing.type';
+import { CreateJobListingDto, CreateJobListingResponse, JobListingDeleteResponse, JobListingResponse, JobListingsListResponse, UpdateJobListingDto } from '@/types/job-listing.type';
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 

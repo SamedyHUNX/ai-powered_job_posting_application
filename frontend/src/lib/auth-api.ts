@@ -1,12 +1,12 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import { SignInRequest } from "@/types/request.auth.type";
 import {
   AuthResponse,
   ForgotPasswordResponse,
   ResetPasswordResponse,
+  SignInRequest,
   VerifyEmailResponse,
-} from "@/types/response.auth.type";
+} from "@/types/auth.type";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 

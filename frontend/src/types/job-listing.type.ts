@@ -62,3 +62,55 @@ export const jobListingTypes = [
   "contract",
   "freelance",
 ] as const;
+
+export interface CreateJobListingDto {
+  organizationId: string;
+  title: string;
+  description: string;
+  wage?: number;
+  wageInterval?: WageInterval;
+  stateAbbreviation?: string;
+  city?: string;
+  isFeatured?: boolean;
+  locationRequirement: LocationRequirement;
+  experienceLevel: ExperienceLevel;
+  status?: JobListingStatus;
+  type: JobListingType;
+  postedAt?: string;
+}
+
+export interface UpdateJobListingDto {
+  title?: string;
+  description?: string;
+  wage?: number;
+  wageInterval?: WageInterval;
+  stateAbbreviation?: string;
+  city?: string;
+  isFeatured?: boolean;
+  locationRequirement?: LocationRequirement;
+  experienceLevel?: ExperienceLevel;
+  status?: JobListingStatus;
+  type?: JobListingType;
+  postedAt?: string;
+}
+
+export interface JobListingResponse {
+  success: boolean;
+  jobListing: JobListing;
+}
+
+export interface JobListingsListResponse {
+  jobListings: JobListing[];
+  count: number;
+}
+
+export interface JobListingDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface CreateJobListingResponse {
+  success: boolean;
+  message: string;
+  jobListing: JobListing;
+}
