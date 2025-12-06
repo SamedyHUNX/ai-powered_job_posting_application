@@ -38,8 +38,7 @@ import { StateSelectItems } from "@/components/customs/StateSelectItem";
 import { Button } from "@/components/ui/button";
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
 
-const NONE_SELECT_VALUE = undefined;
-
+const NONE_SELECT_VALUE = "__none__";
 export function JobListingForm() {
   const validationT = useTranslations("validations.jobListings");
 
@@ -66,84 +65,90 @@ export function JobListingForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 @container"
+        className="h-full flex flex-col @container"
       >
-        <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
-          <FormField
-            name="title"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Title</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="wage"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Wage</FormLabel>
-                <div className="flex">
+        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+          <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
+            <FormField
+              name="title"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    Job Title
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      value={field.value ?? ""}
-                      className="rounded-r-none"
-                      onChange={(e) =>
-                        field.onChange(
-                          isNaN(e.target.valueAsNumber)
-                            ? null
-                            : e.target.valueAsNumber
-                        )
-                      }
-                    />
+                    <Input {...field} />
                   </FormControl>
-                  <FormField
-                    name="wageInterval"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <Select
-                          value={field.value ?? ""}
-                          onValueChange={(val) => field.onChange(val ?? null)}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="rounded-l-none">
-                              / <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {wageIntervals.map((interval) => (
-                              <SelectItem key={interval} value={interval}>
-                                {formatWageInterval(interval)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormDescription>Optional</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
-          <div className="grid grid-cols-1 @xs:grid-cols-2 gap-x-2 gap-y-6 items-start">
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="wage"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    Wage
+                  </FormLabel>
+                  <div className="flex gap-0">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={field.value ?? ""}
+                        className="rounded-r-none flex-1"
+                        onChange={(e) =>
+                          field.onChange(
+                            isNaN(e.target.valueAsNumber)
+                              ? null
+                              : e.target.valueAsNumber
+                          )
+                        }
+                      />
+                    </FormControl>
+                    <FormField
+                      name="wageInterval"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem className="w-[200px]">
+                          <Select
+                            value={field.value ?? ""}
+                            onValueChange={(val) => field.onChange(val ?? null)}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="rounded-l-none">
+                                / <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {wageIntervals.map((interval) => (
+                                <SelectItem key={interval} value={interval}>
+                                  {formatWageInterval(interval)}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormDescription>Optional</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-1 @md:grid-cols-3 gap-x-4 gap-y-6 items-start">
             <FormField
               name="city"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    City
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} value={field.value ?? ""} />
                   </FormControl>
@@ -156,7 +161,9 @@ export function JobListingForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    State
+                  </FormLabel>
                   <Select
                     value={field.value ?? ""}
                     onValueChange={(val) =>
@@ -184,103 +191,115 @@ export function JobListingForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              name="locationRequirement"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    Location Requirement
+                  </FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {locationRequirements.map((lr) => (
+                        <SelectItem key={lr} value={lr}>
+                          {formatLocationRequirement(lr)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
+            <FormField
+              name="type"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    Job Type
+                  </FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {jobListingTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {formatJobType(type)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="experienceLevel"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                    Experience Level
+                  </FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {experienceLevels.map((experience) => (
+                        <SelectItem key={experience} value={experience}>
+                          {formatExperienceLevel(experience)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <FormField
-            name="locationRequirement"
+            name="description"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location Requirement</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {locationRequirements.map((lr) => (
-                      <SelectItem key={lr} value={lr}>
-                        {formatLocationRequirement(lr)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
-          <FormField
-            name="type"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Type</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {jobListingTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {formatJobType(type)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="experienceLevel"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Experience Level</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {experienceLevels.map((experience) => (
-                      <SelectItem key={experience} value={experience}>
-                        {formatExperienceLevel(experience)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormLabel className="text-lg font-medium text-gray-700 tracking-tighter">
+                  Description
+                </FormLabel>
+                <FormControl>
+                  <MarkdownEditor
+                    {...field}
+                    markdown={field.value}
+                    className="min-h-[200px]"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <FormField
-          name="description"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <MarkdownEditor {...field} markdown={field.value} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          disabled={form.formState.isSubmitting}
-          type="submit"
-          className="w-full"
-        >
-          {/* <LoadingSwap isLoading={form.formState.isSubmitting}>
-            Create Job Listing
-          </LoadingSwap> */}
-        </Button>
+        <div className="pt-4 border-t mt-4">
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className="w-full bg-gray-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+          >
+            {form.formState.isSubmitting ? "..." : "Create Job Listing"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

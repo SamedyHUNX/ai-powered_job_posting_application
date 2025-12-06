@@ -9,9 +9,11 @@ import { useOrganization } from "@/hooks/use-organization";
 import { NavBar } from "@/components/customs/Navbar";
 import { BackHomeButton } from "@/components/customs/CustomButtons";
 import PrivateRoute from "@/routes/PrivateRoute";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
+  const isMobile = useIsMobile();
   return (
     <PrivateRoute>
       <AppSidebar
@@ -37,7 +39,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
           )
         }
       >
-        <NavBar />
+        {!isMobile && <NavBar />}
         {children}
       </AppSidebar>
     </PrivateRoute>
