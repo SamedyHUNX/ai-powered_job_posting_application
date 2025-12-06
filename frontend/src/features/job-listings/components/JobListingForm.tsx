@@ -38,6 +38,7 @@ import {
   locationRequirements,
   wageIntervals,
 } from "@/types/job-listing.type";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const NONE_SELECT_VALUE = "__none__";
 
@@ -101,6 +102,7 @@ export function JobListingForm({
 }: JobListingFormProps) {
   const defaultValidationT = useTranslations("validations.jobListings");
   const validationT = translations?.validations ?? defaultValidationT;
+  const isMobile = useIsMobile();
 
   const form = useForm<CreateJobListingFormData>({
     resolver: zodResolver(
@@ -172,7 +174,11 @@ export function JobListingForm({
         className={cn("h-full flex flex-col @container", className)}
       >
         <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-          <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
+          <div
+            className={`grid grid-cols-1 ${
+              !isMobile ? "@md:grid-cols-2" : ""
+            } gap-x-4 gap-y-6 items-start`}
+          >
             {shouldShowField("title") && (
               <FormField
                 name="title"
@@ -263,7 +269,11 @@ export function JobListingForm({
             )}
           </div>
 
-          <div className="grid grid-cols-1 @md:grid-cols-3 gap-x-4 gap-y-6 items-start">
+          <div
+            className={`grid grid-cols-1 ${
+              !isMobile ? "@md:grid-cols-3" : ""
+            } gap-x-4 gap-y-6 items-start`}
+          >
             {shouldShowField("city") && (
               <FormField
                 name="city"
@@ -374,7 +384,11 @@ export function JobListingForm({
             )}
           </div>
 
-          <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
+          <div
+            className={`grid grid-cols-1 ${
+              !isMobile ? "@md:grid-cols-2" : ""
+            } gap-x-4 gap-y-6 items-start`}
+          >
             {shouldShowField("type") && (
               <FormField
                 name="type"

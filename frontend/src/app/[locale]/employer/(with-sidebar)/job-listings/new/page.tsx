@@ -14,7 +14,7 @@ export default function NewJobListingPage() {
   };
 
   return (
-    <div className="w-[95%] mx-auto p-4 h-[calc(100vh-5rem)] flex flex-col">
+    <div className="w-[95%] mx-auto p-4 h-fit flex flex-col">
       <h1 className="text-2xl font-bold mb-2 shrink-0">{pageT("title")}</h1>
       <p className="text-muted-foreground mb-6 shrink-0">
         {pageT("description")}
