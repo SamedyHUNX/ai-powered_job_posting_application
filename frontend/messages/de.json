@@ -71,8 +71,7 @@
     "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
     "alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
     "signIn": "Eintragen",
-    "signUp": "Anmelden",
-    "buttonLoading": "Erstellen..."
+    "signUp": "Anmelden"
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",

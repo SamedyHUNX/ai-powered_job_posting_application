@@ -5,9 +5,10 @@ import { Loading } from "@/components/customs/Loading";
 import { ReactNode } from "react";
 import { useProfile } from "@/hooks/use-profile";
 import { useParams } from "next/navigation";
+import { useLocale } from "next-intl";
 
 export function GlobalLoadingProvider({ children }: { children: ReactNode }) {
-  const { locale } = useParams();
+  const locale = useLocale();
   const { isFetchingCurrentUser } = useProfile();
   const authLoading = useAppSelector(
     (state) =>
@@ -23,17 +24,7 @@ export function GlobalLoadingProvider({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {isGlobalLoading && (
-        <Loading
-          message={
-            locale === "de"
-              ? "Lädt..."
-              : locale === "kh"
-              ? "កំពុងដំណើរការ..."
-              : "Loading..."
-          }
-        />
-      )}
+      {isGlobalLoading && <Loading locale={locale} />}
       {children}
     </>
   );

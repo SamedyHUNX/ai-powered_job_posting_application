@@ -92,3 +92,4 @@ export interface OrganizationDeleteResponse {
   success: boolean;
   message: string;
 }
+

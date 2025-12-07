@@ -175,7 +175,7 @@ export class AuthService {
             fullName: `${firstName} ${lastName}`,
             password: hashedPassword,
             imageUrl,
-            userRole: 'USER', // Explicity set the userRole to 'USER' for security
+            userRole: 'USER', // Explicity set the userRole to 'USER' for security reason
             verificationToken: hashedVerificationToken,
             verificationExpires: verificationExpires,
           })
@@ -197,7 +197,7 @@ export class AuthService {
         });
 
         return {
-          success: true,
+          message: 'User signed up successfully. Please verify your email.',
         };
       } catch (error) {
         // If database insertion falsi, delete the uploaded file from S3
