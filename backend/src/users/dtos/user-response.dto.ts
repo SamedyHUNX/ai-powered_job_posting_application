@@ -24,6 +24,9 @@ export class UserResponseDto {
   imageUrl: string;
 
   @Expose()
+  userRole: string;
+
+  @Expose()
   createdAt: Date;
 
   @Expose()

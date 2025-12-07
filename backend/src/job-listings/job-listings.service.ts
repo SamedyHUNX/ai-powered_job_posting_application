@@ -240,8 +240,9 @@ export class JobListingsService {
         .update(JobListingTable)
         .set({
           ...dto,
-          postedAt: dto.postedAt ? new Date(dto.postedAt) : undefined,
-          updatedAt: new Date(),
+          postedAt: dto.postedAt
+            ? new Date(dto.postedAt)
+            : existingListing.postedAt,
         })
         .where(eq(JobListingTable.id, id))
         .returning();

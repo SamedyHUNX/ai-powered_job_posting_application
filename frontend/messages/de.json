@@ -213,17 +213,18 @@
     }
   },
   "jobSeeker": {
-    "loading": "Ihr Profil wird abgerufen...",
-    "sidebar": {
-      "navMenuGroups": {
-        "findJobs": "Jobs finden",
-        "applications": "Bewerbungen",
-        "profile": "Profil",
-        "settings": "Einstellungen",
-        "aiSearch": "KI Suche",
-        "savedJobs": "Gespeicherte Jobs",
-        "employerDashboard": "Arbeitgeber-Dashboard"
-      }
+    "loading": "Ihr Profil wird abgerufen..."
+  },
+  "sidebar": {
+    "navMenuGroups": {
+      "findJobs": "Jobs finden",
+      "applications": "Bewerbungen",
+      "profile": "Profil",
+      "settings": "Einstellungen",
+      "aiSearch": "KI Suche",
+      "savedJobs": "Gespeicherte Jobs",
+      "employerDashboard": "Arbeitgeber-Dashboard",
+      "superAdminDashboard": "Super-Admin-Dashboard"
     }
   },
   "orgPage": {

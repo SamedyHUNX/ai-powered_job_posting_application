@@ -18,7 +18,8 @@ import PrivateRoute from "@/routes/PrivateRoute";
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
   const { currentUser } = useProfile();
-  const sidebarT = useTranslations("jobSeeker.sidebar.navMenuGroups");
+  const sidebarT = useTranslations("sidebar.navMenuGroups");
+  const isSuperAdmin = currentUser?.userRole === "SUPER-ADMIN";
 
   const href = selectedOrganization
     ? `/employer/organizations/${selectedOrganization.slug}`
@@ -30,24 +31,32 @@ export default function JobSeekerLayout({ children }: { children: ReactNode }) {
         content={
           <SidebarNavMenuGroup
             className="mt-auto"
-            items={[
-              {
-                href: "/",
-                icon: <ClipboardListIcon />,
-                label: sidebarT("findJobs"),
-              },
-              {
-                href: "/ai-search",
-                icon: <BrainCircuitIcon />,
-                label: sidebarT("aiSearch"),
-              },
-              {
-                href,
-                icon: <LayoutDashboard />,
-                label: sidebarT("employerDashboard"),
-                authStatus: currentUser ? "signedIn" : "signedOut",
-              },
-            ]}
+            items={
+              [
+                {
+                  href: "/",
+                  icon: <ClipboardListIcon />,
+                  label: sidebarT("findJobs"),
+                },
+                {
+                  href: "/ai-search",
+                  icon: <BrainCircuitIcon />,
+                  label: sidebarT("aiSearch"),
+                },
+                {
+                  href,
+                  icon: <LayoutDashboard />,
+                  label: sidebarT("employerDashboard"),
+                  authStatus: currentUser ? "signedIn" : "signedOut",
+                },
+                isSuperAdmin && {
+                  href: "/super-admin/dashboard",
+                  icon: <LayoutDashboard />,
+                  label: sidebarT("superAdminDashboard"),
+                  authStatus: currentUser ? "signedIn" : "signedOut",
+                },
+              ].filter(Boolean) as any[]
+            }
           />
         }
         footerButton={<SidebarUserButton />}

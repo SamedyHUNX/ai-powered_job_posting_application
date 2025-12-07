@@ -46,9 +46,9 @@ export class CreateJobListingDto {
     @IsNotEmpty()
     locationRequirement: 'in-office' | 'hybrid' | 'remote';
 
-    @IsEnum(['junior', 'mid-level', 'senior'])
+    @IsEnum(['junior', 'mid', 'senior', 'lead', 'ceo', 'director'])
     @IsNotEmpty()
-    experienceLevel: 'junior' | 'mid-level' | 'senior';
+    experienceLevel: 'junior' | 'mid' | 'senior' | 'lead' | 'ceo' | 'director';
 
     @IsEnum(['draft', 'published', 'delisted'])
     @IsOptional()
@@ -96,9 +96,9 @@ export class UpdateJobListingDto {
     @IsOptional()
     locationRequirement?: 'in-office' | 'hybrid' | 'remote';
 
-    @IsEnum(['junior', 'mid-level', 'senior'])
+    @IsEnum(['junior', 'mid', 'senior', 'lead', 'ceo', 'director'])
     @IsOptional()
-    experienceLevel?: 'junior' | 'mid-level' | 'senior';
+    experienceLevel?: 'junior' | 'mid' | 'senior' | 'lead' | 'ceo' | 'director';
 
     @IsEnum(['draft', 'published', 'delisted'])
     @IsOptional()
