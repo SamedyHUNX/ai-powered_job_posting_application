@@ -24,7 +24,7 @@ import {
   ResetPasswordFormData,
 } from "@/schemas/auth/resetPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function ResetPasswordPage() {
   // Translations

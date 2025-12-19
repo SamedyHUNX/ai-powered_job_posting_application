@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function CreateOrganizationForm() {
   // Translations

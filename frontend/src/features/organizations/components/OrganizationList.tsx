@@ -10,7 +10,7 @@ import {
   OrganizationListTranslations,
 } from "@/types/organization.type";
 import { useProfile } from "@/hooks/use-profile";
-import { CustomDialog } from "@/components/customs/CustomDialog";
+import { CustomDialog } from "@/components/customs/custom-dialog";
 
 const defaultTranslations: OrganizationListTranslations = {
   title: "Choose an account",

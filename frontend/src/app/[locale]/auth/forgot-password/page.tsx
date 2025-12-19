@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { forgotPasswordSchema } from "@/schemas/auth/forgotPasswordSchema";
 import { useErrorHandler } from "@/utils/errorHandler";
 import { Button } from "@/components/ui/button";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function ForgotPasswordPage() {
   // Translations

@@ -26,7 +26,7 @@ import {
   formatLocationRequirement,
   formatWageInterval,
 } from "../lib/formatters";
-import { StateSelectItems } from "@/components/customs/StateSelectItem";
+import { StateSelectItems } from "@/components/customs/state-selection-item";
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
 import {
   CreateJobListingFormData,
@@ -39,7 +39,7 @@ import {
   wageIntervals,
 } from "@/types/job-listing.type";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 const NONE_SELECT_VALUE = "__none__";
 

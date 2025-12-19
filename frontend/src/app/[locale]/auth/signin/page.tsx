@@ -23,8 +23,7 @@ import {
   createSignInSchema,
   SignInFormData,
 } from "@/schemas/auth/signInSchema";
-import { Loading } from "@/components/customs/Loading";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function SigninPage() {
   // Translations

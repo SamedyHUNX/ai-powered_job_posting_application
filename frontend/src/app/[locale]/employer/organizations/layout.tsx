@@ -12,8 +12,8 @@ import {
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
-import { NavBar } from "@/components/customs/Navbar";
-import { BackHomeButton } from "@/components/customs/CustomButtons";
+import { NavBar } from "@/components/customs/navbar";
+import { BackHomeButton } from "@/components/customs/custom-buttons";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocale } from "next-intl";
@@ -22,7 +22,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
   const { selectedOrganization } = useOrganization();
   const locale = useLocale();
   const isMobile = useIsMobile();
-  
+
   return (
     <PrivateRoute>
       <AppSidebar

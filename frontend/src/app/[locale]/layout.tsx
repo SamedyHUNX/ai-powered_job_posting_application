@@ -6,9 +6,9 @@ import { routing } from "@/i18n/routing";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { SWRConfig } from "swr";
+import { Providers } from "@/providers/providers";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
-import { Providers } from "@/providers/providers";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

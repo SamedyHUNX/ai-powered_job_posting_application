@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { CustomDialog } from "@/components/customs/CustomDialog";
+import { CustomDialog } from "@/components/customs/custom-dialog";
 
 interface NoOrganizationDialogProps {
   open: boolean;

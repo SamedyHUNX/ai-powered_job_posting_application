@@ -9,7 +9,7 @@ import {
 } from "../ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut } from "../customs/SignInStatus";
+import { SignedIn, SignedOut } from "../customs/auth-status";
 
 export function SidebarNavMenuGroup({
   items,

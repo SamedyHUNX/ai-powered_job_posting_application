@@ -6,7 +6,7 @@ const translations: Record<string, string> = {
   kh: "កំពុងដំណើរការ...",
 };
 
-export const Loading = ({ locale = "en" }) => {
+export function Loading({ locale = "en" }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
       <div className="relative">
@@ -18,4 +18,4 @@ export const Loading = ({ locale = "en" }) => {
       )}
     </div>
   );
-};
+}

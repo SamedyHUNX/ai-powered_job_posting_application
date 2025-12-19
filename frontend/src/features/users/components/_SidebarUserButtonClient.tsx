@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutButton } from "@/components/customs/CustomButtons";
+import { SignOutButton } from "@/components/customs/custom-buttons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,

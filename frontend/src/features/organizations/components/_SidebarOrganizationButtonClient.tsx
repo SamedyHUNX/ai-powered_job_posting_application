@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User } from "@/store/slices/auth-slice";
-import { SignOutButton } from "@/components/customs/CustomButtons";
+import { SignOutButton } from "@/components/customs/custom-buttons";
 
 export function SidebarOrganizationButtonClient({
   user,

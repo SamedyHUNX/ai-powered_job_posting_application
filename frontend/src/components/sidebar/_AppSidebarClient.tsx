@@ -3,8 +3,8 @@
 import { ReactNode } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ThemeToggle } from "../customs/ThemeToggle";
-import { LanguageSwitcher } from "../customs/LanguageSwitcher";
+import { ThemeToggle } from "../customs/theme-toggle";
+import { LanguageSwitcher } from "../customs/language-switcher";
 
 export function AppSidebarClient({ children }: { children: ReactNode }) {
   const isMobile = useIsMobile();

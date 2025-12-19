@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
-import { NavBar } from "@/components/customs/Navbar";
+import { NavBar } from "@/components/customs/navbar";
 import { useOrganization } from "@/hooks/use-organization";
 import { useTranslations } from "next-intl";
 import { useProfile } from "@/hooks/use-profile";

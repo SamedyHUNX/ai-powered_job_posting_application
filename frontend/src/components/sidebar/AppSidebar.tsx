@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignedIn } from "../customs/SignInStatus";
+import { SignedIn } from "../customs/auth-status";
 import {
   Sidebar,
   SidebarContent,

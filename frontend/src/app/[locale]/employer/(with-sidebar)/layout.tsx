@@ -6,8 +6,8 @@ import { ClipboardListIcon } from "lucide-react";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
 import { useOrganization } from "@/hooks/use-organization";
-import { NavBar } from "@/components/customs/Navbar";
-import { BackHomeButton } from "@/components/customs/CustomButtons";
+import { NavBar } from "@/components/customs/navbar";
+import { BackHomeButton } from "@/components/customs/custom-buttons";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocale } from "next-intl";
@@ -37,7 +37,7 @@ export default function EmployerLayout({ children }: { children: ReactNode }) {
           selectedOrganization ? (
             <SidebarOrganizationButton />
           ) : (
-            <BackHomeButton variant="destructive" locale={locale}/>
+            <BackHomeButton variant="destructive" locale={locale} />
           )
         }
       >

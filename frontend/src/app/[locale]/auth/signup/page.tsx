@@ -24,8 +24,7 @@ import {
   createSignUpSchema,
   SignUpFormData,
 } from "@/schemas/auth/signUpSchema";
-import { Loading } from "@/components/customs/Loading";
-import { LoadingSwap } from "@/components/customs/LoadingSwap";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function SignUpPage() {
   const locale = useLocale();
@@ -70,10 +69,6 @@ export default function SignUpPage() {
       toast.success(successT("signUpSuccess"));
     }
   }, [signUpSuccess, signUpT]);
-
-  if (isSigningUp) {
-    return <Loading />;
-  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
