@@ -73,7 +73,6 @@ export class JobListingsService {
       );
 
       return {
-        success: true,
         message: 'Job listing created successfully',
         jobListing,
       };
@@ -210,7 +209,6 @@ export class JobListingsService {
       }
 
       return {
-        success: true,
         jobListing,
       };
     },
