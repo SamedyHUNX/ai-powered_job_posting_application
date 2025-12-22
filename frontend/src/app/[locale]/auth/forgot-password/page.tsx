@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { forgotPasswordSchema } from "@/schemas/auth/forgotPasswordSchema";
-import { useErrorHandler } from "@/utils/errorHandler";
+import { useErrorHandler } from "@/utils/error-handler";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 

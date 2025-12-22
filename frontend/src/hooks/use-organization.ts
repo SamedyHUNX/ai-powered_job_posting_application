@@ -13,6 +13,7 @@ import {
   setSuccess,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
+import { Organization } from "@/types";
 
 export function useOrganization() {
   const dispatch = useAppDispatch();
@@ -195,18 +196,21 @@ export function useOrganization() {
   // });
 
   // Select organization
-  const selectOrganization = useCallback((orgOrId: string | import("@/types/organization.type").Organization) => {
-    if (typeof orgOrId === "string") {
-      const org = organizations.find((o) => o.id === orgOrId);
-      if (org) {
-        dispatch(setSelectedOrganization(org));
-        localStorage.setItem("selectedOrganization", JSON.stringify(org));
+  const selectOrganization = useCallback(
+    (orgOrId: string | Organization) => {
+      if (typeof orgOrId === "string") {
+        const org = organizations.find((o) => o.id === orgOrId);
+        if (org) {
+          dispatch(setSelectedOrganization(org));
+          localStorage.setItem("selectedOrganization", JSON.stringify(org));
+        }
+      } else {
+        dispatch(setSelectedOrganization(orgOrId));
+        localStorage.setItem("selectedOrganization", JSON.stringify(orgOrId));
       }
-    } else {
-      dispatch(setSelectedOrganization(orgOrId));
-      localStorage.setItem("selectedOrganization", JSON.stringify(orgOrId));
-    }
-  }, [dispatch, organizations]);
+    },
+    [dispatch, organizations]
+  );
 
   // Clear selected organization
   const clearSelectedOrganization = useCallback(() => {

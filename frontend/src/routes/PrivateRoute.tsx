@@ -14,7 +14,6 @@ export default function PrivateRoute({ children }: { children: ReactNode }) {
     }
   }, [isAuthenticated, isInitialized, router]);
 
-
   // Only render children if authenticated
   return <>{isAuthenticated && children}</>;
 }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Organization } from "@/types/organization.type";
+import { Organization } from "@/types";
 
 interface OrganizationsState {
   organizations: Organization[];

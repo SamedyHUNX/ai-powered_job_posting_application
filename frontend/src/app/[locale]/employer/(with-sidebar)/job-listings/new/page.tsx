@@ -2,12 +2,24 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { JobListingForm } from "@/features/job-listings/components/JobListingForm";
+import { useJobListing } from "@/hooks/use-job-listing";
+import { useOrganization } from "@/hooks/use-organization";
+import { CreateJobListingFormData } from "@/schemas/job-listings/createJobListingSchema";
+import { useErrorHandler } from "@/utils/error-handler";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function NewJobListingPage() {
+  // Translations
   const pageT = useTranslations("jobListings.newJobListing");
   const formT = useTranslations("jobListings.form");
   const optionsT = useTranslations("jobListings.form.options");
+  const { getErrorMessage } = useErrorHandler();
+  const { selectedOrganization } = useOrganization();
+
+  const { createJobListing, isCreating, createError, createSuccess } =
+    useJobListing();
 
   const translations = {
     labels: {
@@ -58,10 +70,30 @@ export default function NewJobListingPage() {
     },
   };
 
-  const handleSubmit = async (data: any) => {
-    console.log(data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  const handleSubmit = async (data: CreateJobListingFormData) => {
+    await createJobListing(data);
   };
+
+  // Error toast state management
+  useEffect(() => {
+    if (createError) {
+      const errorMessage = getErrorMessage(createError);
+      toast.error(errorMessage);
+    }
+  }, [createError, getErrorMessage]);
+
+  if (createSuccess) {
+    return (
+      <div className="w-[95%] mx-auto px-4 pt-8 h-fit flex flex-col">
+        <h1 className="text-4xl font-bold mb-2 shrink-0 tracking-tighter">
+          {pageT("successTitle")}
+        </h1>
+        <p className="text-muted-foreground mb-6 shrink-0 tracking-tighter">
+          {pageT("successDescription")}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-[95%] mx-auto px-4 pt-8 h-fit flex flex-col">
@@ -73,7 +105,11 @@ export default function NewJobListingPage() {
       </p>
       <Card className="flex-1 flex flex-col">
         <CardContent className="flex-1 min-h-0 p-6">
-          <JobListingForm onSubmit={handleSubmit} translations={translations} />
+          <JobListingForm
+            onSubmit={handleSubmit}
+            translations={translations}
+            orgId={selectedOrganization!.id}
+          />
         </CardContent>
       </Card>
     </div>

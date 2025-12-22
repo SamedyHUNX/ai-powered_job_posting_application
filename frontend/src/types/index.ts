@@ -1,4 +1,6 @@
+import { CreateJobListingFormData } from "@/schemas/job-listings/createJobListingSchema";
 import { ReactNode } from "react";
+import { UseFormReturn } from "react-hook-form";
 
 // USERS
 export interface User {
@@ -151,8 +153,8 @@ export interface UpdateJobListingDto {
 }
 
 export interface JobListingResponse {
-  success: boolean;
   jobListing: JobListing;
+  message: string;
 }
 
 export interface JobListingsListResponse {
@@ -169,6 +171,54 @@ export interface CreateJobListingResponse {
   success: boolean;
   message: string;
   jobListing: JobListing;
+}
+
+export interface JobListingFormProps {
+  // Core functionality
+  onSubmit: (
+    data: CreateJobListingFormData
+  ) => Promise<CreateJobListingResponse>;
+  defaultValues?: Partial<CreateJobListingFormData>;
+
+  // Customization
+  mode?: "create" | "edit";
+  translations?: {
+    validations?: any;
+    labels?: Partial<Record<keyof CreateJobListingFormData, string>>;
+    descriptions?: Partial<Record<keyof CreateJobListingFormData, string>>;
+    buttons?: {
+      submit?: string;
+      submitting?: string;
+    };
+    options?: {
+      wageIntervals?: Record<string, string>;
+      locationRequirements?: Record<string, string>;
+      jobTypes?: Record<string, string>;
+      experienceLevels?: Record<string, string>;
+      clearState?: string;
+    };
+  };
+
+  // Layout & styling
+  className?: string;
+  buttonClassName?: string;
+  showBorder?: boolean;
+
+  // Field visibility/customization
+  fields?: {
+    show?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
+    disabled?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
+  };
+
+  // Advanced
+  validationSchema?: any;
+  children?: (form: UseFormReturn<CreateJobListingFormData>) => React.ReactNode;
+
+  // Additional props
+  isLoading?: boolean;
+  hideSubmitButton?: boolean;
+
+  orgId?: string;
 }
 
 // ORGANIZATIONS

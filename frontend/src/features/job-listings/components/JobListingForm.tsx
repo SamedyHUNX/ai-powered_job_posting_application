@@ -1,4 +1,4 @@
-import { UseFormReturn, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -32,60 +32,17 @@ import {
   CreateJobListingFormData,
   createJobListingSchema,
 } from "@/schemas/job-listings/createJobListingSchema";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { LoadingSwap } from "@/components/customs/loading-swap";
 import {
   experienceLevels,
+  JobListingFormProps,
   jobListingTypes,
   locationRequirements,
   wageIntervals,
-} from "@/types/job-listing.type";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { LoadingSwap } from "@/components/customs/loading-swap";
+} from "@/types";
 
 const NONE_SELECT_VALUE = "__none__";
-
-interface JobListingFormProps {
-  // Core functionality
-  onSubmit: (data: CreateJobListingFormData) => void | Promise<void>;
-  defaultValues?: Partial<CreateJobListingFormData>;
-
-  // Customization
-  mode?: "create" | "edit";
-  translations?: {
-    validations?: any;
-    labels?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    descriptions?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    buttons?: {
-      submit?: string;
-      submitting?: string;
-    };
-    options?: {
-      wageIntervals?: Record<string, string>;
-      locationRequirements?: Record<string, string>;
-      jobTypes?: Record<string, string>;
-      experienceLevels?: Record<string, string>;
-      clearState?: string;
-    };
-  };
-
-  // Layout & styling
-  className?: string;
-  buttonClassName?: string;
-  showBorder?: boolean;
-
-  // Field visibility/customization
-  fields?: {
-    show?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-    disabled?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-  };
-
-  // Advanced
-  validationSchema?: any;
-  children?: (form: UseFormReturn<CreateJobListingFormData>) => React.ReactNode;
-
-  // Additional props
-  isLoading?: boolean;
-  hideSubmitButton?: boolean;
-}
 
 export function JobListingForm({
   onSubmit,
@@ -100,6 +57,7 @@ export function JobListingForm({
   children,
   isLoading = false,
   hideSubmitButton = false,
+  orgId,
 }: JobListingFormProps) {
   const defaultValidationT = useTranslations("validations.jobListings");
   const validationT = translations?.validations ?? defaultValidationT;
@@ -110,6 +68,7 @@ export function JobListingForm({
       validationSchema ?? createJobListingSchema(validationT)
     ),
     defaultValues: {
+      organizationId: orgId,
       title: "",
       description: "",
       stateAbbreviation: "",
@@ -165,8 +124,6 @@ export function JobListingForm({
     mode === "edit"
       ? translations?.buttons?.submit ?? "Update Job Listing"
       : translations?.buttons?.submit ?? "Create Job Listing";
-
-  const submittingText = translations?.buttons?.submitting ?? "...";
 
   return (
     <Form {...form}>

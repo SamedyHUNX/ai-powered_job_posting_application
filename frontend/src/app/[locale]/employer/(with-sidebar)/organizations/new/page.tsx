@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useErrorHandler } from "@/utils/errorHandler";
+import { useErrorHandler } from "@/utils/error-handler";
 import { useOrganization } from "@/hooks/use-organization";
 import { createOrganizationSchema } from "@/schemas/organizations/createOrganizationSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";

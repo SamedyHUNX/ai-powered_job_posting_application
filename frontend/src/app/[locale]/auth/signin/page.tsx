@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
-import { useErrorHandler } from "@/utils/errorHandler";
+import { useErrorHandler } from "@/utils/error-handler";
 import {
   createSignInSchema,
   SignInFormData,

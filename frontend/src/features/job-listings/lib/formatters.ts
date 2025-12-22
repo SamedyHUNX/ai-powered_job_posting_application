@@ -1,9 +1,10 @@
 import {
   ExperienceLevel,
+  JobListingStatus,
   JobListingType,
   LocationRequirement,
   WageInterval,
-} from "@/types/job-listing.type";
+} from "@/types";
 
 export function formatWageInterval(interval: WageInterval) {
   switch (interval) {
@@ -72,5 +73,18 @@ export function formatJobType(type: JobListingType) {
       return "Freelance";
     default:
       throw new Error(`Unknown job type: ${type satisfies never}`);
+  }
+}
+
+export function formatJobListingStatus(status: JobListingStatus) {
+  switch (status) {
+    case "draft":
+      return "Draft";
+    case "published":
+      return "Active";
+    case "delisted":
+      return "Delisted";
+    default:
+      throw new Error(`Unknown job listing status: ${status satisfies never}`);
   }
 }

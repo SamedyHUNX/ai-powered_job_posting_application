@@ -1,20 +1,25 @@
-import {
-  experienceLevels,
-  jobListingTypes,
-  wageIntervals,
-} from "@/types/job-listing.type";
+import { experienceLevels, jobListingTypes, wageIntervals } from "@/types";
 import { z } from "zod";
 
 export const createJobListingSchema = (t: (key: string) => string) => {
   return z
     .object({
+      organizationId: z.string().min(1),
       title: z.string().min(1, t("jobTitleRequired")),
       description: z.string().min(1, t("jobDescriptionMinLength")),
       experienceLevel: z.enum(experienceLevels, {
         message: t("experienceLevelRequired"),
       }),
-      wage: z.number().optional().nullable(),
-      wageInterval: z.enum(wageIntervals).optional().nullable(),
+      wage: z
+        .number()
+        .optional()
+        .nullable()
+        .transform((val) => val ?? undefined),
+      wageInterval: z
+        .enum(wageIntervals)
+        .optional()
+        .nullable()
+        .transform((val) => val ?? undefined),
       type: z.enum(jobListingTypes, {
         message: t("jobTypeRequired"),
       }),
