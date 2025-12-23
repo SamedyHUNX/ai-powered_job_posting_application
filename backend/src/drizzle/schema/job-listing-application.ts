@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { JobListingTable } from './job-listings';
 import { UserTable } from './users';
-import { createdAt, updatedAt } from '../utils/schema-helpers';
+import { createdAt, updatedAt } from '../../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 
 export const applicationStages = [

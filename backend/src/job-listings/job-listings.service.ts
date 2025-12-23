@@ -13,6 +13,7 @@ import {
   UpdateJobListingDto,
 } from './dtos/job-listing.dto';
 import { catchAsync } from '@/utils/catch-async';
+import { ResponseCode, ResponseHelper } from '@/utils/response-helper';
 
 @Injectable()
 export class JobListingsService {
@@ -29,10 +30,9 @@ export class JobListingsService {
       this.logger.error(
         `Database connection not established at ${this.getTimestamp()}`,
       );
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.dbService.db;
   }

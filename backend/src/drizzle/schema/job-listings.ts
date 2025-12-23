@@ -9,7 +9,7 @@ import {
   index,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { createdAt, id, updatedAt } from '../utils/schema-helpers';
+import { createdAt, id, updatedAt } from '../../utils/schema-helpers';
 import { OrganizationTable } from './organizations';
 import { relations } from 'drizzle-orm';
 import { JobListingApplicationTable } from './job-listing-application';

@@ -1,6 +1,6 @@
 import { pgTable, varchar, boolean, uuid } from 'drizzle-orm/pg-core';
 import { UserTable } from './users';
-import { createdAt, updatedAt } from '../utils/schema-helpers';
+import { createdAt, updatedAt } from '../../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 
 export const UserNotificationSettingsTable = pgTable(

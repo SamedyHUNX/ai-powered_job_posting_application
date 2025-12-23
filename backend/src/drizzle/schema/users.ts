@@ -5,7 +5,7 @@ import {
   timestamp,
   integer,
 } from 'drizzle-orm/pg-core';
-import { createdAt, id, updatedAt } from '../utils/schema-helpers';
+import { createdAt, id, updatedAt } from '../../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 import { UserNotificationSettingsTable } from './user-notification-settings';
 import { UserResumeTable } from './user-resume';

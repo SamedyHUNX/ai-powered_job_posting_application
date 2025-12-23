@@ -16,7 +16,7 @@ import { and, eq, gt, or } from 'drizzle-orm';
 import { S3Service } from '@/s3/s3.service';
 import { AppService } from '@/app.service';
 import { inngest } from '@/inngest/inngest.client';
-import { hashPassword } from '@/drizzle/utils/password.utils';
+import { hashPassword } from '@/utils/password.utils';
 import { capitalizeString } from '@/utils/utils';
 import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { Redis } from 'ioredis';

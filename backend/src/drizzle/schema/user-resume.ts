@@ -1,6 +1,6 @@
 import { varchar, pgTable, uuid } from 'drizzle-orm/pg-core';
 import { UserTable } from './users';
-import { createdAt, updatedAt } from '../utils/schema-helpers';
+import { createdAt, updatedAt } from '../../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 
 export const UserResumeTable = pgTable('user_resumes', {

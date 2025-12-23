@@ -1,10 +1,10 @@
 import { varchar, pgTable, boolean } from 'drizzle-orm/pg-core';
-import { id } from '../utils/schema-helpers';
+import { id } from '../../utils/schema-helpers';
 import { relations } from 'drizzle-orm';
 import { JobListingTable } from './job-listings';
 import { OrganizationUserSettingsTable } from './organization-user-settings';
 import { integer } from 'drizzle-orm/pg-core';
-import { createdAt, updatedAt } from '../utils/schema-helpers';
+import { createdAt, updatedAt } from '../../utils/schema-helpers';
 
 export const OrganizationTable = pgTable('organizations', {
   id,
