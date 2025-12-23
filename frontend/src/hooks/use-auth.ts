@@ -14,7 +14,7 @@ import {
   setError,
   setSuccess,
 } from "@/store/slices/organizations-slice";
-import { SignInRequest } from "@/types/auth.type";
+import { AuthResponse, SignInRequest } from "@/types";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -27,17 +27,23 @@ export function useAuth() {
   // Sign in mutation
   const signInMutation = useMutation({
     mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
-    onSuccess: (data) => {
+    onSuccess: ({ data, message }: AuthResponse) => {
       dispatch(setCredentials({ token: data.token }));
-      dispatch(setUser(data.user));
-      dispatch(setSuccess(data.message));
+      dispatch(setUser(data));
+      dispatch(setSuccess(message));
       dispatch(clearOrganizations());
       localStorage.setItem("access_token", data.token);
 
       router.push(`/${locale}`);
     },
     onError: (err: any) => {
-      dispatch(setError({ message: err.message, code: err.code }));
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
     },
   });
 

@@ -7,9 +7,10 @@ export interface User {
   id: string;
   email: string;
   username: string;
+  firstName: string;
+  lastName: string;
   imageUrl: string;
   userRole: string;
-  isLoading?: boolean;
 }
 
 // AUTHENTICATION
@@ -27,18 +28,19 @@ export interface SignUpRequest {
 }
 
 export interface AuthResponse {
-  user: {
+  status: string;
+  code: number;
+  data: {
     id: string;
     email: string;
     username: string;
     firstName: string;
     lastName: string;
     imageUrl: string;
-    isAdmin: string;
     userRole: string;
+    token: string;
   };
   message: string;
-  token: string;
 }
 
 export interface VerifyEmailResponse {

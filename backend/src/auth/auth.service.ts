@@ -22,6 +22,7 @@ import { SignInDto, SignUpDto } from './dtos/auth.dto';
 import { Redis } from 'ioredis';
 import { REDIS_CLIENT } from '@/redis/redis.module';
 import { catchAsync } from '@/utils/catch-async';
+import { ResponseCode, ResponseHelper } from '@/utils/response-helper';
 
 @Injectable()
 export class AuthService {
@@ -43,10 +44,9 @@ export class AuthService {
       this.logger.error(
         `Database connection not established at ${this.getTimestamp}`,
       );
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.dbService.db;
   }
@@ -54,10 +54,9 @@ export class AuthService {
   private get redisServer() {
     if (!this.redis) {
       this.logger.error(`Redis server is down at ${new Date().toISOString()}`);
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.redis;
   }
@@ -65,10 +64,9 @@ export class AuthService {
   private get s3Server() {
     if (!this.s3Service) {
       this.logger.error(`S3 service is down at ${this.getTimestamp}`);
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.s3Service;
   }
@@ -99,11 +97,9 @@ export class AuthService {
         if (!value) {
           const message = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
           this.logger.error(`Missing ${key}`);
-          throw new ConflictException({
-            code: 'MISSING_FIELDS',
-            message,
-            field: key,
-          });
+          throw new ConflictException(
+            ResponseHelper.error(ResponseCode.MISSING_FIELDS, key),
+          );
         }
       }
 
@@ -119,24 +115,21 @@ export class AuthService {
           this.logger.error(
             `User with email ${email} trying to create an account using existing email!`,
           );
-          throw new ConflictException({
-            code: 'EXISTING_EMAIL',
-            message: 'User with this email already exists',
-          });
+          throw new ConflictException(
+            ResponseHelper.error(ResponseCode.EXISTING_EMAIL),
+          );
         }
         if (existingUser[0].username === username) {
-          throw new ConflictException({
-            code: 'EXISTING_USERNAME',
-            message: 'Username is already taken',
-          });
+          throw new ConflictException(
+            ResponseHelper.error(ResponseCode.EXISTING_USERNAME),
+          );
         }
       }
 
       if (!file || !file.originalname) {
-        throw new ConflictException({
-          code: 'MISSING_PHOTO',
-          message: 'Profile image is required',
-        });
+        throw new ConflictException(
+          ResponseHelper.error(ResponseCode.MISSING_PHOTO),
+        );
       }
 
       // Upload image to S3
@@ -240,10 +233,9 @@ export class AuthService {
 
       if (!user) {
         this.logger.error('Invalid or expired email verification token used');
-        throw new UnauthorizedException({
-          code: 'INVALID_TOKEN',
-          message: 'Invalid or expired token',
-        });
+        throw new UnauthorizedException(
+          ResponseHelper.error(ResponseCode.INVALID_TOKEN),
+        );
       }
 
       // Update user's verified status and clear verification token fields
@@ -257,7 +249,7 @@ export class AuthService {
         .where(eq(UserTable.id, user.id));
 
       this.logger.log(`Email successfully verified for user ID: ${user.id}`);
-      return { message: 'Email has been verified successfully' };
+      return ResponseHelper.success(ResponseCode.EMAIL_VERIFIED);
     },
     this.logger,
     'Failed to verify email',
@@ -270,10 +262,9 @@ export class AuthService {
 
       if (!email || !password) {
         this.logger.error(`User with email ${email} missing required fields`);
-        throw new ConflictException({
-          code: 'MISSING_FIELDS',
-          message: 'Missing required fields',
-        });
+        throw new ConflictException(
+          ResponseHelper.error(ResponseCode.MISSING_FIELDS),
+        );
       }
 
       // Try to get user from Redis cache
@@ -295,37 +286,33 @@ export class AuthService {
           this.logger.error(
             `User with ${email} trying to signin with invalid credentials`,
           );
-          throw new UnauthorizedException({
-            code: 'INVALID_CREDENTIALS',
-            message: 'Invalid credentials',
-          });
+          throw new UnauthorizedException(
+            ResponseHelper.error(ResponseCode.INVALID_CREDENTIALS),
+          );
         }
 
         // Check if user is banned
         if (dbUser.isBanned) {
           this.logger.error(`User with ${email} is banned`);
-          throw new UnauthorizedException({
-            code: 'USER_BANNED',
-            message: 'User is banned',
-          });
+          throw new UnauthorizedException(
+            ResponseHelper.error(ResponseCode.USER_BANNED),
+          );
         }
 
         // Check if user is disabled
         if (dbUser.isDisabled) {
           this.logger.error(`User with ${email} is disabled`);
-          throw new UnauthorizedException({
-            code: 'USER_DISABLED',
-            message: 'User is disabled',
-          });
+          throw new UnauthorizedException(
+            ResponseHelper.error(ResponseCode.USER_DISABLED),
+          );
         }
 
         // Check if user is verified
         if (!dbUser.isVerified) {
           this.logger.error(`User with ${email} is not verified`);
-          throw new UnauthorizedException({
-            code: 'USER_NOT_VERIFIED',
-            message: 'User is not verified',
-          });
+          throw new UnauthorizedException(
+            ResponseHelper.error(ResponseCode.USER_NOT_VERIFIED),
+          );
         }
 
         user = dbUser;
@@ -341,10 +328,9 @@ export class AuthService {
         this.logger.error(
           `User with ${email} trying to signin with invalid password at ${this.getTimestamp()}`,
         );
-        throw new UnauthorizedException({
-          code: 'INVALID_CREDENTIALS',
-          message: 'Invalid credentials',
-        });
+        throw new UnauthorizedException(
+          ResponseHelper.error(ResponseCode.INVALID_CREDENTIALS),
+        );
       }
 
       const payload = {
@@ -355,17 +341,14 @@ export class AuthService {
 
       const token = this.generateToken(payload);
 
-      return {
-        message: 'Signed in successfully',
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          imageUrl: user.imageUrl,
-          userRole: user.userRole,
-        },
+      return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        imageUrl: user.imageUrl,
+        userRole: user.userRole,
         token,
-      };
+      });
     },
     this.logger,
     'Failed to sign in user',
@@ -385,10 +368,9 @@ export class AuthService {
         this.logger.warn(
           `Too many password reset requests from IP: ${ipAddress}`,
         );
-        throw new BadRequestException({
-          code: 'TOO_MANY_REQUESTS',
-          message: 'Too many requests from this IP',
-        });
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.TOO_MANY_REQUESTS),
+        );
       }
 
       // 2. Rate limit by email
@@ -400,10 +382,7 @@ export class AuthService {
       if (emailAttempts > 3) {
         this.logger.warn(`Rate limit exceeded for email: ${email}`);
         // Still return success to prevent enumeration
-        return {
-          success: true,
-          message: 'If an account exists, a reset link has been sent',
-        };
+        return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
       }
 
       // Find user by email
@@ -417,10 +396,7 @@ export class AuthService {
         this.logger.warn(
           `Password reset requested for non-existent email: ${email} at ${this.getTimestamp()}!`,
         );
-        return {
-          success: true,
-          message: 'If an account exists, a reset link has been sent',
-        };
+        return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
       }
 
       // 3. Check for recent token
@@ -428,10 +404,7 @@ export class AuthService {
         user.resetPasswordExpires &&
         user.resetPasswordExpires > new Date(Date.now() - 300000)
       ) {
-        return {
-          success: true,
-          message: 'If an account exists, a reset link has been sent',
-        };
+        return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
       }
 
       // Generate reset token
