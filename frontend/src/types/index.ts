@@ -1,4 +1,4 @@
-import { CreateJobListingFormData } from "@/schemas/job-listings/createJobListingSchema";
+import { CreateJobListingFormData } from "@/schemas/createJobListingSchema";
 import { ReactNode } from "react";
 import { UseFormReturn } from "react-hook-form";
 

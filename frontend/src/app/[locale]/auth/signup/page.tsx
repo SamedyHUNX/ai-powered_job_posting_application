@@ -20,10 +20,7 @@ import { Upload } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/utils/error-handler";
-import {
-  createSignUpSchema,
-  SignUpFormData,
-} from "@/schemas/auth/signUpSchema";
+import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function SignUpPage() {

@@ -436,11 +436,7 @@ export class AuthService {
         },
       });
 
-      return {
-        success: true,
-        email,
-        message: 'A reset link has been sent',
-      };
+      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
     },
     this.logger,
     'Failed to process forgot password request',
@@ -451,7 +447,9 @@ export class AuthService {
       console.log(newPassword, confirmPassword);
       if (newPassword !== confirmPassword) {
         this.logger.error(`User provided non-matching passwords`);
-        throw new BadRequestException('Passwords do not match');
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.PASSWORDS_DO_NOT_MATCH),
+        );
       }
 
       // Hash the token from URL to compare with stored hash
@@ -474,7 +472,9 @@ export class AuthService {
 
       if (!user) {
         this.logger.error('Invalid or expired password reset token used');
-        throw new UnauthorizedException('Invalid or expired token');
+        throw new UnauthorizedException(
+          ResponseHelper.error(ResponseCode.INVALID_TOKEN),
+        );
       }
 
       // Hash new password
@@ -498,7 +498,7 @@ export class AuthService {
       await this.invalidateAllUserSessions(user.id);
 
       this.logger.log(`Password successfully reset for user ID: ${user.id}`);
-      return { success: true, message: 'Password has been reset successfully' };
+      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SUCCESS);
     },
     this.logger,
     'Failed to reset password',
@@ -588,7 +588,9 @@ export class AuthService {
         this.logger.error(
           `User with ID ${payload.sub} not found during validation`,
         );
-        throw new UnauthorizedException('Invalid credentials');
+        throw new UnauthorizedException(
+          ResponseHelper.error(ResponseCode.INVALID_CREDENTIALS),
+        );
       }
 
       // Check if tokenVersion matches
@@ -596,7 +598,9 @@ export class AuthService {
         this.logger.error(
           `Token version mismatch for user ID ${user.id}. Token invalidated.`,
         );
-        throw new UnauthorizedException('Token has been invalidated');
+        throw new UnauthorizedException(
+          ResponseHelper.error(ResponseCode.TOKEN_INVALIDATED),
+        );
       }
 
       return user;

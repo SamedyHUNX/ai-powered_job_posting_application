@@ -31,7 +31,7 @@ import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
 import {
   CreateJobListingFormData,
   createJobListingSchema,
-} from "@/schemas/job-listings/createJobListingSchema";
+} from "@/schemas/createJobListingSchema";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import {

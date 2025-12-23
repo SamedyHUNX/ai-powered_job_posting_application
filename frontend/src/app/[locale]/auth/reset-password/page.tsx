@@ -22,7 +22,7 @@ import { Eye, EyeOff } from "lucide-react";
 import {
   createResetPasswordSchema,
   ResetPasswordFormData,
-} from "@/schemas/auth/resetPasswordSchema";
+} from "@/schemas/resetPasswordSchema";
 import { useErrorHandler } from "@/utils/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 

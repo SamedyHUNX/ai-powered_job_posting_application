@@ -19,10 +19,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import { useErrorHandler } from "@/utils/error-handler";
-import {
-  createSignInSchema,
-  SignInFormData,
-} from "@/schemas/auth/signInSchema";
+import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 
 export default function SigninPage() {
