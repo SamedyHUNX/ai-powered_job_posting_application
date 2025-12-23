@@ -18,6 +18,7 @@ import {
 } from './dtos/organization.dto';
 import { S3Service } from '@/s3/s3.service';
 import { catchAsync } from '@/utils/catch-async';
+import { ResponseCode, ResponseHelper } from '@/utils/response-helper';
 
 @Injectable()
 export class OrganizationsService {
@@ -37,10 +38,9 @@ export class OrganizationsService {
       this.logger.error(
         `Database connection not established at ${this.getTimestamp()}`,
       );
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.dbService.db;
   }
@@ -48,10 +48,9 @@ export class OrganizationsService {
   private get s3Server() {
     if (!this.s3Service) {
       this.logger.error(`S3 service is down at ${this.getTimestamp()}`);
-      throw new InternalServerErrorException({
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable. Please try again later.',
-      });
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
     return this.s3Service;
   }
@@ -76,10 +75,9 @@ export class OrganizationsService {
         this.logger.error(
           `Organization with orgName "${orgName}" already exists`,
         );
-        throw new ConflictException({
-          code: 'ORGANIZATION_EXISTS',
-          message: 'Organization with this name already exists',
-        });
+        throw new ConflictException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_EXISTS),
+        );
       }
 
       let imageUrl: string | undefined;
@@ -100,7 +98,6 @@ export class OrganizationsService {
             orgName,
             imageUrl: imageUrl || dto.imageUrl,
             slug,
-            hasImage: imageUrl || dto.imageUrl ? true : false,
           })
           .returning();
 
@@ -115,10 +112,7 @@ export class OrganizationsService {
           `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
         );
 
-        return {
-          message:
-            'Organization created successfully. Please wait for verification.',
-        };
+        return ResponseHelper.success(ResponseCode.ORGANIZATION_CREATE_SUCCESS);
       } catch (error) {
         // If database insertion fails, delete the uploaded file from S3
         if (imageKey) {
@@ -128,6 +122,7 @@ export class OrganizationsService {
           try {
             await this.s3Server.deleteFile(imageKey);
           } catch (s3Error: any) {
+            // Opt to not alert the user
             this.logger.error(
               `Failed to delete orphaned file ${imageKey}: ${s3Error.message}`,
             );
@@ -148,7 +143,6 @@ export class OrganizationsService {
         orgName: OrganizationTable.orgName,
         imageUrl: OrganizationTable.imageUrl,
         slug: OrganizationTable.slug,
-        hasImage: OrganizationTable.hasImage,
         isVerified: OrganizationTable.isVerified,
         isBanned: OrganizationTable.isBanned,
         membersCount: OrganizationTable.membersCount,
@@ -182,7 +176,12 @@ export class OrganizationsService {
       organizations = await baseQuery;
     }
 
-    return { organizations, count: organizations.length };
+    return ResponseHelper.success(
+      ResponseCode.ORGANIZATION_FETCH_SUCCESS,
+      { organizations },
+      undefined, // customMessage (skip)
+      organizations.length, // count
+    );
   }, this.logger);
 
   // Get organizations by user ID
@@ -194,7 +193,6 @@ export class OrganizationsService {
           orgName: OrganizationTable.orgName,
           imageUrl: OrganizationTable.imageUrl,
           slug: OrganizationTable.slug,
-          hasImage: OrganizationTable.hasImage,
           membersCount: OrganizationTable.membersCount,
           jobsCount: OrganizationTable.jobsCount,
           createdAt: OrganizationTable.createdAt,

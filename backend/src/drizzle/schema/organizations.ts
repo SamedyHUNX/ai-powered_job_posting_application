@@ -11,7 +11,6 @@ export const OrganizationTable = pgTable('organizations', {
   orgName: varchar('org_name').notNull(),
   imageUrl: varchar('image_url'),
   slug: varchar('slug').unique().notNull(),
-  hasImage: boolean('has_image').default(false),
   isVerified: boolean('is_verified').default(false),
   isBanned: boolean('is_banned').default(false),
   membersCount: integer('members_count').default(0),

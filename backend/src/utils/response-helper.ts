@@ -10,6 +10,8 @@ export enum ResponseCode {
   PROFILE_UPDATED = 7,
   ACCOUNT_DELETED = 8,
   EMAIL_VERIFICATION_SENT = 9,
+  ORGANIZATION_CREATE_SUCCESS = 10,
+  ORGANIZATION_FETCH_SUCCESS = 11,
 
   // Service errors (1xxx)
   SERVICE_UNAVAILABLE = 1001,
@@ -28,6 +30,7 @@ export enum ResponseCode {
   EXISTING_EMAIL = 3001,
   EXISTING_USERNAME = 3002,
   MISSING_PHOTO = 3003,
+  ORGANIZATION_EXISTS = 3101,
 
   // Auth errors (4xxx)
   INVALID_TOKEN = 4001,
@@ -57,6 +60,10 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.ACCOUNT_DELETED]: 'Account deleted successfully',
   [ResponseCode.EMAIL_VERIFICATION_SENT]:
     'Verification email sent successfully',
+  [ResponseCode.ORGANIZATION_CREATE_SUCCESS]:
+    'Organization created successfully',
+  [ResponseCode.ORGANIZATION_FETCH_SUCCESS]:
+    'Organzations fetched successfully',
 
   // Service errors
   [ResponseCode.SERVICE_UNAVAILABLE]:
@@ -74,6 +81,8 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.INVALID_EMAIL_FORMAT]: 'Invalid email format',
   [ResponseCode.INVALID_PASSWORD_FORMAT]:
     'Password must be at least 8 characters',
+  [ResponseCode.ORGANIZATION_EXISTS]:
+    'Organization with this name already exists',
 
   // Conflict errors
   [ResponseCode.EXISTING_EMAIL]: 'User with this email already exists',
@@ -101,6 +110,7 @@ export interface ApiResponse<T = any> {
   data?: T;
   field?: string;
   details?: any;
+  count?: number;
 }
 
 // Success response helper
@@ -109,6 +119,7 @@ export interface SuccessResponse<T = any> {
   code: ResponseCode;
   message: string;
   data?: T;
+  count?: number;
 }
 
 // Error response helper
@@ -126,12 +137,14 @@ export class ResponseHelper {
     code: ResponseCode,
     data?: T,
     customMessage?: string,
+    count?: number,
   ): SuccessResponse<T> {
     return {
       status: 'success',
       code,
       message: customMessage || RESPONSE_MESSAGES[code],
       ...(data !== undefined && { data }),
+      count,
     };
   }
 
