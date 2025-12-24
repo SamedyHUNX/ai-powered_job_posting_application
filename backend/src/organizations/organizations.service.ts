@@ -190,23 +190,25 @@ export class OrganizationsService {
   findByUser = catchAsync(
     async (userId: string) => {
       if (!userId) {
-        throw new HttpException(
+        this.logger.error(`Missing userId`);
+        throw new ConflictException(
           ResponseHelper.error(ResponseCode.INVALID_REQUEST_DATA),
-          400,
         );
       }
 
-      const user = await this.dbServer
+      const [user] = await this.dbServer
         .select({ id: UserTable.id })
         .from(UserTable)
         .where(eq(UserTable.id, userId))
         .limit(1);
-      if (!user.length) {
-        throw new HttpException(
-          ResponseHelper.error(ResponseCode.USER_NOT_FOUND, 'userId'),
-          404,
+
+      if (!user) {
+        this.logger.error(`User with id ${userId} not found`);
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.USER_NOT_FOUND),
         );
       }
+
       const organizations = await this.dbServer
         .select({
           id: OrganizationTable.id,
@@ -229,13 +231,7 @@ export class OrganizationsService {
             OrganizationUserSettingsTable.organizationId,
           ),
         )
-        .where(
-          and(
-            eq(OrganizationUserSettingsTable.userId, userId),
-            // eq(OrganizationTable.isVerified, true),
-            // eq(OrganizationTable.isBanned, true),
-          ),
-        );
+        .where(eq(OrganizationUserSettingsTable.userId, userId));
 
       return ResponseHelper.success(
         ResponseCode.ORGANIZATION_FETCH_SUCCESS,

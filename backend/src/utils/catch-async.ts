@@ -37,7 +37,12 @@ export function catchAsync<T>(
       // Log unexpected errors and return a standardized error response
       logger.error(`${errorMessage}: ${error?.message ?? 'Unknown error'}`);
       throw new InternalServerErrorException(
-        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+        ResponseHelper.error(
+          ResponseCode.SERVICE_UNAVAILABLE,
+          undefined,
+          `${errorMessage} — ${error?.message ?? 'Unknown error'}`,
+          process.env.NODE_ENV === 'production' ? undefined : error?.stack,
+        ),
       );
     }
   };

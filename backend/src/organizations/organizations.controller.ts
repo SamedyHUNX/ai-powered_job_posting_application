@@ -23,6 +23,7 @@ import {
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
 import { MulterExceptionFilter } from '@/utils/multer-global-handling';
+import { IdValidationPipe } from '@/utils/validation-pipe';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -69,13 +70,13 @@ export class OrganizationsController {
 
   // Get organizations by user ID: GET /organizations/user/:userId
   @Get('user/:userId')
-  async findByUser(@Param('userId') userId: string) {
+  async findByUser(@Param('userId', IdValidationPipe) userId: string) {
     return this.organizationsService.findByUser(userId);
   }
 
   //Get a single organization by ID: GET /organizations/:id
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', IdValidationPipe) id: string) {
     return this.organizationsService.findOne(id);
   }
 
@@ -84,7 +85,7 @@ export class OrganizationsController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('logo'))
   async update(
-    @Param('id') id: string,
+    @Param('id', IdValidationPipe) id: string,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
@@ -95,7 +96,7 @@ export class OrganizationsController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', IdValidationPipe) id: string) {
     return this.organizationsService.remove(id);
   }
 
@@ -103,7 +104,7 @@ export class OrganizationsController {
   @Post(':id/verify')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async verify(@Param('id') id: string) {
+  async verify(@Param('id', IdValidationPipe) id: string) {
     return this.organizationsService.verify(id);
   }
 
@@ -111,7 +112,7 @@ export class OrganizationsController {
   @Post(':id/ban')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async ban(@Param('id') id: string) {
+  async ban(@Param('id', IdValidationPipe) id: string) {
     return this.organizationsService.ban(id);
   }
 
@@ -119,7 +120,7 @@ export class OrganizationsController {
   @Post(':id/unban')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async unban(@Param('id') id: string) {
+  async unban(@Param('id', IdValidationPipe) id: string) {
     return this.organizationsService.unban(id);
   }
 }
