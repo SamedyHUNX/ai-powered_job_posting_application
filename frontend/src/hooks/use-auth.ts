@@ -27,12 +27,12 @@ export function useAuth() {
   // Sign in mutation
   const signInMutation = useMutation({
     mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
-    onSuccess: ({ data, message }: AuthResponse) => {
-      dispatch(setCredentials({ token: data.token }));
-      dispatch(setUser(data));
+    onSuccess: ({ data: { user }, message }: AuthResponse) => {
+      dispatch(setCredentials({ token: user.token }));
+      dispatch(setUser(user));
       dispatch(setSuccess(message));
       dispatch(clearOrganizations());
-      localStorage.setItem("access_token", data.token);
+      localStorage.setItem("access_token", user.token);
 
       router.push(`/${locale}`);
     },

@@ -11,6 +11,7 @@ export interface User {
   lastName: string;
   imageUrl: string;
   userRole: string;
+  token: string;
 }
 
 // AUTHENTICATION
@@ -31,14 +32,7 @@ export interface AuthResponse {
   status: string;
   code: number;
   data: {
-    id: string;
-    email: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
-    userRole: string;
-    token: string;
+    user: User;
   };
   message: string;
 }

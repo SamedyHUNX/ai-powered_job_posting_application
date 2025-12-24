@@ -5,8 +5,9 @@ import {
   ForgotPasswordResponse,
   ResetPasswordResponse,
   SignInRequest,
+  User,
   VerifyEmailResponse,
-} from "@/types/auth.type";
+} from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -45,7 +46,7 @@ export const authApi = {
 
   // Get user profile
   getProfile: async (token: string) => {
-    const { data } = await api.get("/auth/me", {
+    const { data } = await api.get<User>("/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

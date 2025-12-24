@@ -58,8 +58,9 @@ export const LanguageSwitcher = () => {
 
     // Preserve query parameters
     const queryString = searchParams.toString();
-    const newPath = `/${newLocale}${pathWithoutLocale}${queryString ? `?${queryString}` : ""
-      }`;
+    const newPath = `/${newLocale}${pathWithoutLocale}${
+      queryString ? `?${queryString}` : ""
+    }`;
 
     // Navigate to the new locale path
     router.push(newPath);
@@ -88,8 +89,9 @@ export const LanguageSwitcher = () => {
           <DropdownMenuItem
             key={language.code}
             onClick={() => switchLanguage(language.code)}
-            className={`cursor-pointer ${normalizedLocale === language.code ? "bg-accent" : ""
-              }`}
+            className={`cursor-pointer ${
+              normalizedLocale === language.code ? "bg-accent" : ""
+            }`}
           >
             <span className="text-lg mr-2">{language.flag}</span>
             <span>{language.name}</span>

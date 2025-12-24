@@ -341,13 +341,17 @@ export class AuthService {
 
       const token = this.generateToken(payload);
 
-      return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
+      const resUser = {
         id: user.id,
         email: user.email,
         username: user.username,
         imageUrl: user.imageUrl,
         userRole: user.userRole,
         token,
+      };
+
+      return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
+        user: resUser,
       });
     },
     this.logger,

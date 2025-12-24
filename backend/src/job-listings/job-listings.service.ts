@@ -50,10 +50,9 @@ export class JobListingsService {
         .limit(1);
 
       if (!organization) {
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       // Create job listing
