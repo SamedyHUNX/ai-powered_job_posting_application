@@ -1,4 +1,5 @@
 import { InternalServerErrorException, HttpException } from '@nestjs/common';
+import { ResponseCode, ResponseHelper } from './response-helper';
 
 export function catchAsync<T>(
   fn: (...args: any[]) => Promise<T>,
@@ -9,19 +10,35 @@ export function catchAsync<T>(
     try {
       return await fn(...args);
     } catch (error: any) {
-      // Pass through Nest HTTP exceptions (e.g., UnauthorizedException, ConflictException)
-      if (error instanceof HttpException) {
-        // Optional: avoid double-logging if already logged inside the handler
-        // logger.error(`HTTPException: ${error.message}`);
+      // Pass through Nest HTTP exceptions that already have ResponseHelper structure
+      // We check for instanceof HttpException OR if it looks like one (has getStatus/getResponse methods)
+      // This handles potential package version mismatches where instanceof might fail
+      if (
+        error instanceof HttpException ||
+        (typeof error?.getStatus === 'function' &&
+          typeof error?.getResponse === 'function')
+      ) {
         throw error;
       }
 
-      // Log unexpected errors and return a standardized 500
-      logger.error(`Error: ${error?.message ?? 'Unknown error'}`);
-      throw new InternalServerErrorException({
-        code: 'FETCH_ERROR',
-        message: errorMessage,
-      });
+      // Log details about the unexpected error to help debugging
+      if (process.env.NODE_ENV !== 'production') {
+        const errorDetails = {
+          name: error?.name,
+          constructor: error?.constructor?.name,
+          message: error?.message,
+          stack: error?.stack,
+        };
+        logger.error(
+          `[catchAsync] Unexpected error caught: ${JSON.stringify(errorDetails)}`,
+        );
+      }
+
+      // Log unexpected errors and return a standardized error response
+      logger.error(`${errorMessage}: ${error?.message ?? 'Unknown error'}`);
+      throw new InternalServerErrorException(
+        ResponseHelper.error(ResponseCode.SERVICE_UNAVAILABLE),
+      );
     }
   };
 }

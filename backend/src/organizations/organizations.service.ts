@@ -5,11 +5,13 @@ import {
   ConflictException,
   InternalServerErrorException,
   BadRequestException,
+  HttpException,
 } from '@nestjs/common';
 import { DrizzleService } from '@/drizzle/drizzle.service';
 import {
   OrganizationTable,
   OrganizationUserSettingsTable,
+  UserTable,
 } from '@/drizzle/schema';
 import { eq, like, and } from 'drizzle-orm';
 import {
@@ -187,6 +189,24 @@ export class OrganizationsService {
   // Get organizations by user ID
   findByUser = catchAsync(
     async (userId: string) => {
+      if (!userId) {
+        throw new HttpException(
+          ResponseHelper.error(ResponseCode.INVALID_REQUEST_DATA),
+          400,
+        );
+      }
+
+      const user = await this.dbServer
+        .select({ id: UserTable.id })
+        .from(UserTable)
+        .where(eq(UserTable.id, userId))
+        .limit(1);
+      if (!user.length) {
+        throw new HttpException(
+          ResponseHelper.error(ResponseCode.USER_NOT_FOUND, 'userId'),
+          404,
+        );
+      }
       const organizations = await this.dbServer
         .select({
           id: OrganizationTable.id,

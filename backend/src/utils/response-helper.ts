@@ -30,6 +30,7 @@ export enum ResponseCode {
   PASSWORDS_DO_NOT_MATCH = 2003,
   INVALID_EMAIL_FORMAT = 2004,
   INVALID_PASSWORD_FORMAT = 2005,
+  INVALID_REQUEST_DATA = 2101,
 
   // Conflict errors (3xxx)
   EXISTING_EMAIL = 3001,
@@ -40,14 +41,16 @@ export enum ResponseCode {
   ORGANIZATION_ALREADY_VERIFIED = 3103,
   ORGANIZATION_ALREADY_BANNED = 3104,
   ORGANIZATION_NOT_BANNED = 3105,
+  ORGANIZATION_FETCH_ERROR = 3106,
 
   // Auth errors (4xxx)
   INVALID_TOKEN = 4001,
   EXPIRED_TOKEN = 4002,
   USER_BANNED = 4003,
   USER_DISABLED = 4004,
-  USER_NOT_VERIFIED = 4005,
-  TOKEN_INVALIDATED = 4006,
+  USER_NOT_FOUND = 4005,
+  USER_NOT_VERIFIED = 4006,
+  TOKEN_INVALIDATED = 4007,
 
   // Rate limiting (5xxx)
   TOO_MANY_REQUESTS = 5001,
@@ -107,6 +110,8 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.ORGANIZATION_ALREADY_BANNED]:
     'Organization has already been banned',
   [ResponseCode.ORGANIZATION_NOT_BANNED]: 'Organization is not banned',
+  [ResponseCode.ORGANIZATION_FETCH_ERROR]: 'Failed to fetch organization',
+  [ResponseCode.INVALID_REQUEST_DATA]: 'Missing or invalid request data',
 
   // Conflict errors
   [ResponseCode.EXISTING_EMAIL]: 'User with this email already exists',
@@ -120,6 +125,7 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.USER_DISABLED]: 'User is disabled',
   [ResponseCode.USER_NOT_VERIFIED]: 'User is not verified',
   [ResponseCode.TOKEN_INVALIDATED]: 'Token has been invalidated',
+  [ResponseCode.USER_NOT_FOUND]: 'User not found',
 
   // Rate limiting
   [ResponseCode.TOO_MANY_REQUESTS]: 'Too many requests from this IP',
