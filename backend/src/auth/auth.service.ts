@@ -450,7 +450,6 @@ export class AuthService {
 
   resetPassword = catchAsync(
     async (token: string, newPassword: string, confirmPassword: string) => {
-      console.log(newPassword, confirmPassword);
       if (newPassword !== confirmPassword) {
         this.logger.error(`User provided non-matching passwords`);
         throw new BadRequestException(
