@@ -5,7 +5,7 @@ import { JobListingForm } from "@/features/job-listings/components/JobListingFor
 import { useJobListing } from "@/hooks/use-job-listing";
 import { useOrganization } from "@/hooks/use-organization";
 import { CreateJobListingFormData } from "@/schemas/createJobListingSchema";
-import { useErrorHandler } from "@/utils/error-handler";
+import { useErrorHandler } from "@/lib/error-handler";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { toast } from "sonner";

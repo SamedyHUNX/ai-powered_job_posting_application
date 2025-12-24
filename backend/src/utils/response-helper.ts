@@ -10,8 +10,13 @@ export enum ResponseCode {
   PROFILE_UPDATED = 7,
   ACCOUNT_DELETED = 8,
   EMAIL_VERIFICATION_SENT = 9,
-  ORGANIZATION_CREATE_SUCCESS = 10,
-  ORGANIZATION_FETCH_SUCCESS = 11,
+  ORGANIZATION_CREATE_SUCCESS = 50,
+  ORGANIZATION_FETCH_SUCCESS = 51,
+  ORGANIZATION_UPDATE_SUCCESS = 52,
+  ORGANIZATION_DELETE_SUCCESS = 53,
+  ORGANIZATION_VERIFY_SUCCESS = 54,
+  ORGANIZATION_BAN_SUCCESS = 55,
+  ORGANIZATION_UNBAN_SUCCESS = 56,
 
   // Service errors (1xxx)
   SERVICE_UNAVAILABLE = 1001,
@@ -31,6 +36,10 @@ export enum ResponseCode {
   EXISTING_USERNAME = 3002,
   MISSING_PHOTO = 3003,
   ORGANIZATION_EXISTS = 3101,
+  ORGANIZATION_NOT_FOUND = 3102,
+  ORGANIZATION_ALREADY_VERIFIED = 3103,
+  ORGANIZATION_ALREADY_BANNED = 3104,
+  ORGANIZATION_NOT_BANNED = 3105,
 
   // Auth errors (4xxx)
   INVALID_TOKEN = 4001,
@@ -64,6 +73,15 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
     'Organization created successfully',
   [ResponseCode.ORGANIZATION_FETCH_SUCCESS]:
     'Organzations fetched successfully',
+  [ResponseCode.ORGANIZATION_UPDATE_SUCCESS]:
+    'Organization updated successfully',
+  [ResponseCode.ORGANIZATION_DELETE_SUCCESS]:
+    'Organization deleted successfully',
+  [ResponseCode.ORGANIZATION_VERIFY_SUCCESS]:
+    'Organization verified successfully',
+  [ResponseCode.ORGANIZATION_BAN_SUCCESS]: 'Organization banned successfully',
+  [ResponseCode.ORGANIZATION_UNBAN_SUCCESS]:
+    'Organization unbanned successfully',
 
   // Service errors
   [ResponseCode.SERVICE_UNAVAILABLE]:
@@ -83,6 +101,12 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
     'Password must be at least 8 characters',
   [ResponseCode.ORGANIZATION_EXISTS]:
     'Organization with this name already exists',
+  [ResponseCode.ORGANIZATION_NOT_FOUND]: 'Organization not found',
+  [ResponseCode.ORGANIZATION_ALREADY_VERIFIED]:
+    'Organization has already been verified',
+  [ResponseCode.ORGANIZATION_ALREADY_BANNED]:
+    'Organization has already been banned',
+  [ResponseCode.ORGANIZATION_NOT_BANNED]: 'Organization is not banned',
 
   // Conflict errors
   [ResponseCode.EXISTING_EMAIL]: 'User with this email already exists',

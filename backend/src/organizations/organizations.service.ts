@@ -217,10 +217,12 @@ export class OrganizationsService {
           ),
         );
 
-      return {
-        organizations,
-        count: organizations.length,
-      };
+      return ResponseHelper.success(
+        ResponseCode.ORGANIZATION_FETCH_SUCCESS,
+        { organizations },
+        undefined,
+        organizations.length,
+      );
     },
     this.logger,
     'Failed to fetch user organizations',
@@ -237,16 +239,14 @@ export class OrganizationsService {
 
       if (!organization) {
         this.logger.error(`Organization with ID ${id} not found`);
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
-      return {
-        success: true,
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_FETCH_SUCCESS, {
         organization,
-      };
+      });
     },
     this.logger,
     'Failed to find organization',
@@ -268,10 +268,9 @@ export class OrganizationsService {
 
       if (!existingOrg) {
         this.logger.error(`Organization with ID ${id} not found`);
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       // If orgName is being updated, check for duplicates
@@ -283,10 +282,9 @@ export class OrganizationsService {
           .limit(1);
 
         if (duplicateOrg.length > 0) {
-          throw new ConflictException({
-            code: 'ORGANIZATION_EXISTS',
-            message: 'Organization with this orgName already exists',
-          });
+          throw new ConflictException(
+            ResponseHelper.error(ResponseCode.ORGANIZATION_EXISTS),
+          );
         }
       }
 
@@ -311,10 +309,9 @@ export class OrganizationsService {
 
       this.logger.log(`Organization updated with ID: ${id}`);
 
-      return {
-        success: true,
-        organization: updatedOrg,
-      };
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_UPDATE_SUCCESS, {
+        updatedOrg,
+      });
     },
     this.logger,
     'Failed to update organization',
@@ -332,10 +329,9 @@ export class OrganizationsService {
 
       if (!existingOrg) {
         this.logger.error(`Organization with ID ${id} not found`);
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       // Delete organization
@@ -345,10 +341,7 @@ export class OrganizationsService {
 
       this.logger.log(`Organization deleted with ID: ${id}`);
 
-      return {
-        success: true,
-        message: 'Organization deleted successfully',
-      };
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_DELETE_SUCCESS);
     },
     this.logger,
     'Failed to remove organization',
@@ -364,17 +357,15 @@ export class OrganizationsService {
         .limit(1);
 
       if (!organization) {
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       if (organization.isVerified) {
-        throw new BadRequestException({
-          code: 'ALREADY_VERIFIED',
-          message: 'Organization is already verified',
-        });
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_ALREADY_VERIFIED),
+        );
       }
 
       const [updatedOrg] = await this.dbServer
@@ -385,10 +376,9 @@ export class OrganizationsService {
 
       this.logger.log(`Organization verified with ID: ${id}`);
 
-      return {
-        success: true,
-        organization: updatedOrg,
-      };
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_VERIFY_SUCCESS, {
+        updatedOrg,
+      });
     },
     this.logger,
     'Failed to verify organization',
@@ -404,17 +394,15 @@ export class OrganizationsService {
         .limit(1);
 
       if (!organization) {
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       if (organization.isBanned) {
-        throw new BadRequestException({
-          code: 'ALREADY_BANNED',
-          message: 'Organization is already banned',
-        });
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_ALREADY_BANNED),
+        );
       }
 
       const [updatedOrg] = await this.dbServer
@@ -425,10 +413,7 @@ export class OrganizationsService {
 
       this.logger.log(`Organization banned with ID: ${id}`);
 
-      return {
-        success: true,
-        organization: updatedOrg,
-      };
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_BAN_SUCCESS);
     },
     this.logger,
     'Failed to ban organization',
@@ -444,17 +429,15 @@ export class OrganizationsService {
         .limit(1);
 
       if (!organization) {
-        throw new NotFoundException({
-          code: 'ORGANIZATION_NOT_FOUND',
-          message: 'Organization not found',
-        });
+        throw new NotFoundException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_FOUND),
+        );
       }
 
       if (!organization.isBanned) {
-        throw new BadRequestException({
-          code: 'NOT_BANNED',
-          message: 'Organization is not banned',
-        });
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.ORGANIZATION_NOT_BANNED),
+        );
       }
 
       const [updatedOrg] = await this.dbServer
@@ -465,10 +448,9 @@ export class OrganizationsService {
 
       this.logger.log(`Organization unbanned with ID: ${id}`);
 
-      return {
-        success: true,
-        organization: updatedOrg,
-      };
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_UNBAN_SUCCESS, {
+        updatedOrg,
+      });
     },
     this.logger,
     'Failed to unban organization',
