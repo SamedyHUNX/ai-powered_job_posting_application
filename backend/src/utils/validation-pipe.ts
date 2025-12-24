@@ -6,11 +6,7 @@ export class IdValidationPipe implements PipeTransform {
   transform(value: any) {
     if (!isUuid(value)) {
       throw new BadRequestException(
-        ResponseHelper.error(
-          ResponseCode.INVALID_REQUEST_DATA,
-          undefined,
-          'Invalid ID',
-        ),
+        ResponseHelper.error(ResponseCode.INVALID_REQUEST_DATA),
       );
     }
     return value;
