@@ -76,7 +76,7 @@ export function useAuth() {
     onSuccess: (data) => {
       router.push(
         `/auth/forgot-password/email-sent?email=${encodeURIComponent(
-          data.email
+          data.user.email
         )}`
       );
     },

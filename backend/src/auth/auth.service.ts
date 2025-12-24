@@ -441,7 +441,7 @@ export class AuthService {
       });
 
       return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT, {
-        email,
+        user: email,
       });
     },
     this.logger,

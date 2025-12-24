@@ -55,7 +55,7 @@ export const authApi = {
   forgotPassword: async (
     email: string,
     locale: string
-  ): Promise<{ email: string }> => {
+  ): Promise<{ user: User }> => {
     const {
       data: { data },
     } = await api.post(

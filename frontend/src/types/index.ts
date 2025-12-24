@@ -33,8 +33,7 @@ export interface AuthResponse {
   code: number;
   message: string;
   data: {
-    user?: User;
-    email?: string;
+    user: User;
   };
 }
 
