@@ -31,10 +31,11 @@ export interface SignUpRequest {
 export interface AuthResponse {
   status: string;
   code: number;
-  data: {
-    user: User;
-  };
   message: string;
+  data: {
+    user?: User;
+    email?: string;
+  };
 }
 
 export interface VerifyEmailResponse {

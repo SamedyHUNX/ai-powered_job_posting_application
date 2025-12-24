@@ -440,7 +440,9 @@ export class AuthService {
         },
       });
 
-      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
+      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT, {
+        email,
+      });
     },
     this.logger,
     'Failed to process forgot password request',

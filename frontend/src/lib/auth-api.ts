@@ -2,8 +2,6 @@ import axios from "axios";
 import { env } from "@/data/env/client";
 import {
   AuthResponse,
-  ForgotPasswordResponse,
-  ResetPasswordResponse,
   SignInRequest,
   User,
   VerifyEmailResponse,
@@ -57,8 +55,10 @@ export const authApi = {
   forgotPassword: async (
     email: string,
     locale: string
-  ): Promise<ForgotPasswordResponse> => {
-    const { data } = await api.post<ForgotPasswordResponse>(
+  ): Promise<{ email: string }> => {
+    const {
+      data: { data },
+    } = await api.post(
       "/auth/forgot-password",
       { email },
       {
@@ -74,11 +74,12 @@ export const authApi = {
     token: string,
     newPassword: string,
     confirmPassword: string
-  ): Promise<ResetPasswordResponse> => {
-    const { data } = await api.post<ResetPasswordResponse>(
-      "/auth/reset-password",
-      { token, newPassword, confirmPassword }
-    );
+  ): Promise<AuthResponse> => {
+    const { data } = await api.post<AuthResponse>("/auth/reset-password", {
+      token,
+      newPassword,
+      confirmPassword,
+    });
     return data;
   },
 };
