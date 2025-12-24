@@ -5,7 +5,6 @@ import {
   ConflictException,
   InternalServerErrorException,
   BadRequestException,
-  HttpException,
 } from '@nestjs/common';
 import { DrizzleService } from '@/drizzle/drizzle.service';
 import {
