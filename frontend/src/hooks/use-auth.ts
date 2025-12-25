@@ -16,6 +16,17 @@ import {
 } from "@/store/slices/organizations-slice";
 import { AuthResponse, AuthRequest } from "@/types";
 
+/**
+ * Exposes authentication state, mutation controls, and a logout action for use in components.
+ *
+ * Provides current auth state (user, token, isAuthenticated, isInitialized, isLoading), mutation
+ * functions for sign-in, sign-up, email verification, forgot-password, and reset-password flows,
+ * and a logout function. Each mutation surface includes convenience flags and error objects
+ * (e.g., isPending/isSuccess and error) to drive UI state.
+ *
+ * @returns An object containing auth state values, mutation controls and status/error flags for:
+ * signIn, signUp, verifyEmail, forgotPassword, resetPassword, and the logout action.
+ */
 export function useAuth() {
   const dispatch = useAppDispatch();
   const { user, token, isAuthenticated, isInitialized, isLoading } =

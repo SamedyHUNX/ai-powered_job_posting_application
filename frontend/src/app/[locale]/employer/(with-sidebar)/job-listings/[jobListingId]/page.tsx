@@ -8,6 +8,14 @@ type Props = {
   params: { jobListingId: string };
 };
 
+/**
+ * Renders the job listing page for the provided jobListingId within the currently selected organization.
+ *
+ * If no organization is selected the component returns `null`. If the job listing cannot be found it triggers Next.js's `notFound()` (rendering a 404).
+ *
+ * @param params - Route parameters containing the `jobListingId` to fetch
+ * @returns A React element for the job listing page, `null` when no organization is selected, or a 404 via `notFound()` when the job listing is not found
+ */
 export default async function JobListingPage({ params }: Props) {
   const { selectedOrganization } = useOrganization();
   const { fetchJobListingById } = useJobListing();
