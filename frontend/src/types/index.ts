@@ -11,50 +11,24 @@ export interface User {
   lastName: string;
   imageUrl: string;
   userRole: string;
+  token: string;
 }
 
-// AUTHENTICATION
-export interface SignInRequest {
+export interface AuthRequest {
   email: string;
   password: string;
-}
-
-export interface SignUpRequest {
   name: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
 }
 
 export interface AuthResponse {
   status: string;
   code: number;
+  message: string;
   data: {
-    id: string;
-    email: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
-    userRole: string;
-    token: string;
+    user: User;
   };
-  message: string;
-}
-
-export interface VerifyEmailResponse {
-  code?: string;
-  message: string;
-}
-
-export interface ForgotPasswordResponse {
-  email: string;
-  message: string;
-}
-
-export interface ResetPasswordResponse {
-  message: string;
 }
 
 // JOB LISTINGS
@@ -123,7 +97,7 @@ export const jobListingTypes = [
   "freelance",
 ] as const;
 
-export interface CreateJobListingDto {
+export interface JobListingRequest {
   organizationId: string;
   title: string;
   description: string;
@@ -139,92 +113,17 @@ export interface CreateJobListingDto {
   postedAt?: string;
 }
 
-export interface UpdateJobListingDto {
-  title?: string;
-  description?: string;
-  wage?: number;
-  wageInterval?: WageInterval;
-  stateAbbreviation?: string;
-  city?: string;
-  isFeatured?: boolean;
-  locationRequirement?: LocationRequirement;
-  experienceLevel?: ExperienceLevel;
-  status?: JobListingStatus;
-  type?: JobListingType;
-  postedAt?: string;
-}
-
 export interface JobListingResponse {
-  jobListing: JobListing;
+  success: string;
+  code: number;
   message: string;
-}
-
-export interface JobListingsListResponse {
-  jobListings: JobListing[];
+  data: {
+    jobListing: JobListing[];
+  };
   count: number;
 }
 
-export interface JobListingDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-export interface CreateJobListingResponse {
-  success: boolean;
-  message: string;
-  jobListing: JobListing;
-}
-
-export interface JobListingFormProps {
-  // Core functionality
-  onSubmit: (
-    data: CreateJobListingFormData
-  ) => Promise<CreateJobListingResponse>;
-  defaultValues?: Partial<CreateJobListingFormData>;
-
-  // Customization
-  mode?: "create" | "edit";
-  translations?: {
-    validations?: any;
-    labels?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    descriptions?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    buttons?: {
-      submit?: string;
-      submitting?: string;
-    };
-    options?: {
-      wageIntervals?: Record<string, string>;
-      locationRequirements?: Record<string, string>;
-      jobTypes?: Record<string, string>;
-      experienceLevels?: Record<string, string>;
-      clearState?: string;
-    };
-  };
-
-  // Layout & styling
-  className?: string;
-  buttonClassName?: string;
-  showBorder?: boolean;
-
-  // Field visibility/customization
-  fields?: {
-    show?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-    disabled?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-  };
-
-  // Advanced
-  validationSchema?: any;
-  children?: (form: UseFormReturn<CreateJobListingFormData>) => React.ReactNode;
-
-  // Additional props
-  isLoading?: boolean;
-  hideSubmitButton?: boolean;
-
-  orgId?: string;
-}
-
 // ORGANIZATIONS
-
 export interface Organization {
   id: string;
   orgName: string;
@@ -241,79 +140,19 @@ export interface Organization {
   updatedAt: string;
 }
 
-export interface OrganizationListTranslations {
-  title: string;
-  subTitle: string;
-  loadingText: string;
-  createOrganization: string;
-  securedBy: string;
-  contactSupport: string;
-  nevermind: string;
-  organizationBanned: {
-    title: string;
-    message: string;
-  };
-  verificationRequired: {
-    title: string;
-    message: string;
-  };
-  badges: {
-    banned: string;
-    unverified: string;
-    verified: string;
-  };
-  memberCount: {
-    singular: string;
-    plural: string;
-  };
-  jobCount: {
-    singular: string;
-    plural: string;
-  };
-}
-
-export interface OrganizationListProps {
-  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
-  appearance?: {
-    elements?: Record<string, string>;
-    variables?: Record<string, string>;
-  };
-  fallback?: ReactNode;
-  hidePersonal?: boolean;
-  hideSlug?: boolean;
-  skipInvitationScreen?: boolean;
-  translations?: OrganizationListTranslations;
-}
-
-export interface CreateOrganizationDto {
+export interface OrganizationsRequest {
   orgName: string;
-  imageUrl?: string;
+  imageUrl: string | undefined;
+  isVerified: boolean;
+  isBanned: boolean;
 }
 
-export interface UpdateOrganizationDto {
-  orgName?: string;
-  imageUrl?: string;
-  isVerified?: boolean;
-  isBanned?: boolean;
-}
-
-export interface CreateOrganizationResponse {
+export interface OrganizationsResponse {
+  success: string;
   message: string;
-}
-
-export interface OrganizationResponse {
-  success: boolean;
-  organization: Organization;
-}
-
-export interface OrganizationsListResponse {
-  organizations: Organization[];
+  code: number;
+  data: {
+    organizations: Organization[];
+  };
   count: number;
-}
-
-export interface OrganizationDeleteResponse {
-  success: boolean;
-  message: string;
 }

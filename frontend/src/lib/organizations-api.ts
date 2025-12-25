@@ -1,12 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import {
-  CreateOrganizationResponse,
-  OrganizationDeleteResponse,
-  OrganizationResponse,
-  OrganizationsListResponse,
-  UpdateOrganizationDto,
-} from "@/types/organization.type";
+import { OrganizationsRequest, OrganizationsResponse } from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -22,17 +16,15 @@ export const organizationsApi = {
   create: async (
     formData: FormData,
     token: string
-  ): Promise<CreateOrganizationResponse> => {
-    const { data } = await api.post<CreateOrganizationResponse>(
-      "/organizations",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >("/organizations", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -40,41 +32,43 @@ export const organizationsApi = {
   findAll: async (
     search?: string,
     isVerified?: boolean
-  ): Promise<OrganizationsListResponse> => {
+  ): Promise<OrganizationsResponse> => {
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (isVerified !== undefined)
       params.append("isVerified", String(isVerified));
 
-    const { data } = await api.get<OrganizationsListResponse>(
+    const { data } = await api.get<OrganizationsResponse>(
       `/organizations?${params.toString()}`
     );
     return data;
   },
 
   // Get organizations by user ID
-  findByUser: async (userId: string): Promise<OrganizationsListResponse> => {
-    const { data } = await api.get<OrganizationsListResponse>(
+  findByUser: async (userId: string): Promise<OrganizationsResponse> => {
+    const { data } = await api.get<OrganizationsResponse>(
       `/organizations/user/${userId}`
     );
     return data;
   },
 
   // Get a single organization by ID
-  findOne: async (id: string): Promise<OrganizationResponse> => {
-    const { data } = await api.get<OrganizationResponse>(
-      `/organizations/${id}`
-    );
+  findOne: async (
+    id: string
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.get<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(`/organizations/${id}`);
     return data;
   },
 
   // Update an organization
   update: async (
     id: string,
-    dto: UpdateOrganizationDto,
+    dto: Partial<OrganizationsRequest>,
     token: string,
     file?: File
-  ): Promise<OrganizationResponse> => {
+  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
     const formData = new FormData();
     if (dto.orgName) formData.append("orgName", dto.orgName);
     if (dto.imageUrl) formData.append("imageUrl", dto.imageUrl);
@@ -86,16 +80,14 @@ export const organizationsApi = {
       formData.append("logo", file);
     }
 
-    const { data } = await api.patch<OrganizationResponse>(
-      `/organizations/${id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await api.patch<
+      Pick<OrganizationsResponse, "code" | "message" | "data">
+    >(`/organizations/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -103,21 +95,25 @@ export const organizationsApi = {
   remove: async (
     id: string,
     token: string
-  ): Promise<OrganizationDeleteResponse> => {
-    const { data } = await api.delete<OrganizationDeleteResponse>(
-      `/organizations/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.delete<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(`/organizations/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
   // Verify an organization
-  verify: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  verify: async (
+    id: string,
+    token: string
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(
       `/organizations/${id}/verify`,
       {},
       {
@@ -130,8 +126,13 @@ export const organizationsApi = {
   },
 
   // Ban an organization
-  ban: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  ban: async (
+    id: string,
+    token: string
+  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message" | "data">
+    >(
       `/organizations/${id}/ban`,
       {},
       {
@@ -144,8 +145,13 @@ export const organizationsApi = {
   },
 
   // Unban an organization
-  unban: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  unban: async (
+    id: string,
+    token: string
+  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message" | "data">
+    >(
       `/organizations/${id}/unban`,
       {},
       {

@@ -28,6 +28,7 @@ export default function SigninPage() {
   const signInT = (key: string) => t(`signIn.${key}`);
   const validationT = (key: string) => t(`validations.${key}`);
   const successT = (key: string) => t(`apiSuccess.${key}`);
+  const errorT = (key: string) => t(`apiErrors.${key}`);
 
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();

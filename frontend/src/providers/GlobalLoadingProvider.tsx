@@ -4,7 +4,7 @@ import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
 import { useProfile } from "@/hooks/use-profile";
 import { useLocale } from "next-intl";
-import { Loading } from "@/components/customs/Loading";
+import { Loading } from "@/components/customs/loading";
 
 export function GlobalLoadingProvider({ children }: { children: ReactNode }) {
   const locale = useLocale();

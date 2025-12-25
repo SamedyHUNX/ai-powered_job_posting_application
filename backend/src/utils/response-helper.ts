@@ -55,6 +55,8 @@ export enum ResponseCode {
   // Rate limiting (5xxx)
   TOO_MANY_REQUESTS = 5001,
   RATE_LIMIT_EXCEEDED = 5002,
+
+  UNKNOWN_ERROR = 9999,
 }
 
 export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
@@ -66,7 +68,7 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.SIGNOUT_SUCCESS]: 'Signed out successfully',
   [ResponseCode.EMAIL_VERIFIED]: 'Email has been verified successfully',
   [ResponseCode.PASSWORD_RESET_SENT]:
-    'A reset link has been sent to your email',
+    'If the email exists, a reset link has been sent',
   [ResponseCode.PASSWORD_RESET_SUCCESS]: 'Password has been reset successfully',
   [ResponseCode.PROFILE_UPDATED]: 'Profile updated successfully',
   [ResponseCode.ACCOUNT_DELETED]: 'Account deleted successfully',
@@ -131,6 +133,10 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.TOO_MANY_REQUESTS]: 'Too many requests from this IP',
   [ResponseCode.RATE_LIMIT_EXCEEDED]:
     'Rate limit exceeded. Please try again later.',
+
+  // Unknown
+  [ResponseCode.UNKNOWN_ERROR]:
+    'An unknown error occurred. Please try again later',
 };
 
 export interface ApiResponse<T = any> {

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { formatJobListingStatus } from "@/features/job-listings/lib/formatters";
 import { useJobListing } from "@/hooks/use-job-listing";
-import { useOrganization } from "@/hooks/use-organization";
+import { useOrganization } from "@/hooks/use-organizations";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -30,7 +30,7 @@ export default async function JobListingPage({ params }: Props) {
           </h1>
         </div>
         <div className="flex flex-wrap gap-2 mt-2">
-            <Badge>{formatJobListingStatus(jobListing.status)}</Badge>
+          <Badge>{formatJobListingStatus(jobListing.status)}</Badge>
         </div>
       </div>
     </div>

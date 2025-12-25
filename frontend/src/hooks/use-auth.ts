@@ -14,7 +14,7 @@ import {
   setError,
   setSuccess,
 } from "@/store/slices/organizations-slice";
-import { AuthResponse, SignInRequest } from "@/types";
+import { AuthResponse, AuthRequest } from "@/types";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -26,13 +26,14 @@ export function useAuth() {
 
   // Sign in mutation
   const signInMutation = useMutation({
-    mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
-    onSuccess: ({ data, message }: AuthResponse) => {
-      dispatch(setCredentials({ token: data.token }));
-      dispatch(setUser(data));
+    mutationFn: (credentials: Partial<AuthRequest>) =>
+      authApi.signIn(credentials),
+    onSuccess: ({ data: { user }, message }: AuthResponse) => {
+      dispatch(setCredentials({ token: user.token }));
+      dispatch(setUser(user));
       dispatch(setSuccess(message));
       dispatch(clearOrganizations());
-      localStorage.setItem("access_token", data.token);
+      localStorage.setItem("access_token", user.token);
 
       router.push(`/${locale}`);
     },
@@ -59,6 +60,15 @@ export function useAuth() {
     onSuccess: () => {
       router.push("/auth/signin");
     },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
+    },
   });
 
   // Verify email mutation
@@ -66,6 +76,15 @@ export function useAuth() {
     mutationFn: (token: string) => authApi.verifyEmail(token),
     onSuccess: () => {
       router.push("/auth/signin");
+    },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
     },
   });
 
@@ -76,8 +95,17 @@ export function useAuth() {
     onSuccess: (data) => {
       router.push(
         `/auth/forgot-password/email-sent?email=${encodeURIComponent(
-          data.email
+          data.user.email
         )}`
+      );
+    },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
       );
     },
   });
@@ -92,6 +120,15 @@ export function useAuth() {
       authApi.resetPassword(token, newPassword, confirmPassword),
     onSuccess: () => {
       router.push("/auth/signin");
+    },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
     },
   });
 

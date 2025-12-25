@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -36,13 +36,61 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import {
   experienceLevels,
-  JobListingFormProps,
+  JobListingResponse,
   jobListingTypes,
   locationRequirements,
   wageIntervals,
 } from "@/types";
 
 const NONE_SELECT_VALUE = "__none__";
+
+export interface JobListingFormProps {
+  // Core functionality
+  onSubmit: (
+    data: CreateJobListingFormData
+  ) => Promise<Partial<JobListingResponse>>;
+  defaultValues?: Partial<CreateJobListingFormData>;
+
+  // Customization
+  mode?: "create" | "edit";
+  translations?: {
+    validations?: any;
+    labels?: Partial<Record<keyof CreateJobListingFormData, string>>;
+    descriptions?: Partial<Record<keyof CreateJobListingFormData, string>>;
+    buttons?: {
+      submit?: string;
+      submitting?: string;
+    };
+    options?: {
+      wageIntervals?: Record<string, string>;
+      locationRequirements?: Record<string, string>;
+      jobTypes?: Record<string, string>;
+      experienceLevels?: Record<string, string>;
+      clearState?: string;
+    };
+  };
+
+  // Layout & styling
+  className?: string;
+  buttonClassName?: string;
+  showBorder?: boolean;
+
+  // Field visibility/customization
+  fields?: {
+    show?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
+    disabled?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
+  };
+
+  // Advanced
+  validationSchema?: any;
+  children?: (form: UseFormReturn<CreateJobListingFormData>) => React.ReactNode;
+
+  // Additional props
+  isLoading?: boolean;
+  hideSubmitButton?: boolean;
+
+  orgId?: string;
+}
 
 export function JobListingForm({
   onSubmit,

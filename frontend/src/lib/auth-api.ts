@@ -1,12 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import {
-  AuthResponse,
-  ForgotPasswordResponse,
-  ResetPasswordResponse,
-  SignInRequest,
-  VerifyEmailResponse,
-} from "@/types/auth.type";
+import { AuthResponse, AuthRequest, User } from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -19,7 +13,7 @@ const api = axios.create({
 
 export const authApi = {
   // Signin
-  signIn: async (credentials: SignInRequest): Promise<AuthResponse> => {
+  signIn: async (credentials: Partial<AuthRequest>): Promise<AuthResponse> => {
     const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
     return data;
   },
@@ -36,16 +30,19 @@ export const authApi = {
   },
 
   // Verify Email
-  verifyEmail: async (token: string): Promise<VerifyEmailResponse> => {
-    const { data } = await api.post<VerifyEmailResponse>("/auth/verify-email", {
-      token,
-    });
+  verifyEmail: async (token: string): Promise<Partial<AuthResponse>> => {
+    const { data } = await api.post<Partial<AuthResponse>>(
+      "/auth/verify-email",
+      {
+        token,
+      }
+    );
     return data;
   },
 
   // Get user profile
   getProfile: async (token: string) => {
-    const { data } = await api.get("/auth/me", {
+    const { data } = await api.get<User>("/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -56,8 +53,10 @@ export const authApi = {
   forgotPassword: async (
     email: string,
     locale: string
-  ): Promise<ForgotPasswordResponse> => {
-    const { data } = await api.post<ForgotPasswordResponse>(
+  ): Promise<{ user: User }> => {
+    const {
+      data: { data },
+    } = await api.post(
       "/auth/forgot-password",
       { email },
       {
@@ -73,11 +72,12 @@ export const authApi = {
     token: string,
     newPassword: string,
     confirmPassword: string
-  ): Promise<ResetPasswordResponse> => {
-    const { data } = await api.post<ResetPasswordResponse>(
-      "/auth/reset-password",
-      { token, newPassword, confirmPassword }
-    );
+  ): Promise<AuthResponse> => {
+    const { data } = await api.post<AuthResponse>("/auth/reset-password", {
+      token,
+      newPassword,
+      confirmPassword,
+    });
     return data;
   },
 };

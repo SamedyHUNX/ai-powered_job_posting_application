@@ -341,13 +341,17 @@ export class AuthService {
 
       const token = this.generateToken(payload);
 
-      return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
+      const resUser = {
         id: user.id,
         email: user.email,
         username: user.username,
         imageUrl: user.imageUrl,
         userRole: user.userRole,
         token,
+      };
+
+      return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
+        user: resUser,
       });
     },
     this.logger,
@@ -436,7 +440,11 @@ export class AuthService {
         },
       });
 
-      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT);
+      return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT, {
+        user: {
+          email,
+        },
+      });
     },
     this.logger,
     'Failed to process forgot password request',
@@ -444,7 +452,6 @@ export class AuthService {
 
   resetPassword = catchAsync(
     async (token: string, newPassword: string, confirmPassword: string) => {
-      console.log(newPassword, confirmPassword);
       if (newPassword !== confirmPassword) {
         this.logger.error(`User provided non-matching passwords`);
         throw new BadRequestException(
@@ -578,6 +585,11 @@ export class AuthService {
 
   validateUser = catchAsync(
     async (payload: any) => {
+      if (!payload) {
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.INVALID_REQUEST_DATA),
+        );
+      }
       const [user] = await this.dbServer
         .select()
         .from(UserTable)

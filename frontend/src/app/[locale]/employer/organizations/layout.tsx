@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
-import { useOrganization } from "@/hooks/use-organization";
+import { useOrganization } from "@/hooks/use-organizations";
 import { NavBar } from "@/components/customs/navbar";
 import { BackHomeButton } from "@/components/customs/custom-buttons";
 import PrivateRoute from "@/routes/PrivateRoute";
