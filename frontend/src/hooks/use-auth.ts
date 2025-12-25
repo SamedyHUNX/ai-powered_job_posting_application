@@ -60,6 +60,15 @@ export function useAuth() {
     onSuccess: () => {
       router.push("/auth/signin");
     },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
+    },
   });
 
   // Verify email mutation
@@ -67,6 +76,15 @@ export function useAuth() {
     mutationFn: (token: string) => authApi.verifyEmail(token),
     onSuccess: () => {
       router.push("/auth/signin");
+    },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
     },
   });
 
@@ -81,6 +99,15 @@ export function useAuth() {
         )}`
       );
     },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
+    },
   });
 
   // Reset password
@@ -93,6 +120,15 @@ export function useAuth() {
       authApi.resetPassword(token, newPassword, confirmPassword),
     onSuccess: () => {
       router.push("/auth/signin");
+    },
+    onError: (err: any) => {
+      const errorData = err.response?.data || {};
+      dispatch(
+        setError({
+          message: errorData.message || err.message,
+          code: errorData.code || err.code,
+        })
+      );
     },
   });
 
