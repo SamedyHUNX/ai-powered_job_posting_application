@@ -26,9 +26,11 @@ export interface AuthResponse {
   status: string;
   code: number;
   message: string;
-  data: {
-    user: User;
-  };
+  data: UsersData;
+}
+
+export interface UsersData {
+  users: User[];
 }
 
 // JOB LISTINGS

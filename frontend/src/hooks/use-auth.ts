@@ -1,53 +1,37 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  setCredentials,
-  logout as logoutAction,
-  setUser,
+  clearAuth,
+  selectIsAuthenticated,
+  setAuth,
 } from "@/store/slices/auth-slice";
 import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 import { useLocale } from "next-intl";
-import {
-  clearOrganizations,
-  setError,
-  setSuccess,
-} from "@/store/slices/organizations-slice";
+import { clearOrganizations } from "@/store/slices/organizations-slice";
 import { AuthResponse, AuthRequest } from "@/types";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, token, isAuthenticated, isInitialized, isLoading } =
-    useAppSelector((state) => state.auth);
+  const { user, token, isInitialized } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const queryClient = useQueryClient();
   const router = useRouter();
   const locale = useLocale();
 
   // Sign in mutation
+  // Sign in mutation
   const signInMutation = useMutation({
-    mutationFn: (credentials: Partial<AuthRequest>) =>
-      authApi.signIn(credentials),
-    onSuccess: ({ data: { user }, message }: AuthResponse) => {
-      dispatch(setCredentials({ token: user.token }));
-      dispatch(setUser(user));
-      dispatch(setSuccess(message));
+    mutationFn: (credentials: AuthRequest) => authApi.signIn(credentials),
+    onSuccess: ({ data }: AuthResponse) => {
+      const user = data.users[0];
+      dispatch(setAuth({ token: user.token, user }));
       dispatch(clearOrganizations());
       localStorage.setItem("access_token", user.token);
-
       router.push(`/${locale}`);
     },
-    onError: (err: any) => {
-      const errorData = err.response?.data || {};
-      dispatch(
-        setError({
-          message: errorData.message || err.message,
-          code: errorData.code || err.code,
-        })
-      );
-    },
   });
-
   // Sign up mutation
   const signUpMutation = useMutation({
     mutationFn: ({
@@ -60,15 +44,6 @@ export function useAuth() {
     onSuccess: () => {
       router.push("/auth/signin");
     },
-    onError: (err: any) => {
-      const errorData = err.response?.data || {};
-      dispatch(
-        setError({
-          message: errorData.message || err.message,
-          code: errorData.code || err.code,
-        })
-      );
-    },
   });
 
   // Verify email mutation
@@ -77,18 +52,9 @@ export function useAuth() {
     onSuccess: () => {
       router.push("/auth/signin");
     },
-    onError: (err: any) => {
-      const errorData = err.response?.data || {};
-      dispatch(
-        setError({
-          message: errorData.message || err.message,
-          code: errorData.code || err.code,
-        })
-      );
-    },
   });
 
-  // Forgot password reset
+  // Forgot password mutation
   const forgotPasswordMutation = useMutation({
     mutationFn: ({ email, locale }: { email: string; locale: string }) =>
       authApi.forgotPassword(email, locale),
@@ -99,18 +65,9 @@ export function useAuth() {
         )}`
       );
     },
-    onError: (err: any) => {
-      const errorData = err.response?.data || {};
-      dispatch(
-        setError({
-          message: errorData.message || err.message,
-          code: errorData.code || err.code,
-        })
-      );
-    },
   });
 
-  // Reset password
+  // Reset password mutation
   const resetPasswordMutation = useMutation({
     mutationFn: ({
       token,
@@ -121,21 +78,12 @@ export function useAuth() {
     onSuccess: () => {
       router.push("/auth/signin");
     },
-    onError: (err: any) => {
-      const errorData = err.response?.data || {};
-      dispatch(
-        setError({
-          message: errorData.message || err.message,
-          code: errorData.code || err.code,
-        })
-      );
-    },
   });
 
   // Logout
   const logout = () => {
     dispatch(clearOrganizations());
-    dispatch(logoutAction());
+    dispatch(clearAuth());
     localStorage.removeItem("access_token");
     localStorage.removeItem("selectedOrganization");
     queryClient.clear();
@@ -143,23 +91,23 @@ export function useAuth() {
   };
 
   return {
+    // State
     user,
     token,
     isAuthenticated,
     isInitialized,
-    isLoading,
 
-    // Signin
+    // Sign in
     signIn: signInMutation.mutate,
-    signInSuccess: signInMutation.isSuccess,
     isSigningIn: signInMutation.isPending,
     signInError: signInMutation.error,
+    signInSuccess: signInMutation.isSuccess,
 
-    // Signup
+    // Sign up
     signUp: signUpMutation.mutate,
-    signUpSuccess: signUpMutation.isSuccess,
-    isSigningUp: signInMutation.isPending,
+    isSigningUp: signUpMutation.isPending,
     signUpError: signUpMutation.error,
+    signUpSuccess: signUpMutation.isSuccess,
 
     // Verify email
     verifyEmail: verifyEmailMutation.mutate,
@@ -179,7 +127,7 @@ export function useAuth() {
     resetPasswordError: resetPasswordMutation.error,
     resetPasswordSuccess: resetPasswordMutation.isSuccess,
 
-    // Signout
+    // Logout
     logout,
   };
 }
