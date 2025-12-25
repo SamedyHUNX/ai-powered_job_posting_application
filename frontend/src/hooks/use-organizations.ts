@@ -43,11 +43,11 @@ export function useOrganization() {
   }, [dispatch]);
 
   // Fetch all organizations
-  //   const fetchOrganizationsQuery = useQuery({
-  //     queryKey: ["organizations"],
-  //     queryFn: () => organizationsApi.findAll(),
-  //     enabled: false, // Only fetch when explicitly called
-  //   });
+  const fetchOrganizationsQuery = useQuery({
+    queryKey: ["organizations"],
+    queryFn: () => organizationsApi.findAll(),
+    enabled: false, // Only fetch when explicitly called
+  });
 
   // Fetch organizations with filters
   const fetchOrganizationsMutation = useMutation({
@@ -85,7 +85,10 @@ export function useOrganization() {
     },
     onError: (err: ApiError) => {
       dispatch(
-        setError({ message: err.message || "Failed to fetch organization" })
+        setError({
+          message: err.message || "Failed to fetch organization",
+          code: err.code,
+        })
       );
     },
   });
@@ -110,8 +113,13 @@ export function useOrganization() {
       dispatch(setSuccess(data.message));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to create organization"));
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({
+          message: err.message || "Failed to create organization",
+          code: err.code || 9999,
+        })
+      );
     },
   });
 
@@ -137,13 +145,18 @@ export function useOrganization() {
         queryKey: ["organization", organization.id],
       });
     },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to update organization"));
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({
+          message: err.message || "Failed to update organization",
+          code: err.code || 9999,
+        })
+      );
     },
   });
 
-  // Delete organization mutation
-  const deleteOrganizationMutation = useMutation({
+  // Remove organization mutation
+  const removeOrganizationMutation = useMutation({
     mutationFn: (id: string) => {
       if (!token) throw new Error("Authentication required");
       return organizationsApi.remove(id, token);
@@ -152,28 +165,39 @@ export function useOrganization() {
       dispatch(removeOrganization(id));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to delete organization"));
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({
+          message: err.message || "Failed to remove organization",
+          code: err.code || 9999,
+        })
+      );
     },
   });
 
   // Verify organization mutation
-  // const verifyOrganizationMutation = useMutation({
-  //   mutationFn: (id: string) => {
-  //     if (!token) throw new Error("Authentication required");
-  //     return organizationsApi.verify(id, token);
-  //   },
-  //   onSuccess: (data) => {
-  //     dispatch(updateOrganization(data.organization));
-  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["organization", data.organization.id],
-  //     });
-  //   },
-  //   onError: (err: any) => {
-  //     dispatch(setError(err.message || "Failed to verify organization"));
-  //   },
-  // });
+  const verifyOrganizationMutation = useMutation({
+    mutationFn: async (id: string) => {
+      if (!token) throw new Error("Authentication required");
+      const response = await organizationsApi.verify(id, token);
+      return response.data.organizations[0];
+    },
+    onSuccess: (organization) => {
+      dispatch(updateOrganization(organization));
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["organization", organization.id],
+      });
+    },
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({
+          message: err.message || "Failed to verify organization",
+          code: err.code || 9999,
+        })
+      );
+    },
+  });
 
   // Ban organization mutation
   const banOrganizationMutation = useMutation({
@@ -256,6 +280,7 @@ export function useOrganization() {
 
     // Queries
     fetchOrganizationQuery,
+    fetchOrganizationsQuery,
 
     // Create organization
     createOrganization: createOrganizationMutation.mutate,
@@ -263,29 +288,41 @@ export function useOrganization() {
     createSuccess: createOrganizationMutation.isSuccess,
     createError: createOrganizationMutation.isError,
 
+    // Verify organization
+    verifyOrganization: verifyOrganizationMutation.mutate,
+    isVerifying: verifyOrganizationMutation.isPending,
+    verifySuccess: verifyOrganizationMutation.isSuccess,
+    verifyError: verifyOrganizationMutation.isError,
+
     // Fetch organizations by userId
     fetchOrganizationsByUser: fetchOrganizationByUserMutation.mutate,
     isFetchingOrganizationsByUser: fetchOrganizationByUserMutation.isPending,
     fetchOrganizationsByUserSuccess: fetchOrganizationByUserMutation.isSuccess,
     isFetchingOrganizationsByUserError: fetchOrganizationByUserMutation.isError,
 
-    // Ban organization mutation
+    // Ban organization
     banOrganization: banOrganizationMutation.mutate,
     isBanning: banOrganizationMutation.isPending,
     banSuccess: banOrganizationMutation.isSuccess,
     banError: banOrganizationMutation.isError,
 
-    // Unban organization mutation
+    // Unban organization
     unbanOrganzation: unbanOrganizationMutation.mutate,
     isUnbanning: unbanOrganizationMutation.isPending,
     unbanSuccess: unbanOrganizationMutation.isSuccess,
     unbanError: unbanOrganizationMutation.isError,
 
-    // Update organization mutation
+    // Update organization
     updateOrganization: updateOrganizationMutation.mutate,
     isUpdating: updateOrganizationMutation.isPending,
     updateSuccess: updateOrganizationMutation.isSuccess,
     updateError: updateOrganizationMutation.isError,
+
+    // Remove organization
+    removeOrganization: removeOrganizationMutation.mutate,
+    isRemoving: removeOrganizationMutation.isPending,
+    removeSuccess: removeOrganizationMutation.isSuccess,
+    removeError: removeOrganizationMutation.isError,
 
     // Utility functions
     selectOrganization,
