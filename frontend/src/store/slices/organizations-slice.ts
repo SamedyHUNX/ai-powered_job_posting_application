@@ -83,12 +83,12 @@ const organizationsSlice = createSlice({
     },
     setError: (
       state,
-      action: PayloadAction<{ message: string; code?: number }>
+      action: PayloadAction<{ message: string; code: number }>
     ) => {
       state.isLoading = false;
       state.status = "error";
       state.message = action.payload.message;
-      state.code = action.payload.code ?? 9999;
+      state.code = action.payload.code;
     },
     clearOrganizations: (state) => {
       state.organizations = [];

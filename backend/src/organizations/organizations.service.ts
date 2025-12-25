@@ -392,7 +392,7 @@ export class OrganizationsService {
       this.logger.log(`Organization verified with ID: ${id}`);
 
       return ResponseHelper.success(ResponseCode.ORGANIZATION_VERIFY_SUCCESS, {
-        updatedOrg,
+        organizations: [updatedOrg],
       });
     },
     this.logger,
