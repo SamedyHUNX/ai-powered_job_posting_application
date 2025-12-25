@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 import { useLocale } from "next-intl";
 import { clearOrganizations } from "@/store/slices/organizations-slice";
-import { AuthResponse, AuthRequest } from "@/types";
+import { AuthResponse } from "@/types";
+import { SignInFormData } from "@/schemas";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -21,9 +22,8 @@ export function useAuth() {
   const locale = useLocale();
 
   // Sign in mutation
-  // Sign in mutation
   const signInMutation = useMutation({
-    mutationFn: (credentials: AuthRequest) => authApi.signIn(credentials),
+    mutationFn: (data: SignInFormData) => authApi.signIn(data),
     onSuccess: ({ data }: AuthResponse) => {
       const user = data.users[0];
       dispatch(setAuth({ token: user.token, user }));
