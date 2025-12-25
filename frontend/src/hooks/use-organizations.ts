@@ -139,13 +139,22 @@ export function useOrganization() {
       code,
       message,
       data,
+      status,
     }: {
+      status: string;
       code: number;
       message: string;
       data: OrganizationsData;
     }) => {
-      dispatch(addOrganization(data.organizations[0]));
-      // dispatch(setSelectedOrganization(data.organization));
+      dispatch(
+        addOrganization({
+          code,
+          message,
+          status,
+          organizations: data.organizations,
+        })
+      );
+
       dispatch(setSuccess(message));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
