@@ -587,7 +587,7 @@ export class AuthService {
     async (payload: any) => {
       if (!payload) {
         throw new BadRequestException(
-          ResponseHelper.error(ResponseCode.PASSWORDS_DO_NOT_MATCH),
+          ResponseHelper.error(ResponseCode.INVALID_REQUEST_DATA),
         );
       }
       const [user] = await this.dbServer
