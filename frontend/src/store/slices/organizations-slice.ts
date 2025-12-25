@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Organization } from "@/types";
+import { Organization, OrganizationsResponse } from "@/types";
 
 interface OrganizationsState {
   organizations: Organization[];
@@ -11,7 +11,7 @@ interface OrganizationsState {
   code: number | null;
 }
 
-interface SetOrganizationsPayload {
+interface AddSetOrganizationsPayload {
   organizations: Organization[];
   count: number;
   status: string;
@@ -40,7 +40,7 @@ const organizationsSlice = createSlice({
   reducers: {
     setOrganizations: (
       state,
-      action: PayloadAction<SetOrganizationsPayload>
+      action: PayloadAction<AddSetOrganizationsPayload>
     ) => {
       state.organizations = action.payload.organizations;
       state.count = action.payload.count;
@@ -55,11 +55,19 @@ const organizationsSlice = createSlice({
     ) => {
       state.selectedOrganization = action.payload;
     },
-    addOrganization: (state, action: PayloadAction<Organization>) => {
-      state.organizations.push(action.payload);
+    addOrganization: (
+      state,
+      action: PayloadAction<
+        Pick<
+          AddSetOrganizationsPayload,
+          "organizations" | "status" | "message" | "code"
+        >
+      >
+    ) => {
+      state.organizations.push(action.payload.organizations[0]);
       state.count += 1;
-      state.status = "success";
-      state.message = "Organization added successfully";
+      state.status = action.payload.status;
+      state.message = action.payload.message;
     },
     updateOrganization: (state, action: PayloadAction<Organization>) => {
       const index = state.organizations.findIndex(

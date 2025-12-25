@@ -16,9 +16,11 @@ export const organizationsApi = {
   create: async (
     formData: FormData,
     token: string
-  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
+  ): Promise<
+    Pick<OrganizationsResponse, "code" | "message" | "data" | "status">
+  > => {
     const { data } = await api.post<
-      Pick<OrganizationsResponse, "code" | "message" | "data">
+      Pick<OrganizationsResponse, "code" | "message" | "data" | "status">
     >("/organizations", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
