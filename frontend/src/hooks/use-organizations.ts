@@ -244,10 +244,10 @@ export function useOrganization() {
     count,
 
     // Fetch organizations
-    fetchOrganizations: fetchOrganizationByUserMutation.mutate,
-    isFetchingOrganizations: fetchOrganizationByUserMutation.isPending,
-    fetchOrganizationSuccess: fetchOrganizationByUserMutation.isSuccess,
-    fetchOrganizationError: fetchOrganizationByUserMutation.error,
+    fetchOrganizations: fetchOrganizationsMutation.mutate,
+    isFetchingOrganizations: fetchOrganizationsMutation.isPending,
+    fetchOrganizationSuccess: fetchOrganizationsMutation.isSuccess,
+    fetchOrganizationError: fetchOrganizationsMutation.error,
 
     // Queries
     fetchOrganizationQuery,
