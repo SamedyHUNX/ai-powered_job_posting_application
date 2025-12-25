@@ -1,13 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import {
-  CreateJobListingDto,
-  CreateJobListingResponse,
-  JobListingDeleteResponse,
-  JobListingResponse,
-  JobListingsListResponse,
-  UpdateJobListingDto,
-} from "@/types";
+import { JobListingRequest, JobListingResponse } from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -21,10 +14,10 @@ const api = axios.create({
 export const jobListingsApi = {
   // Create job listing
   create: async (
-    dto: CreateJobListingDto,
+    dto: Partial<JobListingRequest>,
     token: string
-  ): Promise<CreateJobListingResponse> => {
-    const { data } = await api.post<CreateJobListingResponse>(
+  ): Promise<Partial<JobListingResponse>> => {
+    const { data } = await api.post<Partial<JobListingResponse>>(
       "/job-listings",
       dto,
       {
@@ -44,7 +37,7 @@ export const jobListingsApi = {
     type?: string,
     locationRequirement?: string,
     experienceLevel?: string
-  ): Promise<JobListingsListResponse> => {
+  ): Promise<Partial<JobListingResponse>> => {
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (organizationId) params.append("organizationId", organizationId);
@@ -54,7 +47,7 @@ export const jobListingsApi = {
       params.append("locationRequirement", locationRequirement);
     if (experienceLevel) params.append("experienceLevel", experienceLevel);
 
-    const { data } = await api.get<JobListingsListResponse>(
+    const { data } = await api.get<Partial<JobListingResponse>>(
       `/job-listings?${params.toString()}`
     );
     return data;
@@ -63,8 +56,8 @@ export const jobListingsApi = {
   // Get job listings by organization ID
   findByOrganization: async (
     organizationId: string
-  ): Promise<JobListingsListResponse> => {
-    const { data } = await api.get<JobListingsListResponse>(
+  ): Promise<Partial<JobListingResponse>> => {
+    const { data } = await api.get<Partial<JobListingResponse>>(
       `/job-listings?organizationId=${organizationId}`
     );
     return data;
@@ -79,7 +72,7 @@ export const jobListingsApi = {
   // Update a job listing
   update: async (
     id: string,
-    dto: UpdateJobListingDto,
+    dto: Partial<JobListingRequest>,
     token: string
   ): Promise<JobListingResponse> => {
     const { data } = await api.patch<JobListingResponse>(
@@ -98,8 +91,8 @@ export const jobListingsApi = {
   remove: async (
     id: string,
     token: string
-  ): Promise<JobListingDeleteResponse> => {
-    const { data } = await api.delete<JobListingDeleteResponse>(
+  ): Promise<Partial<JobListingResponse>> => {
+    const { data } = await api.delete<Partial<JobListingResponse>>(
       `/job-listings/${id}`,
       {
         headers: {

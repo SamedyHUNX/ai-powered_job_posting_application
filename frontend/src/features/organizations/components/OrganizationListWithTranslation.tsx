@@ -1,9 +1,9 @@
+import { useTranslations } from "next-intl";
 import {
+  OrganizationList,
   OrganizationListProps,
   OrganizationListTranslations,
-} from "@/types/organization.type";
-import { useTranslations } from "next-intl";
-import { OrganizationList } from "./OrganizationList";
+} from "./OrganizationList";
 
 export const OrganizationListWithTranslation = (
   props: Omit<OrganizationListProps, "translations">
