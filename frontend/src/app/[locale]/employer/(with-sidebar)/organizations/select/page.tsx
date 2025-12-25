@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useOrganization } from "@/hooks/use-organization";
+import { useOrganization } from "@/hooks/use-organizations";
 import { OrganizationListWithTranslation } from "@/features/organizations/components/OrganizationListWithTranslation";
 
 export default function OrganizationSelectPage() {

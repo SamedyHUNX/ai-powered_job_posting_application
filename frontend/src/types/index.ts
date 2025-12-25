@@ -31,7 +31,6 @@ export interface AuthResponse {
   };
 }
 
-
 // JOB LISTINGS
 export type WageInterval = "hourly" | "yearly" | "monthly";
 export type LocationRequirement = "in-office" | "hybrid" | "remote";
@@ -216,79 +215,19 @@ export interface Organization {
   updatedAt: string;
 }
 
-export interface OrganizationListTranslations {
-  title: string;
-  subTitle: string;
-  loadingText: string;
-  createOrganization: string;
-  securedBy: string;
-  contactSupport: string;
-  nevermind: string;
-  organizationBanned: {
-    title: string;
-    message: string;
-  };
-  verificationRequired: {
-    title: string;
-    message: string;
-  };
-  badges: {
-    banned: string;
-    unverified: string;
-    verified: string;
-  };
-  memberCount: {
-    singular: string;
-    plural: string;
-  };
-  jobCount: {
-    singular: string;
-    plural: string;
-  };
-}
-
-export interface OrganizationListProps {
-  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
-  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
-  appearance?: {
-    elements?: Record<string, string>;
-    variables?: Record<string, string>;
-  };
-  fallback?: ReactNode;
-  hidePersonal?: boolean;
-  hideSlug?: boolean;
-  skipInvitationScreen?: boolean;
-  translations?: OrganizationListTranslations;
-}
-
-export interface CreateOrganizationDto {
+export interface OrganizationsRequest {
   orgName: string;
-  imageUrl?: string;
+  imageUrl: string | undefined;
+  isVerified: boolean;
+  isBanned: boolean;
 }
 
-export interface UpdateOrganizationDto {
-  orgName?: string;
-  imageUrl?: string;
-  isVerified?: boolean;
-  isBanned?: boolean;
-}
-
-export interface CreateOrganizationResponse {
+export interface OrganizationsResponse {
+  success: string;
   message: string;
-}
-
-export interface OrganizationResponse {
-  success: boolean;
-  organization: Organization;
-}
-
-export interface OrganizationsListResponse {
-  organizations: Organization[];
+  code: number;
+  data: {
+    organizations: Organization[];
+  };
   count: number;
-}
-
-export interface OrganizationDeleteResponse {
-  success: boolean;
-  message: string;
 }

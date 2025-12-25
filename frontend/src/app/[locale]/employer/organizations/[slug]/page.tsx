@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
-import { useOrganization } from "@/hooks/use-organization";
+import { useOrganization } from "@/hooks/use-organizations";
 import { useJobListing } from "@/hooks/use-job-listing";
 import { useProfile } from "@/hooks/use-profile";
 import { useRouter } from "next/navigation";

@@ -1,16 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
-import { useOrganization } from "@/hooks/use-organization";
-import {
-  Organization,
-  OrganizationListProps,
-  OrganizationListTranslations,
-} from "@/types/organization.type";
+import { useOrganization } from "@/hooks/use-organizations";
+import { Organization } from "@/types";
 import { useProfile } from "@/hooks/use-profile";
 import { CustomDialog } from "@/components/customs/custom-dialog";
+
+export interface OrganizationListProps {
+  afterCreateOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectOrganizationUrl?: ((org: Organization) => string) | string;
+  afterSelectPersonalUrl?: ((org: Organization) => string) | string;
+  appearance?: {
+    elements?: Record<string, string>;
+    variables?: Record<string, string>;
+  };
+  fallback?: ReactNode;
+  hidePersonal?: boolean;
+  hideSlug?: boolean;
+  skipInvitationScreen?: boolean;
+  translations?: OrganizationListTranslations;
+}
+
+export interface OrganizationListTranslations {
+  title: string;
+  subTitle: string;
+  loadingText: string;
+  createOrganization: string;
+  securedBy: string;
+  contactSupport: string;
+  nevermind: string;
+  organizationBanned: {
+    title: string;
+    message: string;
+  };
+  verificationRequired: {
+    title: string;
+    message: string;
+  };
+  badges: {
+    banned: string;
+    unverified: string;
+    verified: string;
+  };
+  memberCount: {
+    singular: string;
+    plural: string;
+  };
+  jobCount: {
+    singular: string;
+    plural: string;
+  };
+}
 
 const defaultTranslations: OrganizationListTranslations = {
   title: "Choose an account",
@@ -201,14 +243,14 @@ export const OrganizationList = ({
             >
               <div className="flex-shrink-0">
                 <img
-                  src={currentUser.image}
+                  src={currentUser.imageUrl}
                   alt={currentUser.username}
                   className="w-14 h-14 rounded-full object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-lg font-semibold text-black tracking-tighter">
-                  {currentUser.name}
+                  {currentUser.username}
                 </div>
               </div>
               <div className="flex-shrink-0">

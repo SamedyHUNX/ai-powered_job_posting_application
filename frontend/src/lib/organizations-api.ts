@@ -1,12 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import {
-  CreateOrganizationResponse,
-  OrganizationDeleteResponse,
-  OrganizationResponse,
-  OrganizationsListResponse,
-  UpdateOrganizationDto,
-} from "@/types/organization.type";
+import { OrganizationsRequest, OrganizationsResponse } from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -22,8 +16,8 @@ export const organizationsApi = {
   create: async (
     formData: FormData,
     token: string
-  ): Promise<CreateOrganizationResponse> => {
-    const { data } = await api.post<CreateOrganizationResponse>(
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.post<Partial<OrganizationsResponse>>(
       "/organizations",
       formData,
       {
@@ -40,29 +34,31 @@ export const organizationsApi = {
   findAll: async (
     search?: string,
     isVerified?: boolean
-  ): Promise<OrganizationsListResponse> => {
+  ): Promise<Partial<OrganizationsResponse>> => {
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (isVerified !== undefined)
       params.append("isVerified", String(isVerified));
 
-    const { data } = await api.get<OrganizationsListResponse>(
+    const { data } = await api.get<Partial<OrganizationsResponse>>(
       `/organizations?${params.toString()}`
     );
     return data;
   },
 
   // Get organizations by user ID
-  findByUser: async (userId: string): Promise<OrganizationsListResponse> => {
-    const { data } = await api.get<OrganizationsListResponse>(
+  findByUser: async (
+    userId: string
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.get<Partial<OrganizationsResponse>>(
       `/organizations/user/${userId}`
     );
     return data;
   },
 
   // Get a single organization by ID
-  findOne: async (id: string): Promise<OrganizationResponse> => {
-    const { data } = await api.get<OrganizationResponse>(
+  findOne: async (id: string): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.get<Partial<OrganizationsResponse>>(
       `/organizations/${id}`
     );
     return data;
@@ -71,10 +67,10 @@ export const organizationsApi = {
   // Update an organization
   update: async (
     id: string,
-    dto: UpdateOrganizationDto,
+    dto: Partial<OrganizationsRequest>,
     token: string,
     file?: File
-  ): Promise<OrganizationResponse> => {
+  ): Promise<Partial<OrganizationsResponse>> => {
     const formData = new FormData();
     if (dto.orgName) formData.append("orgName", dto.orgName);
     if (dto.imageUrl) formData.append("imageUrl", dto.imageUrl);
@@ -86,7 +82,7 @@ export const organizationsApi = {
       formData.append("logo", file);
     }
 
-    const { data } = await api.patch<OrganizationResponse>(
+    const { data } = await api.patch<Partial<OrganizationsResponse>>(
       `/organizations/${id}`,
       formData,
       {
@@ -103,8 +99,8 @@ export const organizationsApi = {
   remove: async (
     id: string,
     token: string
-  ): Promise<OrganizationDeleteResponse> => {
-    const { data } = await api.delete<OrganizationDeleteResponse>(
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.delete<Partial<OrganizationsResponse>>(
       `/organizations/${id}`,
       {
         headers: {
@@ -116,8 +112,11 @@ export const organizationsApi = {
   },
 
   // Verify an organization
-  verify: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  verify: async (
+    id: string,
+    token: string
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.post<Partial<OrganizationsResponse>>(
       `/organizations/${id}/verify`,
       {},
       {
@@ -130,8 +129,11 @@ export const organizationsApi = {
   },
 
   // Ban an organization
-  ban: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  ban: async (
+    id: string,
+    token: string
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.post<Partial<OrganizationsResponse>>(
       `/organizations/${id}/ban`,
       {},
       {
@@ -144,8 +146,11 @@ export const organizationsApi = {
   },
 
   // Unban an organization
-  unban: async (id: string, token: string): Promise<OrganizationResponse> => {
-    const { data } = await api.post<OrganizationResponse>(
+  unban: async (
+    id: string,
+    token: string
+  ): Promise<Partial<OrganizationsResponse>> => {
+    const { data } = await api.post<Partial<OrganizationsResponse>>(
       `/organizations/${id}/unban`,
       {},
       {

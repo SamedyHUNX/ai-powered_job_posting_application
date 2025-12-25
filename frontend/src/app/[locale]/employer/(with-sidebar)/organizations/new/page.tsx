@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/lib/error-handler";
-import { useOrganization } from "@/hooks/use-organization";
+import { useOrganization } from "@/hooks/use-organizations";
 import { createOrganizationSchema } from "@/schemas/createOrganizationSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 
