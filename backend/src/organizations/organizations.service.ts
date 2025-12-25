@@ -420,20 +420,24 @@ export class OrganizationsService {
         );
       }
 
-      const [updatedOrg] = await this.dbServer
+      const result = await this.dbServer
         .update(OrganizationTable)
         .set({ isBanned: true })
         .where(eq(OrganizationTable.id, id))
         .returning();
 
-      this.logger.log(`Organization banned with ID: ${id}`);
+      const [updatedOrg] = result;
+      console.log('Destructured updatedOrg:', updatedOrg);
 
-      return ResponseHelper.success(ResponseCode.ORGANIZATION_BAN_SUCCESS);
+      this.logger.log(`Organization banned with ID: ${id} ${updatedOrg}`);
+
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_BAN_SUCCESS, {
+        updatedOrg,
+      });
     },
     this.logger,
     'Failed to ban organization',
   );
-
   // Unban an organization
   unban = catchAsync(
     async (id: string) => {
@@ -463,9 +467,12 @@ export class OrganizationsService {
 
       this.logger.log(`Organization unbanned with ID: ${id}`);
 
-      return ResponseHelper.success(ResponseCode.ORGANIZATION_UNBAN_SUCCESS, {
-        updatedOrg,
-      });
+      return ResponseHelper.success(
+        ResponseCode.ORGANIZATION_UNBAN_SUCCESS,
+        {
+          organizations: updatedOrg,
+        },
+      );
     },
     this.logger,
     'Failed to unban organization',

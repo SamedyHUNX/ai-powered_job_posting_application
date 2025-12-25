@@ -163,40 +163,40 @@ export function useOrganization() {
   // });
 
   // Ban organization mutation
-  // const banOrganizationMutation = useMutation({
-  //   mutationFn: (id: string) => {
-  //     if (!token) throw new Error("Authentication required");
-  //     return organizationsApi.ban(id, token);
-  //   },
-  //   onSuccess: (data) => {
-  //     dispatch(updateOrganization(data.organization));
-  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["organization", data.organization.id],
-  //     });
-  //   },
-  //   onError: (err: any) => {
-  //     dispatch(setError(err.message || "Failed to ban organization"));
-  //   },
-  // });
+  const banOrganizationMutation = useMutation({
+    mutationFn: (id: string) => {
+      if (!token) throw new Error("Authentication required");
+      return organizationsApi.ban(id, token);
+    },
+    onSuccess: (data) => {
+      dispatch(updateOrganization(data.organization));
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["organization", data.organization.id],
+      });
+    },
+    onError: (err: any) => {
+      dispatch(setError(err.message || "Failed to ban organization"));
+    },
+  });
 
   // Unban organization mutation
-  // const unbanOrganizationMutation = useMutation({
-  //   mutationFn: (id: string) => {
-  //     if (!token) throw new Error("Authentication required");
-  //     return organizationsApi.unban(id, token);
-  //   },
-  //   onSuccess: (data) => {
-  //     dispatch(updateOrganization(data.organization));
-  //     queryClient.invalidateQueries({ queryKey: ["organizations"] });
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["organization", data.organization.id],
-  //     });
-  //   },
-  //   onError: (err: any) => {
-  //     dispatch(setError(err.message || "Failed to unban organization"));
-  //   },
-  // });
+  const unbanOrganizationMutation = useMutation({
+    mutationFn: (id: string) => {
+      if (!token) throw new Error("Authentication required");
+      return organizationsApi.unban(id, token);
+    },
+    onSuccess: (data) => {
+      dispatch(updateOrganization(data.organization));
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["organization", data.organization.id],
+      });
+    },
+    onError: (err: any) => {
+      dispatch(setError(err.message || "Failed to unban organization"));
+    },
+  });
 
   // Select organization
   const selectOrganization = useCallback(
