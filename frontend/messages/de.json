@@ -156,6 +156,8 @@
   "apiErrors": {
     "2001": "Bitte füllen Sie alle Felder aus",
     "2002": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
+    "2102": "Nur Bilddateien (jpg, jpeg) sind erlaubt",
+    "2103": "Dateigröße muss kleiner als 5 MB sein",
     "3001": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
     "3002": "Benutzername ist bereits vergeben",
     "3003": "Profilbild ist erforderlich",

@@ -195,6 +195,8 @@
   "apiErrors": {
     "2001": "Please fill in all required fields",
     "2002": "Invalid email or password",
+    "2102": "Only image files (jpg, jpeg) are allowed",
+    "2103": "File size must be less than 5MB",
     "3001": "User with this email already exists",
     "3002": "Username is already taken",
     "3003": "Profile image is required",
