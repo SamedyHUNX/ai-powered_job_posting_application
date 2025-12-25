@@ -13,7 +13,7 @@ import {
   setSuccess,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
-import { Organization } from "@/types";
+import { Organization, OrganizationsResponse } from "@/types";
 
 export function useOrganization() {
   const dispatch = useAppDispatch();
@@ -48,11 +48,14 @@ export function useOrganization() {
   const fetchOrganizations = async (search?: string, isVerified?: boolean) => {
     try {
       dispatch(setLoading(true));
-      const response = await organizationsApi.findAll(search, isVerified);
+      const { data, count } = await organizationsApi.findAll(
+        search,
+        isVerified
+      );
       dispatch(
         setOrganizations({
-          organizations: response.organizations,
-          count: response.count,
+          organizations: data.organizations,
+          count,
         })
       );
     } catch (err: any) {
@@ -65,7 +68,7 @@ export function useOrganization() {
     onSuccess: (data) => {
       dispatch(
         setOrganizations({
-          organizations: data.organizations,
+          organizations: data.data.organizations,
           count: data.count,
         })
       );

@@ -16,17 +16,15 @@ export const organizationsApi = {
   create: async (
     formData: FormData,
     token: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.post<Partial<OrganizationsResponse>>(
-      "/organizations",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >("/organizations", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -34,33 +32,33 @@ export const organizationsApi = {
   findAll: async (
     search?: string,
     isVerified?: boolean
-  ): Promise<Partial<OrganizationsResponse>> => {
+  ): Promise<OrganizationsResponse> => {
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (isVerified !== undefined)
       params.append("isVerified", String(isVerified));
 
-    const { data } = await api.get<Partial<OrganizationsResponse>>(
+    const { data } = await api.get<OrganizationsResponse>(
       `/organizations?${params.toString()}`
     );
     return data;
   },
 
   // Get organizations by user ID
-  findByUser: async (
-    userId: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.get<Partial<OrganizationsResponse>>(
+  findByUser: async (userId: string): Promise<OrganizationsResponse> => {
+    const { data } = await api.get<OrganizationsResponse>(
       `/organizations/user/${userId}`
     );
     return data;
   },
 
   // Get a single organization by ID
-  findOne: async (id: string): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.get<Partial<OrganizationsResponse>>(
-      `/organizations/${id}`
-    );
+  findOne: async (
+    id: string
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.get<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(`/organizations/${id}`);
     return data;
   },
 
@@ -70,7 +68,7 @@ export const organizationsApi = {
     dto: Partial<OrganizationsRequest>,
     token: string,
     file?: File
-  ): Promise<Partial<OrganizationsResponse>> => {
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
     const formData = new FormData();
     if (dto.orgName) formData.append("orgName", dto.orgName);
     if (dto.imageUrl) formData.append("imageUrl", dto.imageUrl);
@@ -82,16 +80,14 @@ export const organizationsApi = {
       formData.append("logo", file);
     }
 
-    const { data } = await api.patch<Partial<OrganizationsResponse>>(
-      `/organizations/${id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await api.patch<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(`/organizations/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -99,15 +95,14 @@ export const organizationsApi = {
   remove: async (
     id: string,
     token: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.delete<Partial<OrganizationsResponse>>(
-      `/organizations/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.delete<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(`/organizations/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -115,8 +110,10 @@ export const organizationsApi = {
   verify: async (
     id: string,
     token: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.post<Partial<OrganizationsResponse>>(
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(
       `/organizations/${id}/verify`,
       {},
       {
@@ -132,8 +129,10 @@ export const organizationsApi = {
   ban: async (
     id: string,
     token: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.post<Partial<OrganizationsResponse>>(
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(
       `/organizations/${id}/ban`,
       {},
       {
@@ -149,8 +148,10 @@ export const organizationsApi = {
   unban: async (
     id: string,
     token: string
-  ): Promise<Partial<OrganizationsResponse>> => {
-    const { data } = await api.post<Partial<OrganizationsResponse>>(
+  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+    const { data } = await api.post<
+      Pick<OrganizationsResponse, "code" | "message">
+    >(
       `/organizations/${id}/unban`,
       {},
       {
