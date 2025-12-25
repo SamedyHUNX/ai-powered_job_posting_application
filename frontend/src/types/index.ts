@@ -14,18 +14,12 @@ export interface User {
   token: string;
 }
 
-// AUTHENTICATION
-export interface SignInRequest {
+export interface AuthRequest {
   email: string;
   password: string;
-}
-
-export interface SignUpRequest {
   name: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
 }
 
 export interface AuthResponse {
@@ -37,19 +31,6 @@ export interface AuthResponse {
   };
 }
 
-export interface VerifyEmailResponse {
-  code?: string;
-  message: string;
-}
-
-export interface ForgotPasswordResponse {
-  email: string;
-  message: string;
-}
-
-export interface ResetPasswordResponse {
-  message: string;
-}
 
 // JOB LISTINGS
 export type WageInterval = "hourly" | "yearly" | "monthly";

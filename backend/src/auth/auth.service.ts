@@ -441,7 +441,9 @@ export class AuthService {
       });
 
       return ResponseHelper.success(ResponseCode.PASSWORD_RESET_SENT, {
-        user: email,
+        user: {
+          email,
+        },
       });
     },
     this.logger,
@@ -583,6 +585,11 @@ export class AuthService {
 
   validateUser = catchAsync(
     async (payload: any) => {
+      if (!payload) {
+        throw new BadRequestException(
+          ResponseHelper.error(ResponseCode.PASSWORDS_DO_NOT_MATCH),
+        );
+      }
       const [user] = await this.dbServer
         .select()
         .from(UserTable)

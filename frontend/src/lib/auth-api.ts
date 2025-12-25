@@ -1,11 +1,6 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
-import {
-  AuthResponse,
-  SignInRequest,
-  User,
-  VerifyEmailResponse,
-} from "@/types";
+import { AuthResponse, AuthRequest, User } from "@/types";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -18,7 +13,7 @@ const api = axios.create({
 
 export const authApi = {
   // Signin
-  signIn: async (credentials: SignInRequest): Promise<AuthResponse> => {
+  signIn: async (credentials: Partial<AuthRequest>): Promise<AuthResponse> => {
     const { data } = await api.post<AuthResponse>("/auth/signin", credentials);
     return data;
   },
@@ -35,10 +30,13 @@ export const authApi = {
   },
 
   // Verify Email
-  verifyEmail: async (token: string): Promise<VerifyEmailResponse> => {
-    const { data } = await api.post<VerifyEmailResponse>("/auth/verify-email", {
-      token,
-    });
+  verifyEmail: async (token: string): Promise<Partial<AuthResponse>> => {
+    const { data } = await api.post<Partial<AuthResponse>>(
+      "/auth/verify-email",
+      {
+        token,
+      }
+    );
     return data;
   },
 

@@ -14,7 +14,7 @@ import {
   setError,
   setSuccess,
 } from "@/store/slices/organizations-slice";
-import { AuthResponse, SignInRequest } from "@/types";
+import { AuthResponse, AuthRequest } from "@/types";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -26,7 +26,8 @@ export function useAuth() {
 
   // Sign in mutation
   const signInMutation = useMutation({
-    mutationFn: (credentials: SignInRequest) => authApi.signIn(credentials),
+    mutationFn: (credentials: Partial<AuthRequest>) =>
+      authApi.signIn(credentials),
     onSuccess: ({ data: { user }, message }: AuthResponse) => {
       dispatch(setCredentials({ token: user.token }));
       dispatch(setUser(user));
