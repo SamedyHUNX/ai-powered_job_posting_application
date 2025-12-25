@@ -147,12 +147,14 @@ export interface OrganizationsRequest {
   isBanned: boolean;
 }
 
+export interface OrganizationsData {
+  organizations: Organization[];
+}
+
 export interface OrganizationsResponse {
-  success: string;
+  status: string;
   message: string;
   code: number;
-  data: {
-    organizations: Organization[];
-  };
+  data: OrganizationsData;
   count: number;
 }

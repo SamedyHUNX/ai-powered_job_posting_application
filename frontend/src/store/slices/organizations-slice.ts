@@ -5,10 +5,23 @@ interface OrganizationsState {
   organizations: Organization[];
   selectedOrganization: Organization | null;
   isLoading: boolean;
-  status: "idle" | "loading" | "success" | "error";
+  status: string;
   message: string | null;
   count: number;
   code: number | null;
+}
+
+interface SetOrganizationsPayload {
+  organizations: Organization[];
+  count: number;
+  status: string;
+  message: string;
+  code: number;
+}
+
+interface SetErrorPayload {
+  message: string;
+  code: number;
 }
 
 const initialState: OrganizationsState = {
@@ -27,13 +40,14 @@ const organizationsSlice = createSlice({
   reducers: {
     setOrganizations: (
       state,
-      action: PayloadAction<{ organizations: Organization[]; count: number }>
+      action: PayloadAction<SetOrganizationsPayload>
     ) => {
       state.organizations = action.payload.organizations;
       state.count = action.payload.count;
       state.isLoading = false;
-      state.status = "success";
-      state.message = "Organizations loaded successfully";
+      state.status = action.payload.status;
+      state.message = action.payload.message;
+      state.code = action.payload.code;
     },
     setSelectedOrganization: (
       state,
@@ -81,10 +95,7 @@ const organizationsSlice = createSlice({
       state.status = action.payload ? "loading" : "idle";
       if (action.payload) state.message = null;
     },
-    setError: (
-      state,
-      action: PayloadAction<{ message: string; code: number }>
-    ) => {
+    setError: (state, action: PayloadAction<SetErrorPayload>) => {
       state.isLoading = false;
       state.status = "error";
       state.message = action.payload.message;
