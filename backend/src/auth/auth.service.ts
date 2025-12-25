@@ -351,7 +351,7 @@ export class AuthService {
       };
 
       return ResponseHelper.success(ResponseCode.SIGNIN_SUCCESS, {
-        user: resUser,
+        users: [resUser],
       });
     },
     this.logger,
