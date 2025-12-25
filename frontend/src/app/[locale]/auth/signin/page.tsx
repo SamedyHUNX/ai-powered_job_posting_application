@@ -22,6 +22,13 @@ import { useErrorHandler } from "@/lib/error-handler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 
+/**
+ * Render the sign-in page with a translated, validated form and authentication handling.
+ *
+ * Displays a form for email and password with real-time validation, submits credentials via the auth hook, and shows toast notifications for API errors and successful sign-in. The component also includes links for forgotten password and sign-up flows.
+ *
+ * @returns A React element that renders the localized sign-in UI with validation and toast feedback.
+ */
 export default function SigninPage() {
   // Translations
   const t = useTranslations();
