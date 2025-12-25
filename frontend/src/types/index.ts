@@ -97,7 +97,7 @@ export const jobListingTypes = [
   "freelance",
 ] as const;
 
-export interface CreateJobListingDto {
+export interface JobListingRequest {
   organizationId: string;
   title: string;
   description: string;
@@ -113,92 +113,17 @@ export interface CreateJobListingDto {
   postedAt?: string;
 }
 
-export interface UpdateJobListingDto {
-  title?: string;
-  description?: string;
-  wage?: number;
-  wageInterval?: WageInterval;
-  stateAbbreviation?: string;
-  city?: string;
-  isFeatured?: boolean;
-  locationRequirement?: LocationRequirement;
-  experienceLevel?: ExperienceLevel;
-  status?: JobListingStatus;
-  type?: JobListingType;
-  postedAt?: string;
-}
-
 export interface JobListingResponse {
-  jobListing: JobListing;
+  success: string;
+  code: number;
   message: string;
-}
-
-export interface JobListingsListResponse {
-  jobListings: JobListing[];
+  data: {
+    jobListing: JobListing[];
+  };
   count: number;
 }
 
-export interface JobListingDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-export interface CreateJobListingResponse {
-  success: boolean;
-  message: string;
-  jobListing: JobListing;
-}
-
-export interface JobListingFormProps {
-  // Core functionality
-  onSubmit: (
-    data: CreateJobListingFormData
-  ) => Promise<CreateJobListingResponse>;
-  defaultValues?: Partial<CreateJobListingFormData>;
-
-  // Customization
-  mode?: "create" | "edit";
-  translations?: {
-    validations?: any;
-    labels?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    descriptions?: Partial<Record<keyof CreateJobListingFormData, string>>;
-    buttons?: {
-      submit?: string;
-      submitting?: string;
-    };
-    options?: {
-      wageIntervals?: Record<string, string>;
-      locationRequirements?: Record<string, string>;
-      jobTypes?: Record<string, string>;
-      experienceLevels?: Record<string, string>;
-      clearState?: string;
-    };
-  };
-
-  // Layout & styling
-  className?: string;
-  buttonClassName?: string;
-  showBorder?: boolean;
-
-  // Field visibility/customization
-  fields?: {
-    show?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-    disabled?: Partial<Record<keyof CreateJobListingFormData, boolean>>;
-  };
-
-  // Advanced
-  validationSchema?: any;
-  children?: (form: UseFormReturn<CreateJobListingFormData>) => React.ReactNode;
-
-  // Additional props
-  isLoading?: boolean;
-  hideSubmitButton?: boolean;
-
-  orgId?: string;
-}
-
 // ORGANIZATIONS
-
 export interface Organization {
   id: string;
   orgName: string;
