@@ -136,7 +136,7 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
 
   // Unknown
   [ResponseCode.UNKNOWN_ERROR]:
-    'An unknown error occured. Please try again later',
+    'An unknown error occurred. Please try again later',
 };
 
 export interface ApiResponse<T = any> {

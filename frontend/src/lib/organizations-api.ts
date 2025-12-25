@@ -68,7 +68,7 @@ export const organizationsApi = {
     dto: Partial<OrganizationsRequest>,
     token: string,
     file?: File
-  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
     const formData = new FormData();
     if (dto.orgName) formData.append("orgName", dto.orgName);
     if (dto.imageUrl) formData.append("imageUrl", dto.imageUrl);
@@ -81,7 +81,7 @@ export const organizationsApi = {
     }
 
     const { data } = await api.patch<
-      Pick<OrganizationsResponse, "code" | "message">
+      Pick<OrganizationsResponse, "code" | "message" | "data">
     >(`/organizations/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

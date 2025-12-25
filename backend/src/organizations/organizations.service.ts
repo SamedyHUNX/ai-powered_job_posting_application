@@ -325,7 +325,7 @@ export class OrganizationsService {
       this.logger.log(`Organization updated with ID: ${id}`);
 
       return ResponseHelper.success(ResponseCode.ORGANIZATION_UPDATE_SUCCESS, {
-        updatedOrg,
+        organizations: [updatedOrg],
       });
     },
     this.logger,
@@ -432,7 +432,7 @@ export class OrganizationsService {
       this.logger.log(`Organization banned with ID: ${id} ${updatedOrg}`);
 
       return ResponseHelper.success(ResponseCode.ORGANIZATION_BAN_SUCCESS, {
-        organzations: [updatedOrg],
+        organizations: [updatedOrg],
       });
     },
     this.logger,
@@ -468,7 +468,7 @@ export class OrganizationsService {
       this.logger.log(`Organization unbanned with ID: ${id}`);
 
       return ResponseHelper.success(ResponseCode.ORGANIZATION_UNBAN_SUCCESS, {
-        organzations: [updatedOrg],
+        organizations: [updatedOrg],
       });
     },
     this.logger,
