@@ -129,9 +129,9 @@ export const organizationsApi = {
   ban: async (
     id: string,
     token: string
-  ): Promise<Pick<OrganizationsResponse, "code" | "message">> => {
+  ): Promise<Pick<OrganizationsResponse, "code" | "message" | "data">> => {
     const { data } = await api.post<
-      Pick<OrganizationsResponse, "code" | "message">
+      Pick<OrganizationsResponse, "code" | "message" | "data">
     >(
       `/organizations/${id}/ban`,
       {},

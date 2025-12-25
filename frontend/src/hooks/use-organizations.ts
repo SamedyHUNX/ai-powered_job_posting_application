@@ -14,6 +14,7 @@ import {
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
 import { Organization, OrganizationsResponse } from "@/types";
+import { ApiError } from "@/lib/api-error";
 
 export function useOrganization() {
   const dispatch = useAppDispatch();
@@ -45,23 +46,28 @@ export function useOrganization() {
   //   });
 
   // Fetch organizations with filters
-  const fetchOrganizations = async (search?: string, isVerified?: boolean) => {
-    try {
-      dispatch(setLoading(true));
-      const { data, count } = await organizationsApi.findAll(
-        search,
-        isVerified
-      );
+  const fetchOrganizationsMutation = useMutation({
+    mutationFn: (params: { search?: string; isVerified?: boolean }) =>
+      organizationsApi.findAll(params.search, params.isVerified),
+
+    onSuccess: (data) => {
       dispatch(
         setOrganizations({
-          organizations: data.organizations,
-          count,
+          organizations: data.data.organizations,
+          count: data.count,
         })
       );
-    } catch (err: any) {
-      dispatch(setError(err.message || "Failed to fetch organizations"));
-    }
-  };
+    },
+
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({
+          message: err.message || "Failed to fetch organizations",
+          code: err.code || 9999,
+        })
+      );
+    },
+  });
 
   const fetchOrganizationByUserMutation = useMutation({
     mutationFn: (userId: string) => organizationsApi.findByUser(userId),
@@ -73,8 +79,10 @@ export function useOrganization() {
         })
       );
     },
-    onError: (err: any) => {
-      dispatch(setError(err.message || "Failed to fetch user organizations"));
+    onError: (err: ApiError) => {
+      dispatch(
+        setError({ message: err.message || "Failed to fetch organization" })
+      );
     },
   });
 
@@ -164,15 +172,16 @@ export function useOrganization() {
 
   // Ban organization mutation
   const banOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
+    mutationFn: async (id: string) => {
       if (!token) throw new Error("Authentication required");
-      return organizationsApi.ban(id, token);
+      const { data } = await organizationsApi.ban(id, token);
+      return data.organizations[0];
     },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
+    onSuccess: (organization) => {
+      dispatch(updateOrganization(organization));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
+        queryKey: ["organization", organization.id],
       });
     },
     onError: (err: any) => {
@@ -180,17 +189,17 @@ export function useOrganization() {
     },
   });
 
-  // Unban organization mutation
   const unbanOrganizationMutation = useMutation({
-    mutationFn: (id: string) => {
+    mutationFn: async (id: string) => {
       if (!token) throw new Error("Authentication required");
-      return organizationsApi.unban(id, token);
+      const { data } = await organizationsApi.unban(id, token);
+      return data.organizations[0];
     },
-    onSuccess: (data) => {
-      dispatch(updateOrganization(data.organization));
+    onSuccess: (organization) => {
+      dispatch(updateOrganization(organization));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
-        queryKey: ["organization", data.organization.id],
+        queryKey: ["organization", organization.id],
       });
     },
     onError: (err: any) => {
@@ -234,8 +243,13 @@ export function useOrganization() {
     isLoading,
     count,
 
+    // Fetch organizations
+    fetchOrganizations: fetchOrganizationByUserMutation.mutate,
+    isFetchingOrganizations: fetchOrganizationByUserMutation.isPending,
+    fetchOrganizationSuccess: fetchOrganizationByUserMutation.isSuccess,
+    fetchOrganizationError: fetchOrganizationByUserMutation.error,
+
     // Queries
-    fetchOrganizations,
     fetchOrganizationQuery,
 
     // Create organization
@@ -250,31 +264,17 @@ export function useOrganization() {
     fetchOrganizationsByUserSuccess: fetchOrganizationByUserMutation.isSuccess,
     isFetchingOrganizationsByUserError: fetchOrganizationByUserMutation.error,
 
-    // Mutations
-    // updateOrganization: updateOrganizationMutation.mutate,
-    // deleteOrganization: deleteOrganizationMutation.mutate,
-    // verifyOrganization: verifyOrganizationMutation.mutate,
-    // banOrganization: banOrganizationMutation.mutate,
-    // unbanOrganization: unbanOrganizationMutation.mutate,
+    // Ban organization mutation
+    banOrganization: banOrganizationMutation.mutate,
+    isBanning: banOrganizationMutation.isPending,
+    banSuccess: banOrganizationMutation.isSuccess,
+    banError: banOrganizationMutation.error,
 
-    // Mutation states
-    // isUpdating: updateOrganizationMutation.isPending,
-    // isDeleting: deleteOrganizationMutation.isPending,
-    // isVerifying: verifyOrganizationMutation.isPending,
-    // isBanning: banOrganizationMutation.isPending,
-    // isUnbanning: unbanOrganizationMutation.isPending,
-
-    // updateSuccess: updateOrganizationMutation.isSuccess,
-    // deleteSuccess: deleteOrganizationMutation.isSuccess,
-    // verifySuccess: verifyOrganizationMutation.isSuccess,
-    // banSuccess: banOrganizationMutation.isSuccess,
-    // unbanSuccess: unbanOrganizationMutation.isSuccess,
-
-    // updateError: updateOrganizationMutation.error,
-    // deleteError: deleteOrganizationMutation.error,
-    // verifyError: verifyOrganizationMutation.error,
-    // banError: banOrganizationMutation.error,
-    // unbanError: unbanOrganizationMutation.error,
+    // Unban organization mutation
+    unbanOrganzation: unbanOrganizationMutation.mutate,
+    isUnbanning: unbanOrganizationMutation.isPending,
+    unbanSuccess: unbanOrganizationMutation.isSuccess,
+    unbanError: unbanOrganizationMutation.isError,
 
     // Utility functions
     selectOrganization,

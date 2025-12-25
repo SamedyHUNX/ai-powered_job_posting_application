@@ -8,7 +8,7 @@ interface OrganizationsState {
   status: "idle" | "loading" | "success" | "error";
   message: string | null;
   count: number;
-  code: string | null;
+  code: number | null;
 }
 
 const initialState: OrganizationsState = {
@@ -18,7 +18,7 @@ const initialState: OrganizationsState = {
   status: "idle",
   message: null,
   count: 0,
-  code: "",
+  code: null,
 };
 
 const organizationsSlice = createSlice({
@@ -83,12 +83,12 @@ const organizationsSlice = createSlice({
     },
     setError: (
       state,
-      action: PayloadAction<{ message: string; code: string }>
+      action: PayloadAction<{ message: string; code?: number }>
     ) => {
       state.isLoading = false;
       state.status = "error";
       state.message = action.payload.message;
-      state.code = action.payload.code;
+      state.code = action.payload.code ?? 9999;
     },
     clearOrganizations: (state) => {
       state.organizations = [];

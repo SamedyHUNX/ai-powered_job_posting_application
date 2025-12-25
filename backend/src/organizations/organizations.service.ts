@@ -432,7 +432,7 @@ export class OrganizationsService {
       this.logger.log(`Organization banned with ID: ${id} ${updatedOrg}`);
 
       return ResponseHelper.success(ResponseCode.ORGANIZATION_BAN_SUCCESS, {
-        updatedOrg,
+        organzations: [updatedOrg],
       });
     },
     this.logger,
@@ -467,12 +467,9 @@ export class OrganizationsService {
 
       this.logger.log(`Organization unbanned with ID: ${id}`);
 
-      return ResponseHelper.success(
-        ResponseCode.ORGANIZATION_UNBAN_SUCCESS,
-        {
-          organizations: updatedOrg,
-        },
-      );
+      return ResponseHelper.success(ResponseCode.ORGANIZATION_UNBAN_SUCCESS, {
+        organzations: [updatedOrg],
+      });
     },
     this.logger,
     'Failed to unban organization',

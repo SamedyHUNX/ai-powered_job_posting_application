@@ -55,6 +55,8 @@ export enum ResponseCode {
   // Rate limiting (5xxx)
   TOO_MANY_REQUESTS = 5001,
   RATE_LIMIT_EXCEEDED = 5002,
+
+  UNKNOWN_ERROR = 9999,
 }
 
 export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
@@ -131,6 +133,10 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.TOO_MANY_REQUESTS]: 'Too many requests from this IP',
   [ResponseCode.RATE_LIMIT_EXCEEDED]:
     'Rate limit exceeded. Please try again later.',
+
+  // Unknown
+  [ResponseCode.UNKNOWN_ERROR]:
+    'An unknown error occured. Please try again later',
 };
 
 export interface ApiResponse<T = any> {
