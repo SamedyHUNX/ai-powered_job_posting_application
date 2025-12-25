@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useErrorHandler } from "@/lib/error-handler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
+import { AuthRequest } from "@/types";
 
 export default function SigninPage() {
   // Translations
@@ -28,7 +29,6 @@ export default function SigninPage() {
   const signInT = (key: string) => t(`signIn.${key}`);
   const validationT = (key: string) => t(`validations.${key}`);
   const successT = (key: string) => t(`apiSuccess.${key}`);
-  const errorT = (key: string) => t(`apiErrors.${key}`);
 
   const { signIn, isSigningIn, signInError, signInSuccess } = useAuth();
   const { getErrorMessage } = useErrorHandler();
@@ -40,7 +40,7 @@ export default function SigninPage() {
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
-    mode: "onChange", // Enable real-time validation
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
