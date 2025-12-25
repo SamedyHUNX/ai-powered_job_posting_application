@@ -113,7 +113,12 @@ export class OrganizationsService {
           `Organization created with ID: ${organization.id} and assigned to user: ${userId}`,
         );
 
-        return ResponseHelper.success(ResponseCode.ORGANIZATION_CREATE_SUCCESS);
+        return ResponseHelper.success(
+          ResponseCode.ORGANIZATION_CREATE_SUCCESS,
+          {
+            organizations: [organization],
+          },
+        );
       } catch (error) {
         // If database insertion fails, delete the uploaded file from S3
         if (imageKey) {

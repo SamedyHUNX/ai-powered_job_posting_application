@@ -14,10 +14,8 @@ import {
 } from "@/store/slices/job-listings-slice";
 import { jobListingsApi } from "@/lib/job-listings-api";
 import {
-  CreateJobListingDto,
   JobListing,
   JobListingResponse,
-  UpdateJobListingDto,
 } from "@/types";
 
 export function useJobListing() {

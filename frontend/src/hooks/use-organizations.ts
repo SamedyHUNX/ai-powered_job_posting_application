@@ -15,6 +15,7 @@ import {
 import { organizationsApi } from "@/lib/organizations-api";
 import {
   Organization,
+  OrganizationsData,
   OrganizationsRequest,
   OrganizationsResponse,
 } from "@/types";
@@ -51,14 +52,28 @@ export function useOrganization() {
 
   // Fetch organizations with filters
   const fetchOrganizationsMutation = useMutation({
-    mutationFn: (params: { search?: string; isVerified?: boolean }) =>
-      organizationsApi.findAll(params.search, params.isVerified),
+    mutationFn: async (params: { search?: string; isVerified?: boolean }) => {
+      const response = await organizationsApi.findAll(
+        params.search,
+        params.isVerified
+      );
+      return response;
+    },
 
-    onSuccess: (data) => {
+    onSuccess: ({
+      code,
+      status,
+      message,
+      data,
+      count,
+    }: OrganizationsResponse) => {
       dispatch(
         setOrganizations({
-          organizations: data.data.organizations,
-          count: data.count,
+          status,
+          organizations: data.organizations,
+          code,
+          count: count,
+          message,
         })
       );
     },
@@ -74,12 +89,24 @@ export function useOrganization() {
   });
 
   const fetchOrganizationByUserMutation = useMutation({
-    mutationFn: (userId: string) => organizationsApi.findByUser(userId),
-    onSuccess: (data) => {
+    mutationFn: async (userId: string) => {
+      const response = await organizationsApi.findByUser(userId);
+      return response;
+    },
+    onSuccess: ({
+      code,
+      status,
+      message,
+      data,
+      count,
+    }: OrganizationsResponse) => {
       dispatch(
         setOrganizations({
-          organizations: data.data.organizations,
-          count: data.count,
+          code,
+          status,
+          message,
+          organizations: data.organizations,
+          count,
         })
       );
     },
@@ -103,14 +130,23 @@ export function useOrganization() {
 
   // Create organization mutation
   const createOrganizationMutation = useMutation({
-    mutationFn: (formData: FormData) => {
+    mutationFn: async (formData: FormData) => {
       if (!token) throw new Error("Authentication required");
-      return organizationsApi.create(formData, token);
+      const response = await organizationsApi.create(formData, token);
+      return response;
     },
-    onSuccess: (data) => {
-      // dispatch(addOrganization(data.organization));
+    onSuccess: ({
+      code,
+      message,
+      data,
+    }: {
+      code: number;
+      message: string;
+      data: OrganizationsData;
+    }) => {
+      dispatch(addOrganization(data.organizations[0]));
       // dispatch(setSelectedOrganization(data.organization));
-      dispatch(setSuccess(data.message));
+      dispatch(setSuccess(message));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: ApiError) => {
