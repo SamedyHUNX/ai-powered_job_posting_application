@@ -31,6 +31,8 @@ export enum ResponseCode {
   INVALID_EMAIL_FORMAT = 2004,
   INVALID_PASSWORD_FORMAT = 2005,
   INVALID_REQUEST_DATA = 2101,
+  INVALID_IMAGE_TYPE = 2102,
+  INVALID_IMAGE_SIZE = 2103,
 
   // Conflict errors (3xxx)
   EXISTING_EMAIL = 3001,
@@ -114,6 +116,9 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.ORGANIZATION_NOT_BANNED]: 'Organization is not banned',
   [ResponseCode.ORGANIZATION_FETCH_ERROR]: 'Failed to fetch organization',
   [ResponseCode.INVALID_REQUEST_DATA]: 'Missing or invalid request data',
+  [ResponseCode.INVALID_IMAGE_TYPE]:
+    'Only image files (jpg, jpeg) are allowed',
+  [ResponseCode.INVALID_IMAGE_SIZE]: 'File size must be less than 5MB',
 
   // Conflict errors
   [ResponseCode.EXISTING_EMAIL]: 'User with this email already exists',
