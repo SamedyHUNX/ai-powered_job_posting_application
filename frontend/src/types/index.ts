@@ -29,6 +29,8 @@ export interface UsersData {
   users: User[];
 }
 
+export type LocaleType = "en" | "de" | "kh";
+
 // JOB LISTINGS
 export type WageInterval = "hourly" | "yearly" | "monthly";
 export type LocationRequirement = "in-office" | "hybrid" | "remote";

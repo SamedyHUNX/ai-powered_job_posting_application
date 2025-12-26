@@ -9,6 +9,7 @@ import { SWRConfig } from "swr";
 import { Providers } from "@/providers/providers";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
+import { LocaleType } from "@/types";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -24,7 +25,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
 
   // Validate locale
-  if (!routing.locales.includes(locale as any)) notFound();
+  if (!routing.locales.includes(locale as LocaleType)) notFound();
 
   // Load messages for this locale
   const messages = await getMessages({ locale });
