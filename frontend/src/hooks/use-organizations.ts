@@ -7,10 +7,9 @@ import {
   addOrganization,
   updateOrganization,
   removeOrganization,
-  setLoading,
   setError,
   clearOrganizations,
-  setSuccess,
+  setLoading,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
 import {
@@ -25,7 +24,7 @@ export function useOrganization() {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const token = useAppSelector((state) => state.auth.token);
-  const { organizations, selectedOrganization, isLoading, count } =
+  const { organizations, selectedOrganization, isLoading, error } =
     useAppSelector((state) => state.organizations);
 
   // Restore selected organization from localStorage on mount
@@ -41,82 +40,39 @@ export function useOrganization() {
         }
       }
     }
-  }, [dispatch]);
+  }, [dispatch, selectedOrganization]);
 
   // Fetch all organizations
   const fetchOrganizationsQuery = useQuery({
     queryKey: ["organizations"],
     queryFn: () => organizationsApi.findAll(),
-    enabled: false, // Only fetch when explicitly called
+    enabled: false,
   });
 
   // Fetch organizations with filters
   const fetchOrganizationsMutation = useMutation({
     mutationFn: async (params: { search?: string; isVerified?: boolean }) => {
-      const response = await organizationsApi.findAll(
-        params.search,
-        params.isVerified
-      );
-      return response;
+      dispatch(setLoading(true));
+      return await organizationsApi.findAll(params.search, params.isVerified);
     },
-
-    onSuccess: ({
-      code,
-      status,
-      message,
-      data,
-      count,
-    }: OrganizationsResponse) => {
-      dispatch(
-        setOrganizations({
-          status,
-          organizations: data.organizations,
-          code,
-          count: count,
-          message,
-        })
-      );
+    onSuccess: (response: OrganizationsResponse) => {
+      dispatch(setOrganizations(response.data.organizations));
     },
-
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to fetch organizations",
-          code: err.code || 9999,
-        })
-      );
+      dispatch(setError(err.message || "Failed to fetch organizations"));
     },
   });
 
   const fetchOrganizationByUserMutation = useMutation({
     mutationFn: async (userId: string) => {
-      const response = await organizationsApi.findByUser(userId);
-      return response;
+      dispatch(setLoading(true));
+      return await organizationsApi.findByUser(userId);
     },
-    onSuccess: ({
-      code,
-      status,
-      message,
-      data,
-      count,
-    }: OrganizationsResponse) => {
-      dispatch(
-        setOrganizations({
-          code,
-          status,
-          message,
-          organizations: data.organizations,
-          count,
-        })
-      );
+    onSuccess: (response: OrganizationsResponse) => {
+      dispatch(setOrganizations(response.data.organizations));
     },
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to fetch organization",
-          code: err.code,
-        })
-      );
+      dispatch(setError(err.message || "Failed to fetch organization"));
     },
   });
 
@@ -132,39 +88,19 @@ export function useOrganization() {
   const createOrganizationMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       if (!token) throw new Error("Authentication required");
-      const response = await organizationsApi.create(formData, token);
-      return response;
+      return await organizationsApi.create(formData, token);
     },
-    onSuccess: ({
-      code,
-      message,
-      data,
-      status,
-    }: {
+    onSuccess: (response: {
       status: string;
       code: number;
       message: string;
       data: OrganizationsData;
     }) => {
-      dispatch(
-        addOrganization({
-          code,
-          message,
-          status,
-          organizations: data.organizations,
-        })
-      );
-
-      dispatch(setSuccess(message));
+      dispatch(addOrganization(response.data.organizations[0]));
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to create organization",
-          code: err.code || 9999,
-        })
-      );
+      dispatch(setError(err.message || "Failed to create organization"));
     },
   });
 
@@ -191,12 +127,7 @@ export function useOrganization() {
       });
     },
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to update organization",
-          code: err.code || 9999,
-        })
-      );
+      dispatch(setError(err.message || "Failed to update organization"));
     },
   });
 
@@ -211,12 +142,7 @@ export function useOrganization() {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to remove organization",
-          code: err.code || 9999,
-        })
-      );
+      dispatch(setError(err.message || "Failed to remove organization"));
     },
   });
 
@@ -235,12 +161,7 @@ export function useOrganization() {
       });
     },
     onError: (err: ApiError) => {
-      dispatch(
-        setError({
-          message: err.message || "Failed to verify organization",
-          code: err.code || 9999,
-        })
-      );
+      dispatch(setError(err.message || "Failed to verify organization"));
     },
   });
 
@@ -258,7 +179,7 @@ export function useOrganization() {
         queryKey: ["organization", organization.id],
       });
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       dispatch(setError(err.message || "Failed to ban organization"));
     },
   });
@@ -276,7 +197,7 @@ export function useOrganization() {
         queryKey: ["organization", organization.id],
       });
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       dispatch(setError(err.message || "Failed to unban organization"));
     },
   });
@@ -315,7 +236,8 @@ export function useOrganization() {
     organizations,
     selectedOrganization,
     isLoading,
-    count,
+    error,
+    count: organizations.length,
 
     // Fetch organizations
     fetchOrganizations: fetchOrganizationsMutation.mutate,

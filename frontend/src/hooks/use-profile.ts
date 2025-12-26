@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { authApi } from "@/lib/auth-api";
-import { logout } from "@/store/slices/auth-slice";
+import { clearAuth } from "@/store/slices/auth-slice";
 import useSWR from "swr";
 import { clearOrganizations } from "@/store/slices/organizations-slice";
 
@@ -16,7 +16,7 @@ export function useProfile() {
       shouldRetryOnError: false, // Similar to retry: false in React Query
       onError: () => {
         dispatch(clearOrganizations());
-        dispatch(logout());
+        dispatch(clearAuth());
         localStorage.removeItem("access_token");
       },
     }
