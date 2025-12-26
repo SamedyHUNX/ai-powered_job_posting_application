@@ -10,7 +10,6 @@ import {
   setError,
   clearOrganizations,
   setLoading,
-  clearLastResponse,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
 import {
@@ -25,13 +24,8 @@ export function useOrganization() {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const token = useAppSelector((state) => state.auth.token);
-  const {
-    organizations,
-    selectedOrganization,
-    isLoading,
-    error,
-    lastResponse,
-  } = useAppSelector((state) => state.organizations);
+  const { organizations, selectedOrganization, isLoading, error } =
+    useAppSelector((state) => state.organizations);
 
   // Restore selected organization from localStorage on mount
   useEffect(() => {
@@ -58,11 +52,9 @@ export function useOrganization() {
       dispatch(
         setOrganizations({
           organizations: response.data.organizations,
-          response: {
-            status: response.status,
-            code: response.code,
-            message: response.message,
-          },
+          status: response.status,
+          code: response.code,
+          message: response.message,
         })
       );
     },
@@ -80,11 +72,9 @@ export function useOrganization() {
       dispatch(
         setOrganizations({
           organizations: response.data.organizations,
-          response: {
-            status: response.status,
-            code: response.code,
-            message: response.message,
-          },
+          status: response.status,
+          code: response.code,
+          message: response.message,
         })
       );
     },
@@ -116,11 +106,9 @@ export function useOrganization() {
       dispatch(
         addOrganization({
           organization: response.data.organizations[0],
-          response: {
-            status: response.status,
-            code: response.code,
-            message: response.message,
-          },
+          status: response.status,
+          code: response.code,
+          message: response.message,
         })
       );
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
@@ -263,7 +251,6 @@ export function useOrganization() {
     selectedOrganization,
     isLoading,
     error,
-    lastResponse, // Access to last API response metadata
     count: organizations.length,
 
     // Fetch organizations
@@ -321,6 +308,5 @@ export function useOrganization() {
     selectOrganization,
     clearSelectedOrganization,
     clearAllOrganizations,
-    clearLastResponse: () => dispatch(clearLastResponse()),
   };
 }
