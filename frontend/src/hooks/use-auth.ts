@@ -12,6 +12,7 @@ import { useLocale } from "next-intl";
 import { clearOrganizations } from "@/store/slices/organizations-slice";
 import { AuthResponse } from "@/types";
 import { SignInFormData } from "@/schemas";
+import { ApiError } from "@/lib/api-error";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -100,31 +101,31 @@ export function useAuth() {
     // Sign in
     signIn: signInMutation.mutate,
     isSigningIn: signInMutation.isPending,
-    signInError: signInMutation.error,
+    signInError: signInMutation.error as ApiError,
     signInSuccess: signInMutation.isSuccess,
 
     // Sign up
     signUp: signUpMutation.mutate,
     isSigningUp: signUpMutation.isPending,
-    signUpError: signUpMutation.error,
+    signUpError: signUpMutation.error as ApiError,
     signUpSuccess: signUpMutation.isSuccess,
 
     // Verify email
     verifyEmail: verifyEmailMutation.mutate,
     isVerifyingEmail: verifyEmailMutation.isPending,
-    verifyEmailError: verifyEmailMutation.error,
+    verifyEmailError: verifyEmailMutation.error as ApiError,
     verifyEmailSuccess: verifyEmailMutation.isSuccess,
 
     // Forgot password
     forgotPassword: forgotPasswordMutation.mutate,
     isRequestingForgotPassword: forgotPasswordMutation.isPending,
-    forgotPasswordError: forgotPasswordMutation.error,
+    forgotPasswordError: forgotPasswordMutation.error as ApiError,
     forgotPasswordSuccess: forgotPasswordMutation.isSuccess,
 
     // Reset password
     resetPassword: resetPasswordMutation.mutate,
     isResettingPassword: resetPasswordMutation.isPending,
-    resetPasswordError: resetPasswordMutation.error,
+    resetPasswordError: resetPasswordMutation.error as ApiError,
     resetPasswordSuccess: resetPasswordMutation.isSuccess,
 
     // Logout

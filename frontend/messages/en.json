@@ -200,7 +200,6 @@
     "3001": "User with this email already exists",
     "3002": "Username is already taken",
     "3003": "Profile image is required",
-    "UNKNOWN_ERROR": "An error occurred. Please try again",
     "4001": "The provided token is invalid or has expired.",
     "4003": "Your account has been banned. Please contact support.",
     "4004": "Your account is disabled. Please contact support.",
@@ -208,7 +207,8 @@
     "ERR_NETWORK": "Network error. Please check your internet connection.",
     "ERR_BAD_REQUEST": "Bad request. Please check your input and try again.",
     "ORGANIZATION_EXISTS": "An organization with this name already exists.",
-    "FETCH_ERROR": "Error fetching data. Please try again."
+    "FETCH_ERROR": "Error fetching data. Please try again.",
+    "9999": "An error occurred. Please try again"
   },
   "apiSuccess": {
     "signInSuccess": "Signed in successfully",

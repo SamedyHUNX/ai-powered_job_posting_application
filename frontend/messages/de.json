@@ -161,7 +161,6 @@
     "3001": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
     "3002": "Benutzername ist bereits vergeben",
     "3003": "Profilbild ist erforderlich",
-    "UNKNOWN_ERROR": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut",
     "4001": "Der bereitgestellte Token ist ungültig oder abgelaufen.",
     "4003": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Support.",
     "4004": "Ihr Konto ist deaktiviert. Bitte kontaktieren Sie den Support.",
@@ -169,7 +168,8 @@
     "ERR_NETWORK": "Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.",
     "ERR_BAD_REQUEST": "Ungültige Anfrage. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
     "ORGANIZATION_EXISTS": "Eine Organisation mit diesem Namen existiert bereits.",
-    "FETCH_ERROR": "Fehler beim Abrufen der Daten. Bitte versuchen Sie es erneut."
+    "FETCH_ERROR": "Fehler beim Abrufen der Daten. Bitte versuchen Sie es erneut.",
+    "9999": "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es erneut"
   },
   "apiSuccess": {
     "signInSuccess": "Erfolgreich angemeldet",
