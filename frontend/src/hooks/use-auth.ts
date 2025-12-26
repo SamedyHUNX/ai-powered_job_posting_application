@@ -11,7 +11,7 @@ import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 import { useLocale } from "next-intl";
 import { clearOrganizations } from "@/store/slices/organizations-slice";
 import { AuthResponse } from "@/types";
-import { SignInFormData } from "@/schemas";
+import { SignInFormData, SignUpFormData } from "@/schemas";
 import { ApiError } from "@/lib/api-error";
 
 export function useAuth() {
@@ -99,30 +99,32 @@ export function useAuth() {
     isInitialized,
 
     // Sign in
-    signIn: signInMutation.mutate,
-    isSigningIn: signInMutation.isPending,
+    signIn: signInMutation.mutate as (data: SignInFormData) => void,
+    isSigningIn: signInMutation.isPending as boolean,
     signInError: signInMutation.error as ApiError,
-    signInSuccess: signInMutation.isSuccess,
-    signInData: signInMutation.data,
+    signInSuccess: signInMutation.isSuccess as boolean,
+    signInData: signInMutation.data as AuthResponse,
 
     // Sign up
     signUp: signUpMutation.mutate,
-    isSigningUp: signUpMutation.isPending,
+    isSigningUp: signUpMutation.isPending as boolean,
     signUpError: signUpMutation.error as ApiError,
-    signUpSuccess: signUpMutation.isSuccess,
-    signUpData: signUpMutation.data,
+    signUpSuccess: signUpMutation.isSuccess as boolean,
+    signUpData: signUpMutation.data as AuthResponse,
 
     // Verify email
     verifyEmail: verifyEmailMutation.mutate,
-    isVerifyingEmail: verifyEmailMutation.isPending,
+    isVerifyingEmail: verifyEmailMutation.isPending as boolean,
     verifyEmailError: verifyEmailMutation.error as ApiError,
-    verifyEmailSuccess: verifyEmailMutation.isSuccess,
+    verifyEmailSuccess: verifyEmailMutation.isSuccess as boolean,
+    verifyEmailData: verifyEmailMutation.data as AuthResponse,
 
     // Forgot password
     forgotPassword: forgotPasswordMutation.mutate,
-    isRequestingForgotPassword: forgotPasswordMutation.isPending,
+    isRequestingForgotPassword: forgotPasswordMutation.isPending as boolean,
     forgotPasswordError: forgotPasswordMutation.error as ApiError,
-    forgotPasswordSuccess: forgotPasswordMutation.isSuccess,
+    forgotPasswordSuccess: forgotPasswordMutation.isSuccess as boolean,
+    forgotPasswordData: forgotPasswordMutation.data,
 
     // Reset password
     resetPassword: resetPasswordMutation.mutate,
