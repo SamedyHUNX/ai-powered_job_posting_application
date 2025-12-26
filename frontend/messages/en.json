@@ -217,7 +217,8 @@
     "resetPasswordSuccess": "Your password has been reset successfully",
     "forgotPasswordSuccess": "Please check your email for password reset instructions",
     "createNewOrgSuccess": "Organization created successfully. Please wait for verification from admin",
-    "createJobListingSuccess": "Job listing created successfully as a draft"
+    "createJobListingSuccess": "Job listing created successfully as a draft",
+    "0": "Success!"
   },
   "organizationsList": {
     "chooseAccount": {

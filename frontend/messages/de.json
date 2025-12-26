@@ -177,7 +177,8 @@
     "verifyEmailSuccess": "Ihre E-Mail wurde erfolgreich verifiziert",
     "resetPasswordSuccess": "Ihr Passwort wurde erfolgreich zurückgesetzt",
     "forgotPasswordSuccess": "Bitte überprüfen Sie Ihre E-Mails für Anweisungen zum Zurücksetzen des Passworts",
-    "createNewOrgSuccess": "Organisation erfolgreich erstellt. Bitte warten Sie auf die Verifizierung durch den Admin."
+    "createNewOrgSuccess": "Organisation erfolgreich erstellt. Bitte warten Sie auf die Verifizierung durch den Admin.",
+    "0": "Erfolgreich"
   },
   "organizationsList": {
     "chooseAccount": {

@@ -52,8 +52,7 @@ export default function ForgotPasswordPage() {
 
   useEffect(() => {
     if (forgotPasswordError) {
-      const errorMessage = getErrorMessage(forgotPasswordError);
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(forgotPasswordError));
     }
   }, [forgotPasswordError, getErrorMessage]);
 

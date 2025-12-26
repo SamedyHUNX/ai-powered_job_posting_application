@@ -103,12 +103,14 @@ export function useAuth() {
     isSigningIn: signInMutation.isPending,
     signInError: signInMutation.error as ApiError,
     signInSuccess: signInMutation.isSuccess,
+    signInData: signInMutation.data,
 
     // Sign up
     signUp: signUpMutation.mutate,
     isSigningUp: signUpMutation.isPending,
     signUpError: signUpMutation.error as ApiError,
     signUpSuccess: signUpMutation.isSuccess,
+    signUpData: signUpMutation.data,
 
     // Verify email
     verifyEmail: verifyEmailMutation.mutate,
