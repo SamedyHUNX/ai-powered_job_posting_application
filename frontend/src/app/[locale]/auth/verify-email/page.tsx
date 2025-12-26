@@ -35,10 +35,9 @@ export default function VerifyEmailPage() {
   // Handle error with toast
   useEffect(() => {
     if (verifyEmailError) {
-      const errorMessage = getErrorMessage(verifyEmailError);
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(verifyEmailError));
     }
-  }, [verifyEmailError, t]);
+  }, [verifyEmailError]);
 
   // Handle success with toast
   useEffect(() => {
