@@ -1,7 +1,3 @@
-import { CreateJobListingFormData } from "@/schemas/createJobListingSchema";
-import { ReactNode } from "react";
-import { UseFormReturn } from "react-hook-form";
-
 // USERS
 export interface User {
   id: string;

@@ -6,11 +6,9 @@ interface OrganizationsState {
   selectedOrganization: Organization | null;
   isLoading: boolean;
   error: string | null;
-  lastResponse: {
-    status: string;
-    code: number;
-    message: string;
-  } | null;
+  status: string | null;
+  code: number | null;
+  message: string | null;
 }
 
 const initialState: OrganizationsState = {
@@ -18,7 +16,9 @@ const initialState: OrganizationsState = {
   selectedOrganization: null,
   isLoading: false,
   error: null,
-  lastResponse: null,
+  status: null,
+  code: null,
+  message: null,
 };
 
 const organizationsSlice = createSlice({
@@ -29,15 +29,17 @@ const organizationsSlice = createSlice({
       state,
       action: PayloadAction<{
         organizations: Organization[];
-        response?: { status: string; code: number; message: string };
+        status: string;
+        code: number;
+        message: string;
       }>
     ) => {
       state.organizations = action.payload.organizations;
+      state.status = action.payload.status || null;
+      state.code = action.payload.code || null;
+      state.message = action.payload.message || null;
       state.isLoading = false;
       state.error = null;
-      if (action.payload.response) {
-        state.lastResponse = action.payload.response;
-      }
     },
     setSelectedOrganization: (
       state,
@@ -49,13 +51,15 @@ const organizationsSlice = createSlice({
       state,
       action: PayloadAction<{
         organization: Organization;
-        response?: { status: string; code: number; message: string };
+        status?: string;
+        code?: number;
+        message?: string;
       }>
     ) => {
       state.organizations.push(action.payload.organization);
-      if (action.payload.response) {
-        state.lastResponse = action.payload.response;
-      }
+      state.status = action.payload.status || null;
+      state.code = action.payload.code || null;
+      state.message = action.payload.message || null;
     },
     updateOrganization: (state, action: PayloadAction<Organization>) => {
       const index = state.organizations.findIndex(
@@ -82,10 +86,14 @@ const organizationsSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
-      state.lastResponse = null;
+      state.status = null;
+      state.code = null;
+      state.message = null;
     },
-    clearLastResponse: (state) => {
-      state.lastResponse = null;
+    clearResponse: (state) => {
+      state.status = null;
+      state.code = null;
+      state.message = null;
     },
     clearOrganizations: () => initialState,
   },
@@ -99,7 +107,7 @@ export const {
   removeOrganization,
   setLoading,
   setError,
-  clearLastResponse,
+  clearResponse,
   clearOrganizations,
 } = organizationsSlice.actions;
 
