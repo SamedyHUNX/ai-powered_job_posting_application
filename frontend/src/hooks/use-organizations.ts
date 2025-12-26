@@ -10,6 +10,7 @@ import {
   setError,
   clearOrganizations,
   setLoading,
+  clearLastResponse,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
 import {
@@ -24,8 +25,13 @@ export function useOrganization() {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const token = useAppSelector((state) => state.auth.token);
-  const { organizations, selectedOrganization, isLoading, error } =
-    useAppSelector((state) => state.organizations);
+  const {
+    organizations,
+    selectedOrganization,
+    isLoading,
+    error,
+    lastResponse,
+  } = useAppSelector((state) => state.organizations);
 
   // Restore selected organization from localStorage on mount
   useEffect(() => {
@@ -42,13 +48,6 @@ export function useOrganization() {
     }
   }, [dispatch, selectedOrganization]);
 
-  // Fetch all organizations
-  const fetchOrganizationsQuery = useQuery({
-    queryKey: ["organizations"],
-    queryFn: () => organizationsApi.findAll(),
-    enabled: false,
-  });
-
   // Fetch organizations with filters
   const fetchOrganizationsMutation = useMutation({
     mutationFn: async (params: { search?: string; isVerified?: boolean }) => {
@@ -56,7 +55,16 @@ export function useOrganization() {
       return await organizationsApi.findAll(params.search, params.isVerified);
     },
     onSuccess: (response: OrganizationsResponse) => {
-      dispatch(setOrganizations(response.data.organizations));
+      dispatch(
+        setOrganizations({
+          organizations: response.data.organizations,
+          response: {
+            status: response.status,
+            code: response.code,
+            message: response.message,
+          },
+        })
+      );
     },
     onError: (err: ApiError) => {
       dispatch(setError(err.message || "Failed to fetch organizations"));
@@ -69,7 +77,16 @@ export function useOrganization() {
       return await organizationsApi.findByUser(userId);
     },
     onSuccess: (response: OrganizationsResponse) => {
-      dispatch(setOrganizations(response.data.organizations));
+      dispatch(
+        setOrganizations({
+          organizations: response.data.organizations,
+          response: {
+            status: response.status,
+            code: response.code,
+            message: response.message,
+          },
+        })
+      );
     },
     onError: (err: ApiError) => {
       dispatch(setError(err.message || "Failed to fetch organization"));
@@ -96,7 +113,16 @@ export function useOrganization() {
       message: string;
       data: OrganizationsData;
     }) => {
-      dispatch(addOrganization(response.data.organizations[0]));
+      dispatch(
+        addOrganization({
+          organization: response.data.organizations[0],
+          response: {
+            status: response.status,
+            code: response.code,
+            message: response.message,
+          },
+        })
+      );
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
     onError: (err: ApiError) => {
@@ -237,6 +263,7 @@ export function useOrganization() {
     selectedOrganization,
     isLoading,
     error,
+    lastResponse, // Access to last API response metadata
     count: organizations.length,
 
     // Fetch organizations
@@ -247,7 +274,6 @@ export function useOrganization() {
 
     // Queries
     fetchOrganizationQuery,
-    fetchOrganizationsQuery,
 
     // Create organization
     createOrganization: createOrganizationMutation.mutate,
@@ -295,5 +321,6 @@ export function useOrganization() {
     selectOrganization,
     clearSelectedOrganization,
     clearAllOrganizations,
+    clearLastResponse: () => dispatch(clearLastResponse()),
   };
 }
