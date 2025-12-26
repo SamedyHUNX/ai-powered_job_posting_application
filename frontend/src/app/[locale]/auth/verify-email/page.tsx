@@ -51,7 +51,7 @@ export default function VerifyEmailPage() {
   }, [verifyEmailSuccess, t, router]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-lg mx-auto mt-[15%] min-h-screen">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 bg-blue-500/10 dark:bg-blue-500/10 rounded-full flex items-center justify-center mb-6">
           <svg
