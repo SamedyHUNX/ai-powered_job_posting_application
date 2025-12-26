@@ -21,7 +21,6 @@ import Link from "next/link";
 import { useErrorHandler } from "@/lib/error-handler";
 import { createSignInSchema, SignInFormData } from "@/schemas/signInSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
-import { AuthRequest } from "@/types";
 
 export default function SigninPage() {
   // Translations

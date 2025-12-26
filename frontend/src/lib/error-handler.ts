@@ -1,13 +1,14 @@
 import { useTranslations } from "next-intl";
+import { ApiError } from "./api-error";
 
 export function useErrorHandler() {
   const t = useTranslations();
 
-  const getErrorMessage = (error: any) => {
-    const errorCode = error.response?.data.code || "UNKNOWN_ERROR";
+  const getErrorMessage = (error: ApiError) => {
+    const errorCode = error.code || 9999;
 
     return t(`apiErrors.${errorCode}`, {
-      defaultValue: error.message || t(`apiErrors.UNKNOWN_ERROR`),
+      defaultValue: error.code || t(`apiErrors.9999`),
     });
   };
 
