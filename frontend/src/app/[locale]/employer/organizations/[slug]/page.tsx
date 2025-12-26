@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 export default function EmployerHomepage() {
   // Translations
@@ -32,6 +33,7 @@ export default function EmployerHomepage() {
   const router = useRouter();
   const noOrganizations = organizations.length === 0;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { lastResponse, clearLastResponse } = useOrganization();
 
   useEffect(() => {
     if (noOrganizations) {
@@ -40,6 +42,14 @@ export default function EmployerHomepage() {
       setDialogOpen(false);
     }
   }, [noOrganizations]);
+
+  // After fetching
+  useEffect(() => {
+    if (lastResponse) {
+      toast.success(lastResponse.message);
+      clearLastResponse();
+    }
+  }, [lastResponse]);
 
   useEffect(() => {
     if (currentUser?.id) fetchOrganizationsByUser(currentUser.id);
