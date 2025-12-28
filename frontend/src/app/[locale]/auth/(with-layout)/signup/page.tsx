@@ -45,7 +45,7 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpFormSchema),
     mode: "onChange", // Enable real-time validation
     defaultValues: {
-      name: "",
+      username: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -56,8 +56,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (signUpError) {
-      const errorMessage = getErrorMessage(signUpError);
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(signUpError));
     }
   }, [signUpError, getErrorMessage]);
 
@@ -87,7 +86,7 @@ export default function SignUpPage() {
     }
 
     const formData = new FormData();
-    formData.append("username", data.name);
+    formData.append("username", data.username);
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
@@ -169,7 +168,7 @@ export default function SignUpPage() {
             {/* Username */}
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300">
