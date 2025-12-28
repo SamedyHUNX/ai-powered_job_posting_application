@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createSignUpSchema = (t: (key: string) => string) => {
   return z.object({
-    name: z.string().min(1, t("nameRequired")),
+    username: z.string().min(1, t("nameRequired")),
     firstName: z.string().min(1, t("firstNameRequired")),
     lastName: z.string().min(1, t("lastNameRequired")),
     email: z.string().email(t("invalidEmail")),
@@ -12,7 +12,7 @@ export const createSignUpSchema = (t: (key: string) => string) => {
 };
 
 export type SignUpFormData = {
-  name: string;
+  username: string;
   firstName: string;
   lastName: string;
   email: string;
