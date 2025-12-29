@@ -63,16 +63,11 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     if (resetPasswordError) {
-      const errorMessage = getErrorMessage(resetPasswordError);
-      toast.error(errorMessage);
-    }
-  }, [resetPasswordError, getErrorMessage]);
-
-  useEffect(() => {
-    if (resetPasswordSuccess) {
+      toast.error(getErrorMessage(resetPasswordError));
+    } else if (resetPasswordSuccess) {
       toast.success(successT("resetPasswordSuccess"));
     }
-  }, [resetPasswordSuccess, t]);
+  }, [resetPasswordError, getErrorMessage, resetPasswordSuccess]);
 
   if (!token) {
     return null;

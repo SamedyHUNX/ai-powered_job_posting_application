@@ -53,14 +53,10 @@ export default function ForgotPasswordPage() {
   useEffect(() => {
     if (forgotPasswordError) {
       toast.error(getErrorMessage(forgotPasswordError));
-    }
-  }, [forgotPasswordError, getErrorMessage]);
-
-  useEffect(() => {
-    if (forgotPasswordSuccess) {
+    } else if (forgotPasswordSuccess) {
       toast.success(successT("forgotPasswordSuccess"));
     }
-  }, [forgotPasswordSuccess, t]);
+  }, [forgotPasswordError, getErrorMessage, forgotPasswordSuccess]);
 
   const onSubmit = async ({ email }: { email: string }) => {
     forgotPassword({ email, locale });

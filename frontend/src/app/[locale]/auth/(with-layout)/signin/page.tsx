@@ -49,14 +49,10 @@ export default function SigninPage() {
   useEffect(() => {
     if (signInError) {
       toast.error(getErrorMessage(signInError));
-    }
-  }, [signInError, getErrorMessage]);
-
-  useEffect(() => {
-    if (signInSuccess) {
+    } else if (signInSuccess) {
       toast.success(successT("0"));
     }
-  }, [signInSuccess]);
+  }, [signInError, getErrorMessage, signInSuccess]);
 
   const onSubmit = (data: SignInFormData) => {
     signIn(data);
