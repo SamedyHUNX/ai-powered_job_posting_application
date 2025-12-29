@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { NavBar } from "@/components/customs/Navbar";
+import { NavBar } from "@/components/customs/navbar";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   const t = useTranslations("authLayout");

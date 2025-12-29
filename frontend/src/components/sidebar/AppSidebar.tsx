@@ -13,7 +13,7 @@ import {
 import { AppSidebarClient } from "./_appsidebar-client";
 import { ReactNode } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { NavBar } from "../customs/Navbar";
+import { NavBar } from "../customs/navbar";
 
 export const AppSidebar = ({
   content,
