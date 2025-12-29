@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useTranslations } from "next-intl";
 
 interface ApiError {

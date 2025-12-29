@@ -1,5 +1,6 @@
 "use client";
 
+import { Loading } from "@/components/customs/loading";
 import { Badge } from "@/components/ui/badge";
 import { formatJobListingStatus } from "@/features/job-listings/lib/formatters";
 import { useJobListings } from "@/hooks/use-job-listing";
@@ -22,7 +23,7 @@ export default function JobListingPage({ params }: Props) {
   const { data: jobListing, isLoading, error } = useJobListing(jobListingId);
 
   if (isLoading) {
-    return <div className="p-4">Loading...</div>;
+    return <Loading />;
   }
 
   if (error || !jobListing) {
