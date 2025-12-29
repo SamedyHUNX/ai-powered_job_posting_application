@@ -7,6 +7,7 @@ import {
 } from "@/store/slices/job-listings-slice";
 import { jobListingsApi } from "@/lib/job-listings-api";
 import { JobListing, JobListingRequest, JobListingResponse } from "@/types";
+import { CreateJobListingFormData } from "@/schemas";
 
 interface UseJobListingsParams {
   search?: string;
@@ -68,7 +69,7 @@ export function useJobListings(params?: UseJobListingsParams) {
   // Create job listing mutation
   const createJobListingMutation = useMutation({
     mutationFn: (
-      dto: Partial<JobListingRequest>
+      dto: CreateJobListingFormData
     ): Promise<JobListingResponse> => {
       if (!token) throw new Error("Authentication required");
       return jobListingsApi.create(dto, token);

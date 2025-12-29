@@ -6,6 +6,7 @@ import { useJobListings } from "@/hooks/use-job-listing";
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useErrorHandler } from "@/lib/error-handler";
 import { CreateJobListingFormData } from "@/schemas";
+import { JobListingResponse } from "@/types";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -70,15 +71,14 @@ export default function NewJobListingPage() {
     },
   };
 
-  const handleSubmit = async (data: CreateJobListingFormData) => {
-    await createJobListing(data);
+  const handleSubmit = (data: CreateJobListingFormData): void => {
+    return createJobListing(data);
   };
 
   // Error toast state management
   useEffect(() => {
     if (createError) {
-      const errorMessage = getErrorMessage(createError);
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(createError));
     }
   }, [createError, getErrorMessage]);
 

@@ -71,7 +71,9 @@ export const JobListingTable = pgTable(
     stateAbbreviation: varchar('state_abbreviation'),
     city: varchar(),
     isFeatured: boolean('is_featured').notNull().default(false),
-    locationRequirement: locationRequirementEnum('localRequirement').notNull(),
+    locationRequirement: locationRequirementEnum(
+      'location_requirement',
+    ).notNull(),
     experienceLevel: experienceLevelEnum('experience_level').notNull(),
     status: jobListingStatusEnum().notNull().default('draft'),
     type: jobListingTypeEnum().notNull(),

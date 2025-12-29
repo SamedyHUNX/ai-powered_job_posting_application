@@ -1,6 +1,7 @@
 import axios from "axios";
 import { env } from "@/data/env/client";
 import { JobListingRequest, JobListingResponse } from "@/types";
+import { CreateJobListingFormData } from "@/schemas";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -14,7 +15,7 @@ const api = axios.create({
 export const jobListingsApi = {
   // Create job listing
   create: async (
-    dto: Partial<JobListingRequest>,
+    dto: CreateJobListingFormData,
     token: string
   ): Promise<JobListingResponse> => {
     const { data } = await api.post<JobListingResponse>("/job-listings", dto, {
