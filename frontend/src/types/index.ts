@@ -117,10 +117,12 @@ export interface JobListingResponse {
   success: string;
   code: number;
   message: string;
-  data: {
-    jobListing: JobListing[];
-  };
+  data: JobListingData;
   count: number;
+}
+
+export interface JobListingData {
+  jobListings: JobListing[];
 }
 
 // ORGANIZATIONS

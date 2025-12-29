@@ -16,16 +16,12 @@ export const jobListingsApi = {
   create: async (
     dto: Partial<JobListingRequest>,
     token: string
-  ): Promise<Partial<JobListingResponse>> => {
-    const { data } = await api.post<Partial<JobListingResponse>>(
-      "/job-listings",
-      dto,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  ): Promise<JobListingResponse> => {
+    const { data } = await api.post<JobListingResponse>("/job-listings", dto, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   },
 
@@ -37,7 +33,7 @@ export const jobListingsApi = {
     type?: string,
     locationRequirement?: string,
     experienceLevel?: string
-  ): Promise<Partial<JobListingResponse>> => {
+  ): Promise<JobListingResponse> => {
     const params = new URLSearchParams();
     if (search) params.append("search", search);
     if (organizationId) params.append("organizationId", organizationId);
@@ -47,7 +43,7 @@ export const jobListingsApi = {
       params.append("locationRequirement", locationRequirement);
     if (experienceLevel) params.append("experienceLevel", experienceLevel);
 
-    const { data } = await api.get<Partial<JobListingResponse>>(
+    const { data } = await api.get<JobListingResponse>(
       `/job-listings?${params.toString()}`
     );
     return data;
