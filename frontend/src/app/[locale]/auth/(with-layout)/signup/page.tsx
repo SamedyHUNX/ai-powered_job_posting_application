@@ -20,8 +20,8 @@ import { Upload } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/lib/error-handler";
-import { createSignUpSchema, SignUpFormData } from "@/schemas/signUpSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
+import { createSignUpSchema, SignUpFormData } from "@/schemas";
 
 export default function SignUpPage() {
   const locale = useLocale();

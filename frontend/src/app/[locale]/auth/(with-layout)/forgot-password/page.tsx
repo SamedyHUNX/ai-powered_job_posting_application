@@ -17,10 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { forgotPasswordSchema } from "@/schemas/forgotPasswordSchema";
 import { useErrorHandler } from "@/lib/error-handler";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/customs/loading-swap";
+import { forgotPasswordSchema } from "@/schemas";
 
 export default function ForgotPasswordPage() {
   // Translations

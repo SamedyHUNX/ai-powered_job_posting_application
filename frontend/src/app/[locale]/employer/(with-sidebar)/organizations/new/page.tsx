@@ -21,8 +21,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/lib/error-handler";
 import { useOrganizations } from "@/hooks/use-organizations";
-import { createOrganizationSchema } from "@/schemas/createOrganizationSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
+import { createOrganizationSchema } from "@/schemas";
 
 export default function CreateOrganizationForm() {
   // Translations
