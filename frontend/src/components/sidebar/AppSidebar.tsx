@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SignedIn } from "../customs/auth-status";
 import {
   Sidebar,
@@ -12,8 +11,8 @@ import {
 } from "../ui/sidebar";
 import { AppSidebarClient } from "./_appsidebar-client";
 import { ReactNode } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { NavBar } from "../customs/navbar";
+import { BrandHeader } from "../customs/brand-header";
 
 export const AppSidebar = ({
   content,
@@ -26,17 +25,13 @@ export const AppSidebar = ({
   footerButton: ReactNode;
   showNavBar?: boolean;
 }) => {
-  const isMobile = useIsMobile();
-
   return (
     <SidebarProvider className="overflow-y-hidden">
       <AppSidebarClient>
         <Sidebar collapsible="icon" className="overflow-hidden">
-          <SidebarHeader className="flex-row h-[68px]">
-            <SidebarTrigger className="mt-1" />
-            <Link className="mt-2" href={"/"}>
-              JobXHub
-            </Link>
+          <SidebarHeader className="flex-row h-[48px] mt-2">
+            <SidebarTrigger className="mt-2" />
+            <BrandHeader logoWidth={42} />
           </SidebarHeader>
           <SidebarContent>{content}</SidebarContent>
           <SignedIn>

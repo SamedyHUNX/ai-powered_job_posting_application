@@ -21,7 +21,7 @@ import { useErrorHandler } from "@/lib/error-handler";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import { forgotPasswordSchema } from "@/schemas";
-import { AuthHeader } from "@/components/customs/auth-header";
+import { BrandHeader } from "@/components/customs/brand-header";
 
 export default function ForgotPasswordPage() {
   // Translations
@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <AuthHeader
+      <BrandHeader
         title={forgotPasswordT("title")}
         titleDesc={forgotPasswordT("titleDesc")}
       />

@@ -22,7 +22,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useErrorHandler } from "@/lib/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import { createSignUpSchema, SignUpFormData } from "@/schemas";
-import { AuthHeader } from "@/components/customs/auth-header";
+import { BrandHeader } from "@/components/customs/brand-header";
 
 export default function SignUpPage() {
   const locale = useLocale();
@@ -96,7 +96,7 @@ export default function SignUpPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <AuthHeader title={signUpT("title")} titleDesc={signUpT("titleDesc")} />
+      <BrandHeader title={signUpT("title")} titleDesc={signUpT("titleDesc")} />
 
       {/* Form */}
       <Form {...form}>

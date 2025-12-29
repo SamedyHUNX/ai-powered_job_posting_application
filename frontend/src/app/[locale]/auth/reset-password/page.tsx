@@ -22,7 +22,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useErrorHandler } from "@/lib/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import { createResetPasswordSchema, ResetPasswordFormData } from "@/schemas";
-import { AuthHeader } from "@/components/customs/auth-header";
+import { BrandHeader } from "@/components/customs/brand-header";
 
 export default function ResetPasswordPage() {
   // Translations
@@ -85,7 +85,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="space-y-8 max-w-lg mx-auto mt-[10%] min-h-screen">
       {/* Header */}
-      <AuthHeader
+      <BrandHeader
         title={resetPasswordT("title")}
         titleDesc={resetPasswordT("titleDesc")}
       />

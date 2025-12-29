@@ -21,7 +21,7 @@ import Link from "next/link";
 import { useErrorHandler } from "@/lib/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import { createSignInSchema, SignInFormData } from "@/schemas";
-import { AuthHeader } from "@/components/customs/auth-header";
+import { BrandHeader } from "@/components/customs/brand-header";
 
 export default function SigninPage() {
   // Translations
@@ -62,7 +62,7 @@ export default function SigninPage() {
   return (
     <div className="mx-auto max-w-lg space-y-8">
       {/* Header */}
-      <AuthHeader title={signInT("title")} titleDesc={signInT("titleDesc")} />
+      <BrandHeader title={signInT("title")} titleDesc={signInT("titleDesc")} />
 
       {/* Form */}
       <Form {...form}>
