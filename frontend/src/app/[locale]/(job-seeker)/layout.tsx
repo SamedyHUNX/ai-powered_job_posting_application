@@ -9,14 +9,14 @@ import {
 } from "lucide-react";
 import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
 import { SidebarNavMenuGroup } from "@/components/sidebar/SidebarNavMenuGroup";
-import { NavBar } from "@/components/customs/navbar";
-import { useOrganization } from "@/hooks/use-organizations";
+import { useOrganizations } from "@/hooks/use-organizations";
 import { useTranslations } from "next-intl";
 import { useProfile } from "@/hooks/use-profile";
 import PrivateRoute from "@/routes/PrivateRoute";
+import { NavBar } from "@/components/customs/Navbar";
 
 export default function JobSeekerLayout({ children }: { children: ReactNode }) {
-  const { selectedOrganization } = useOrganization();
+  const { selectedOrganization } = useOrganizations();
   const { currentUser } = useProfile();
   const sidebarT = useTranslations("sidebar.navMenuGroups");
   const isSuperAdmin = currentUser?.userRole === "SUPER-ADMIN";

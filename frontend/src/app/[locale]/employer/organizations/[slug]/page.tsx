@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
-import { useOrganization } from "@/hooks/use-organizations";
-import { useJobListing } from "@/hooks/use-job-listing";
 import { useProfile } from "@/hooks/use-profile";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -18,48 +16,40 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import { useOrganizations } from "@/hooks/use-organizations";
+import { useJobListings } from "@/hooks/use-job-listing";
 
 export default function EmployerHomepage() {
   // Translations
   const orgT = useTranslations("orgPage");
   const jobListingT = useTranslations("orgPage.jobListings");
 
-  const { fetchOrganizationsByUser, organizations, selectedOrganization } =
-    useOrganization();
-  const { fetchJobListingsByOrganization, jobListings, count } =
-    useJobListing();
   const { currentUser } = useProfile();
   const router = useRouter();
+
+  // Fetch organizations by user with useQuery
+  const { useOrganizationsByUser, selectedOrganization } = useOrganizations();
+
+  const { data: organizations = [], isLoading: isLoadingOrgs } =
+    useOrganizationsByUser(currentUser?.id || "");
+
+  // Fetch job listings by organization
+  const {
+    jobListings,
+    count,
+    isLoading: isLoadingJobs,
+  } = useJobListings({
+    organizationId: selectedOrganization?.id,
+  });
+
   const noOrganizations = organizations.length === 0;
   const [dialogOpen, setDialogOpen] = useState(false);
-  // const { lastResponse, clearLastResponse } = useOrganization();
 
   useEffect(() => {
-    if (noOrganizations) {
-      setDialogOpen(true);
-    } else {
-      setDialogOpen(false);
+    if (!isLoadingOrgs) {
+      setDialogOpen(noOrganizations);
     }
-  }, [noOrganizations]);
-
-  // After fetching
-  // useEffect(() => {
-  //   if (lastResponse) {
-  //     toast.success(lastResponse.message);
-  //     clearLastResponse();
-  //   }
-  // }, [lastResponse]);
-
-  useEffect(() => {
-    if (currentUser?.id) fetchOrganizationsByUser(currentUser.id);
-  }, [currentUser?.id, fetchOrganizationsByUser]);
-
-  // Fetch job listings when selectedOrganization changes
-  useEffect(() => {
-    if (selectedOrganization?.id) {
-      fetchJobListingsByOrganization(selectedOrganization.id);
-    }
-  }, [selectedOrganization?.id, fetchJobListingsByOrganization]);
+  }, [noOrganizations, isLoadingOrgs]);
 
   const handleDialogCancel = () => {
     setDialogOpen(false);
@@ -70,6 +60,22 @@ export default function EmployerHomepage() {
     (j) => j.status === "published"
   ).length;
   const draftCount = jobListings.filter((j) => j.status === "draft").length;
+
+  // Show loading state
+  if (isLoadingOrgs) {
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-b from-background to-muted/20">
+        <div className="container mx-auto px-4 py-8 w-[95%]">
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading organizations...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-background to-muted/20">
@@ -149,7 +155,19 @@ export default function EmployerHomepage() {
         {/* Job Listings Section */}
         <div>
           <h2 className="text-2xl font-bold mb-6">{jobListingT("title")}</h2>
-          {jobListings.length === 0 ? (
+
+          {isLoadingJobs ? (
+            <Card>
+              <CardContent className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+                  <p className="text-muted-foreground">
+                    Loading job listings...
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : jobListings.length === 0 ? (
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-16 px-4">
                 <BriefcaseIcon className="h-16 w-16 text-muted-foreground/50 mb-4" />

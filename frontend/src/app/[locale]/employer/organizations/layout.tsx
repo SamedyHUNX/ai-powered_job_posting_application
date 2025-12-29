@@ -11,15 +11,15 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
-import { useOrganization } from "@/hooks/use-organizations";
-import { NavBar } from "@/components/customs/navbar";
 import { BackHomeButton } from "@/components/customs/custom-buttons";
 import PrivateRoute from "@/routes/PrivateRoute";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocale } from "next-intl";
+import { useOrganizations } from "@/hooks/use-organizations";
+import { NavBar } from "@/components/customs/Navbar";
 
 export default function EmployerLayout({ children }: { children: ReactNode }) {
-  const { selectedOrganization } = useOrganization();
+  const { selectedOrganization } = useOrganizations();
   const locale = useLocale();
   const isMobile = useIsMobile();
 
