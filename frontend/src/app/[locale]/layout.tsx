@@ -4,12 +4,13 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { SWRConfig } from "swr";
 import { Providers } from "@/providers/providers";
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { LocaleType } from "@/types";
+import { AuthGuard } from "../../../guards/auth-guard";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -49,7 +50,7 @@ export default async function LocaleLayout({
             >
               <Providers>
                 <Toaster richColors theme="light" />
-                {children}
+                <AuthGuard>{children}</AuthGuard>
               </Providers>
             </ThemeProvider>
           </NextIntlClientProvider>

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { formatJobListingStatus } from "@/features/job-listings/lib/formatters";
-import { useJobListing } from "@/hooks/use-job-listing";
-import { useOrganization } from "@/hooks/use-organizations";
+import { useJobListings } from "@/hooks/use-job-listing";
+import { useOrganizations } from "@/hooks/use-organizations";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -9,8 +9,8 @@ type Props = {
 };
 
 export default async function JobListingPage({ params }: Props) {
-  const { selectedOrganization } = useOrganization();
-  const { fetchJobListingById } = useJobListing();
+  const { selectedOrganization } = useOrganizations();
+  const { fetchJobListingById } = useJobListings();
 
   if (!selectedOrganization) {
     return null;

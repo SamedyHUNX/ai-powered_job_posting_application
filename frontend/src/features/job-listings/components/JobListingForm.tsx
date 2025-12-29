@@ -27,7 +27,7 @@ import {
   formatWageInterval,
 } from "../lib/formatters";
 import { StateSelectItems } from "@/components/customs/state-selection-item";
-import { MarkdownEditor } from "@/components/markdown/MarkdownEditor";
+import { MarkdownEditor } from "@/components/markdown/markdown-editor";
 import {
   CreateJobListingFormData,
   createJobListingSchema,
