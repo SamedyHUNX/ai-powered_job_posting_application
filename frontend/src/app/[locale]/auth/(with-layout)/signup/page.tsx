@@ -57,14 +57,10 @@ export default function SignUpPage() {
   useEffect(() => {
     if (signUpError) {
       toast.error(getErrorMessage(signUpError));
-    }
-  }, [signUpError, getErrorMessage]);
-
-  useEffect(() => {
-    if (signUpSuccess) {
+    } else if (signUpSuccess) {
       toast.success(successT("signUpSuccess"));
     }
-  }, [signUpSuccess, signUpT]);
+  }, [signUpError, getErrorMessage, signUpSuccess]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

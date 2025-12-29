@@ -36,18 +36,13 @@ export default function VerifyEmailPage() {
   useEffect(() => {
     if (verifyEmailError) {
       toast.error(getErrorMessage(verifyEmailError));
-    }
-  }, [verifyEmailError]);
-
-  // Handle success with toast
-  useEffect(() => {
-    if (verifyEmailSuccess) {
+    } else if (verifyEmailSuccess) {
       toast.success(successT("verifyEmailSuccess"));
       setTimeout(() => {
         router.push("/");
       }, 2000);
     }
-  }, [verifyEmailSuccess, t, router]);
+  }, [verifyEmailError, verifyEmailSuccess, router]);
 
   return (
     <div className="space-y-8 max-w-lg mx-auto mt-[15%] min-h-screen">
