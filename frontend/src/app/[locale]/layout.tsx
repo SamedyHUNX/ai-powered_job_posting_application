@@ -11,6 +11,13 @@ import "./globals.css";
 import "@mdxeditor/editor/style.css";
 import { LocaleType } from "@/types";
 import { AuthGuard } from "../../../guards/auth-guard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
