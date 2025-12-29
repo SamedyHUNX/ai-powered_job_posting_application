@@ -2,8 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { JobListingForm } from "@/features/job-listings/components/JobListingForm";
-import { useJobListing } from "@/hooks/use-job-listing";
-import { useOrganization } from "@/hooks/use-organizations";
+import { useJobListings } from "@/hooks/use-job-listing";
+import { useOrganizations } from "@/hooks/use-organizations";
 import { CreateJobListingFormData } from "@/schemas/createJobListingSchema";
 import { useErrorHandler } from "@/lib/error-handler";
 import { useTranslations } from "next-intl";
@@ -16,10 +16,10 @@ export default function NewJobListingPage() {
   const formT = useTranslations("jobListings.form");
   const optionsT = useTranslations("jobListings.form.options");
   const { getErrorMessage } = useErrorHandler();
-  const { selectedOrganization } = useOrganization();
+  const { selectedOrganization } = useOrganizations();
 
   const { createJobListing, isCreating, createError, createSuccess } =
-    useJobListing();
+    useJobListings();
 
   const translations = {
     labels: {

@@ -250,7 +250,7 @@ export const OrganizationList = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-lg font-semibold text-black tracking-tighter">
-                  {currentUser.username}
+                  {currentUser.user}
                 </div>
               </div>
               <div className="flex-shrink-0">

@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useErrorHandler } from "@/lib/error-handler";
-import { useOrganization } from "@/hooks/use-organizations";
+import { useOrganizations } from "@/hooks/use-organizations";
 import { createOrganizationSchema } from "@/schemas/createOrganizationSchema";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 
@@ -36,7 +36,7 @@ export default function CreateOrganizationForm() {
   const { getErrorMessage } = useErrorHandler();
 
   const { createOrganization, isCreating, createError, createSuccess } =
-    useOrganization();
+    useOrganizations();
 
   const createOrganizationFormSchema = useMemo(
     () => createOrganizationSchema(validationT),
