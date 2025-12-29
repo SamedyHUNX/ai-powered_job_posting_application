@@ -6,7 +6,7 @@ import {
   ClipboardListIcon,
   LayoutDashboard,
 } from "lucide-react";
-import { SidebarUserButton } from "@/features/users/components/SidebarUserButton";
+import { SidebarUserButton } from "@/features/users/components/sidebar-user-button";
 import { SidebarNavMenuGroup } from "@/components/sidebar/sidebar-nav-menu-group";
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useTranslations } from "next-intl";

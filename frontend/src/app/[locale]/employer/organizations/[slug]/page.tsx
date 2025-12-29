@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NoOrganizationDialog } from "@/features/employers/components/NoOrganizationDialog";
+import { NoOrganizationDialog } from "@/features/employers/components/no-organization-dialog";
 import { useProfile } from "@/hooks/use-profile";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

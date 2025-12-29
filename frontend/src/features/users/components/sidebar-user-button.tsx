@@ -1,5 +1,5 @@
 import { useProfile } from "@/hooks/use-profile";
-import { SidebarUserButtonClient } from "./_SidebarUserButtonClient";
+import { SidebarUserButtonClient } from "./_sidebar-user-button-client";
 
 export const SidebarUserButton = () => {
   const { currentUser, isFetchingCurrentUser, currentUserError } = useProfile();

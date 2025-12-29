@@ -1,12 +1,15 @@
 "use client";
 
+import { useLocale } from "next-intl";
+
 const translations: Record<string, string> = {
   en: "Loading",
   de: "Lädt...",
   kh: "កំពុងដំណើរការ...",
 };
 
-export function Loading({ locale = "en" }) {
+export function Loading() {
+  const locale = useLocale();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
       <div className="relative">
