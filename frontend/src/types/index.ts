@@ -114,11 +114,11 @@ export interface JobListingRequest {
 }
 
 export interface JobListingResponse {
-  success: string;
+  status: string;
   code: number;
   message: string;
   data: JobListingData;
-  count: number;
+  count?: number;
 }
 
 export interface JobListingData {

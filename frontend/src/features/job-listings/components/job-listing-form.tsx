@@ -43,9 +43,7 @@ const NONE_SELECT_VALUE = "__none__";
 
 export interface JobListingFormProps {
   // Core functionality
-  onSubmit: (
-    data: CreateJobListingFormData
-  ) => Promise<Partial<JobListingResponse>>;
+  onSubmit: (data: CreateJobListingFormData) => void;
   defaultValues?: Partial<CreateJobListingFormData>;
 
   // Customization

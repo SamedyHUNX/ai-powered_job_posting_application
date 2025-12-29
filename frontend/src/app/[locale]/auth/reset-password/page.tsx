@@ -22,6 +22,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useErrorHandler } from "@/lib/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import { createResetPasswordSchema, ResetPasswordFormData } from "@/schemas";
+import { BrandHeader } from "@/components/customs/brand-header";
 
 export default function ResetPasswordPage() {
   // Translations
@@ -82,16 +83,12 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-lg mx-auto mt-[15%] min-h-screen">
+    <div className="space-y-8 max-w-lg mx-auto mt-[10%] min-h-screen">
       {/* Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {resetPasswordT("title")}
-        </h2>
-        <p className="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-          {resetPasswordT("titleDesc")}
-        </p>
-      </div>
+      <BrandHeader
+        title={resetPasswordT("title")}
+        titleDesc={resetPasswordT("titleDesc")}
+      />
 
       {/* Form */}
       <Form {...form}>

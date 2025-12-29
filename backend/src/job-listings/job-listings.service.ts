@@ -71,10 +71,9 @@ export class JobListingsService {
         `Job listing created with ID: ${jobListing.id} for organization: ${organizationId}`,
       );
 
-      return {
-        message: 'Job listing created successfully',
-        jobListing,
-      };
+      return ResponseHelper.success(ResponseCode.JOB_LISTING_CREATE_SUCCESS, {
+        jobListings: [jobListing],
+      });
     },
     this.logger,
     'Failed to create job listing',

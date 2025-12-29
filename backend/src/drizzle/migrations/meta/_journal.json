@@ -148,6 +148,13 @@
       "when": 1766490534562,
       "tag": "0020_big_blacklash",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1767010142191,
+      "tag": "0021_watery_maggott",
+      "breakpoints": true
     }
   ]
 }

@@ -18,6 +18,9 @@ export enum ResponseCode {
   ORGANIZATION_BAN_SUCCESS = 55,
   ORGANIZATION_UNBAN_SUCCESS = 56,
 
+  // JobListing success
+  JOB_LISTING_CREATE_SUCCESS = 71,
+
   // Service errors (1xxx)
   SERVICE_UNAVAILABLE = 1001,
   DATABASE_ERROR = 1002,
@@ -90,6 +93,8 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.ORGANIZATION_UNBAN_SUCCESS]:
     'Organization unbanned successfully',
 
+  [ResponseCode.JOB_LISTING_CREATE_SUCCESS]: 'Job listing created successfully',
+
   // Service errors
   [ResponseCode.SERVICE_UNAVAILABLE]:
     'Service temporarily unavailable. Please try again later.',
@@ -116,8 +121,7 @@ export const RESPONSE_MESSAGES: Record<ResponseCode, string> = {
   [ResponseCode.ORGANIZATION_NOT_BANNED]: 'Organization is not banned',
   [ResponseCode.ORGANIZATION_FETCH_ERROR]: 'Failed to fetch organization',
   [ResponseCode.INVALID_REQUEST_DATA]: 'Missing or invalid request data',
-  [ResponseCode.INVALID_IMAGE_TYPE]:
-    'Only image files (jpg, jpeg) are allowed',
+  [ResponseCode.INVALID_IMAGE_TYPE]: 'Only image files (jpg, jpeg) are allowed',
   [ResponseCode.INVALID_IMAGE_SIZE]: 'File size must be less than 5MB',
 
   // Conflict errors

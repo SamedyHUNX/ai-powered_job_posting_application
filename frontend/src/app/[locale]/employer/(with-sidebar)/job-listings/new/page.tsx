@@ -70,15 +70,14 @@ export default function NewJobListingPage() {
     },
   };
 
-  const handleSubmit = async (data: CreateJobListingFormData) => {
-    await createJobListing(data);
+  const handleSubmit = (data: CreateJobListingFormData) => {
+    createJobListing(data);
   };
 
   // Error toast state management
   useEffect(() => {
     if (createError) {
-      const errorMessage = getErrorMessage(createError);
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(createError));
     }
   }, [createError, getErrorMessage]);
 
