@@ -2,30 +2,24 @@ import { useEffect, useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  setOrganizations,
   setSelectedOrganization,
-  addOrganization,
-  updateOrganization,
-  removeOrganization,
-  setError,
-  clearOrganizations,
-  setLoading,
+  clearSelection,
 } from "@/store/slices/organizations-slice";
 import { organizationsApi } from "@/lib/organizations-api";
-import {
-  Organization,
-  OrganizationsData,
-  OrganizationsRequest,
-  OrganizationsResponse,
-} from "@/types";
-import { ApiError } from "@/lib/api-error";
+import { Organization, OrganizationsRequest } from "@/types";
 
-export function useOrganization() {
+interface UseOrganizationsParams {
+  search?: string;
+  isVerified?: boolean;
+}
+
+export function useOrganizations(params?: UseOrganizationsParams) {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const token = useAppSelector((state) => state.auth.token);
-  const { organizations, selectedOrganization, isLoading, error } =
-    useAppSelector((state) => state.organizations);
+  const selectedOrganization = useAppSelector(
+    (state) => state.organizations.selectedOrganization
+  );
 
   // Restore selected organization from localStorage on mount
   useEffect(() => {
@@ -42,53 +36,36 @@ export function useOrganization() {
     }
   }, [dispatch, selectedOrganization]);
 
-  // Fetch organizations with filters
-  const fetchOrganizationsMutation = useMutation({
-    mutationFn: async (params: { search?: string; isVerified?: boolean }) => {
-      dispatch(setLoading(true));
-      return await organizationsApi.findAll(params.search, params.isVerified);
-    },
-    onSuccess: (response: OrganizationsResponse) => {
-      dispatch(
-        setOrganizations({
-          organizations: response.data.organizations,
-          status: response.status,
-          code: response.code,
-          message: response.message,
-        })
-      );
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to fetch organizations"));
-    },
+  // Fetch organizations with filters using useQuery
+  const {
+    data: organizationsData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["organizations", params],
+    queryFn: () => organizationsApi.findAll(params?.search, params?.isVerified),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const fetchOrganizationByUserMutation = useMutation({
-    mutationFn: async (userId: string) => {
-      dispatch(setLoading(true));
-      return await organizationsApi.findByUser(userId);
-    },
-    onSuccess: (response: OrganizationsResponse) => {
-      dispatch(
-        setOrganizations({
-          organizations: response.data.organizations,
-          status: response.status,
-          code: response.code,
-          message: response.message,
-        })
-      );
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to fetch organization"));
-    },
-  });
+  const organizations = organizationsData?.data.organizations || [];
+
+  // Fetch organizations by user
+  const useOrganizationsByUser = (userId: string) =>
+    useQuery({
+      queryKey: ["organizations", "user", userId],
+      queryFn: () => organizationsApi.findByUser(userId),
+      enabled: !!userId,
+      select: (data) => data.data.organizations,
+    });
 
   // Fetch single organization
-  const fetchOrganizationQuery = (id: string) =>
+  const useOrganization = (id: string) =>
     useQuery({
       queryKey: ["organization", id],
       queryFn: () => organizationsApi.findOne(id),
       enabled: !!id,
+      select: (data) => data.data.organizations[0],
     });
 
   // Create organization mutation
@@ -97,24 +74,8 @@ export function useOrganization() {
       if (!token) throw new Error("Authentication required");
       return await organizationsApi.create(formData, token);
     },
-    onSuccess: (response: {
-      status: string;
-      code: number;
-      message: string;
-      data: OrganizationsData;
-    }) => {
-      dispatch(
-        addOrganization({
-          organization: response.data.organizations[0],
-          status: response.status,
-          code: response.code,
-          message: response.message,
-        })
-      );
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to create organization"));
     },
   });
 
@@ -130,18 +91,24 @@ export function useOrganization() {
       file?: File;
     }) => {
       if (!token) throw new Error("Authentication required");
-      const response = await organizationsApi.update(id, dto, token, file);
-      return response.data.organizations[0];
+      return await organizationsApi.update(id, dto, token, file);
     },
-    onSuccess: (organization) => {
-      dispatch(updateOrganization(organization));
+    onSuccess: (response) => {
+      const organization = response.data.organizations[0];
+
+      // Update selected organization if it was the one updated
+      if (selectedOrganization?.id === organization.id) {
+        dispatch(setSelectedOrganization(organization));
+        localStorage.setItem(
+          "selectedOrganization",
+          JSON.stringify(organization)
+        );
+      }
+
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
         queryKey: ["organization", organization.id],
       });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to update organization"));
     },
   });
 
@@ -152,11 +119,13 @@ export function useOrganization() {
       return organizationsApi.remove(id, token);
     },
     onSuccess: (_, id) => {
-      dispatch(removeOrganization(id));
+      // Clear selection if removed organization was selected
+      if (selectedOrganization?.id === id) {
+        dispatch(clearSelection());
+        localStorage.removeItem("selectedOrganization");
+      }
+
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to remove organization"));
     },
   });
 
@@ -164,18 +133,24 @@ export function useOrganization() {
   const verifyOrganizationMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!token) throw new Error("Authentication required");
-      const response = await organizationsApi.verify(id, token);
-      return response.data.organizations[0];
+      return await organizationsApi.verify(id, token);
     },
-    onSuccess: (organization) => {
-      dispatch(updateOrganization(organization));
+    onSuccess: (response) => {
+      const organization = response.data.organizations[0];
+
+      // Update selected organization if it was verified
+      if (selectedOrganization?.id === organization.id) {
+        dispatch(setSelectedOrganization(organization));
+        localStorage.setItem(
+          "selectedOrganization",
+          JSON.stringify(organization)
+        );
+      }
+
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
         queryKey: ["organization", organization.id],
       });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to verify organization"));
     },
   });
 
@@ -183,36 +158,49 @@ export function useOrganization() {
   const banOrganizationMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!token) throw new Error("Authentication required");
-      const response = await organizationsApi.ban(id, token);
-      return response.data.organizations[0];
+      return await organizationsApi.ban(id, token);
     },
-    onSuccess: (organization) => {
-      dispatch(updateOrganization(organization));
+    onSuccess: (response) => {
+      const organization = response.data.organizations[0];
+
+      // Update selected organization if it was banned
+      if (selectedOrganization?.id === organization.id) {
+        dispatch(setSelectedOrganization(organization));
+        localStorage.setItem(
+          "selectedOrganization",
+          JSON.stringify(organization)
+        );
+      }
+
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
         queryKey: ["organization", organization.id],
       });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to ban organization"));
     },
   });
 
+  // Unban organization mutation
   const unbanOrganizationMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!token) throw new Error("Authentication required");
-      const response = await organizationsApi.unban(id, token);
-      return response.data.organizations[0];
+      return await organizationsApi.unban(id, token);
     },
-    onSuccess: (organization) => {
-      dispatch(updateOrganization(organization));
+    onSuccess: (response) => {
+      const organization = response.data.organizations[0];
+
+      // Update selected organization if it was unbanned
+      if (selectedOrganization?.id === organization.id) {
+        dispatch(setSelectedOrganization(organization));
+        localStorage.setItem(
+          "selectedOrganization",
+          JSON.stringify(organization)
+        );
+      }
+
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({
         queryKey: ["organization", organization.id],
       });
-    },
-    onError: (err: ApiError) => {
-      dispatch(setError(err.message || "Failed to unban organization"));
     },
   });
 
@@ -220,7 +208,7 @@ export function useOrganization() {
   const selectOrganization = useCallback(
     (orgOrId: string | Organization) => {
       if (typeof orgOrId === "string") {
-        const org = organizations.find((o) => o.id === orgOrId);
+        const org = organizations.find((o: Organization) => o.id === orgOrId);
         if (org) {
           dispatch(setSelectedOrganization(org));
           localStorage.setItem("selectedOrganization", JSON.stringify(org));
@@ -235,78 +223,62 @@ export function useOrganization() {
 
   // Clear selected organization
   const clearSelectedOrganization = useCallback(() => {
-    dispatch(setSelectedOrganization(null));
-    localStorage.removeItem("selectedOrganization");
-  }, [dispatch]);
-
-  // Clear all organizations
-  const clearAllOrganizations = useCallback(() => {
-    dispatch(clearOrganizations());
+    dispatch(clearSelection());
     localStorage.removeItem("selectedOrganization");
   }, [dispatch]);
 
   return {
-    // State
+    // Query state from TanStack Query
     organizations,
-    selectedOrganization,
+    count: organizations.length,
     isLoading,
     error,
-    count: organizations.length,
+    refetch,
 
-    // Fetch organizations
-    fetchOrganizations: fetchOrganizationsMutation.mutate,
-    isFetchingOrganizations: fetchOrganizationsMutation.isPending,
-    fetchOrganizationSuccess: fetchOrganizationsMutation.isSuccess,
-    fetchOrganizationError: fetchOrganizationsMutation.isError,
-
-    // Queries
-    fetchOrganizationQuery,
-
-    // Create organization
-    createOrganization: createOrganizationMutation.mutate,
-    isCreating: createOrganizationMutation.isPending,
-    createSuccess: createOrganizationMutation.isSuccess,
-    createError: createOrganizationMutation.isError,
-
-    // Verify organization
-    verifyOrganization: verifyOrganizationMutation.mutate,
-    isVerifying: verifyOrganizationMutation.isPending,
-    verifySuccess: verifyOrganizationMutation.isSuccess,
-    verifyError: verifyOrganizationMutation.isError,
-
-    // Fetch organizations by userId
-    fetchOrganizationsByUser: fetchOrganizationByUserMutation.mutate,
-    isFetchingOrganizationsByUser: fetchOrganizationByUserMutation.isPending,
-    fetchOrganizationsByUserSuccess: fetchOrganizationByUserMutation.isSuccess,
-    isFetchingOrganizationsByUserError: fetchOrganizationByUserMutation.isError,
-
-    // Ban organization
-    banOrganization: banOrganizationMutation.mutate,
-    isBanning: banOrganizationMutation.isPending,
-    banSuccess: banOrganizationMutation.isSuccess,
-    banError: banOrganizationMutation.isError,
-
-    // Unban organization
-    unbanOrganzation: unbanOrganizationMutation.mutate,
-    isUnbanning: unbanOrganizationMutation.isPending,
-    unbanSuccess: unbanOrganizationMutation.isSuccess,
-    unbanError: unbanOrganizationMutation.isError,
-
-    // Update organization
-    updateOrganization: updateOrganizationMutation.mutate,
-    isUpdating: updateOrganizationMutation.isPending,
-    updateSuccess: updateOrganizationMutation.isSuccess,
-    updateError: updateOrganizationMutation.isError,
-
-    // Remove organization
-    removeOrganization: removeOrganizationMutation.mutate,
-    isRemoving: removeOrganizationMutation.isPending,
-    removeSuccess: removeOrganizationMutation.isSuccess,
-    removeError: removeOrganizationMutation.isError,
-
-    // Utility functions
+    // Selected organization from Redux
+    selectedOrganization,
     selectOrganization,
     clearSelectedOrganization,
-    clearAllOrganizations,
+
+    // Additional query hooks
+    useOrganization,
+    useOrganizationsByUser,
+
+    // Mutations
+    createOrganization: createOrganizationMutation.mutate,
+    createOrganizationAsync: createOrganizationMutation.mutateAsync,
+    isCreating: createOrganizationMutation.isPending,
+    createSuccess: createOrganizationMutation.isSuccess,
+    createError: createOrganizationMutation.error,
+
+    updateOrganization: updateOrganizationMutation.mutate,
+    updateOrganizationAsync: updateOrganizationMutation.mutateAsync,
+    isUpdating: updateOrganizationMutation.isPending,
+    updateSuccess: updateOrganizationMutation.isSuccess,
+    updateError: updateOrganizationMutation.error,
+
+    removeOrganization: removeOrganizationMutation.mutate,
+    removeOrganizationAsync: removeOrganizationMutation.mutateAsync,
+    isRemoving: removeOrganizationMutation.isPending,
+    removeSuccess: removeOrganizationMutation.isSuccess,
+    removeError: removeOrganizationMutation.error,
+
+    verifyOrganization: verifyOrganizationMutation.mutate,
+    verifyOrganizationAsync: verifyOrganizationMutation.mutateAsync,
+    isVerifying: verifyOrganizationMutation.isPending,
+    verifySuccess: verifyOrganizationMutation.isSuccess,
+    verifyError: verifyOrganizationMutation.error,
+
+    banOrganization: banOrganizationMutation.mutate,
+    banOrganizationAsync: banOrganizationMutation.mutateAsync,
+    isBanning: banOrganizationMutation.isPending,
+    banSuccess: banOrganizationMutation.isSuccess,
+    banError: banOrganizationMutation.error,
+
+    unbanOrganization: unbanOrganizationMutation.mutate,
+    unbanOrganizationAsync: unbanOrganizationMutation.mutateAsync,
+    isUnbanning: unbanOrganizationMutation.isPending,
+    unbanSuccess: unbanOrganizationMutation.isSuccess,
+    unbanError: unbanOrganizationMutation.error,
   };
 }
