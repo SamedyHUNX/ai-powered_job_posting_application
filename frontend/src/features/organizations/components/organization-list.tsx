@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
-import { useOrganization } from "@/hooks/use-organizations";
+import { useOrganizations } from "@/hooks/use-organizations";
 import { Organization } from "@/types";
 import { useProfile } from "@/hooks/use-profile";
 import { CustomDialog } from "@/components/customs/custom-dialog";
@@ -107,18 +107,14 @@ export const OrganizationList = ({
     message: "",
   });
   const router = useRouter();
-  const {
-    fetchOrganizationsByUser,
-    isFetchingOrganizationsByUser,
-    organizations,
-    selectOrganization,
-  } = useOrganization();
+  const { useOrganizationsByUser, selectOrganization } =
+    useOrganizations();
 
-  useEffect(() => {
-    if (currentUser?.id) {
-      fetchOrganizationsByUser(currentUser.id);
-    }
-  }, [currentUser]);
+  // Use the hook to fetch organizations for the current user
+  const {
+    data: organizations = [],
+    isLoading: isLoadingOrganizations,
+  } = useOrganizationsByUser(currentUser?.id || "");
 
   const handleSelectOrganization = (org: Organization) => {
     if (org.isBanned) {
@@ -158,10 +154,10 @@ export const OrganizationList = ({
   };
 
   const handleSelectPersonal = () => {
-    if (afterSelectPersonalUrl) {
+    if (afterSelectPersonalUrl && currentUser) {
       const url =
         typeof afterSelectPersonalUrl === "function"
-          ? afterSelectPersonalUrl(currentUser)
+          ? afterSelectPersonalUrl(currentUser as any)
           : afterSelectPersonalUrl;
       router.push(url);
     } else {
@@ -200,7 +196,7 @@ export const OrganizationList = ({
     return colors[index % colors.length];
   };
 
-  if (isFetchingOrganizationsByUser && fallback) {
+  if (isLoadingOrganizations && fallback) {
     return <>{fallback}</>;
   }
 
@@ -250,7 +246,7 @@ export const OrganizationList = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-lg font-semibold text-black tracking-tighter">
-                  {currentUser.user}
+                  {currentUser.username}
                 </div>
               </div>
               <div className="flex-shrink-0">
@@ -260,15 +256,14 @@ export const OrganizationList = ({
           )}
 
           {/* Organizations */}
-          {organizations.map((org, index) => (
+          {organizations.map((org: Organization, index: number) => (
             <div
               key={org.id}
               onClick={() => handleSelectOrganization(org)}
-              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${
-                org.isBanned || !org.isVerified
-                  ? "opacity-50 cursor-not-allowed hover:bg-red-50"
-                  : "hover:bg-gray-50"
-              }`}
+              className={`flex items-center gap-4 px-8 py-6 transition-colors cursor-pointer group ${org.isBanned || !org.isVerified
+                ? "opacity-50 cursor-not-allowed hover:bg-red-50"
+                : "hover:bg-gray-50"
+                }`}
             >
               {/* Avatar/Icon */}
               <div className="flex-shrink-0 relative">

@@ -1,4 +1,4 @@
-import { SidebarOrganizationButtonClient } from "./_SidebarOrganizationButtonClient";
+import { SidebarOrganizationButtonClient } from "./_sidebar-organization-client";
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useProfile } from "@/hooks/use-profile";
 import { BackHomeButton } from "@/components/customs/custom-buttons";

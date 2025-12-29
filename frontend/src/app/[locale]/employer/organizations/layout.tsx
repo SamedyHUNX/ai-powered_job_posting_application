@@ -9,7 +9,7 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
+import { SidebarOrganizationButton } from "@/features/organizations/components/sidebar-organization-button";
 import { BackHomeButton } from "@/components/customs/custom-buttons";
 import { useLocale } from "next-intl";
 import { useOrganizations } from "@/hooks/use-organizations";

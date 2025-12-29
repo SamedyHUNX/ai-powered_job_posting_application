@@ -3,7 +3,7 @@ import {
   OrganizationList,
   OrganizationListProps,
   OrganizationListTranslations,
-} from "./OrganizationList";
+} from "./organization-list";
 
 export const OrganizationListWithTranslation = (
   props: Omit<OrganizationListProps, "translations">

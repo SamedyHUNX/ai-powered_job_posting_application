@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { JobListingForm } from "@/features/job-listings/components/JobListingForm";
+import { JobListingForm } from "@/features/job-listings/components/job-listing-form";
 import { useJobListings } from "@/hooks/use-job-listing";
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useErrorHandler } from "@/lib/error-handler";
@@ -108,7 +108,7 @@ export default function NewJobListingPage() {
           <JobListingForm
             onSubmit={handleSubmit}
             translations={translations}
-            orgId={selectedOrganization!.id}
+            orgId={selectedOrganization?.id}
           />
         </CardContent>
       </Card>
