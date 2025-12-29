@@ -19,8 +19,6 @@ export function useErrorHandler() {
       }
     }
 
-    console.log("normalized error", apiError);
-
     return t(`apiErrors.${apiError.code}`);
   };
 

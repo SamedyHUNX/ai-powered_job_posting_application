@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Right side - Image/Branding */}
-        <div className="hidden lg:flex lg:flex-1 relative h-screen">
+        <div className="hidden lg:flex lg:flex-1 relative min-h-screen">
           {/* Top right controls - Language Switcher and Theme Toggle */}
           <div className="absolute top-6 right-6 z-10 flex items-center gap-3">
             <NavBar />
