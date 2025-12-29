@@ -19,12 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
-import {
-  createResetPasswordSchema,
-  ResetPasswordFormData,
-} from "@/schemas/resetPasswordSchema";
 import { useErrorHandler } from "@/lib/error-handler";
 import { LoadingSwap } from "@/components/customs/loading-swap";
+import { createResetPasswordSchema, ResetPasswordFormData } from "@/schemas";
 
 export default function ResetPasswordPage() {
   // Translations
