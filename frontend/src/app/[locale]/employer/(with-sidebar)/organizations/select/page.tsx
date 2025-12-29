@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useOrganizations } from "@/hooks/use-organizations";
-import { OrganizationListWithTranslation } from "@/features/organizations/components/OrganizationListWithTranslation";
+import { OrganizationListWithTranslation } from "@/features/organizations/components/organization-list-with-translation";
 
 export default function OrganizationSelectPage() {
   const { clearSelectedOrganization } = useOrganizations();

@@ -28,10 +28,6 @@ import {
 } from "../lib/formatters";
 import { StateSelectItems } from "@/components/customs/state-selection-item";
 import { MarkdownEditor } from "@/components/markdown/markdown-editor";
-import {
-  CreateJobListingFormData,
-  createJobListingSchema,
-} from "@/schemas/createJobListingSchema";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LoadingSwap } from "@/components/customs/loading-swap";
 import {
@@ -41,6 +37,7 @@ import {
   locationRequirements,
   wageIntervals,
 } from "@/types";
+import { CreateJobListingFormData, createJobListingSchema } from "@/schemas";
 
 const NONE_SELECT_VALUE = "__none__";
 

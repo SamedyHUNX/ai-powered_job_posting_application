@@ -54,7 +54,7 @@ export function useJobListings(params?: UseJobListingsParams) {
       queryKey: ["jobListing", id],
       queryFn: () => jobListingsApi.findOne(id),
       enabled: !!id,
-      select: (data) => data.data.jobListings,
+      select: (data) => data.data.jobListings[0],
     });
 
   // Fetch job listings by organization

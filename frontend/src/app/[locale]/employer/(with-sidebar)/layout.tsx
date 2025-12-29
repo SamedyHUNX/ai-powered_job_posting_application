@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import { ClipboardListIcon } from "lucide-react";
 import { SidebarNavMenuGroup } from "@/components/sidebar/sidebar-nav-menu-group";
-import { SidebarOrganizationButton } from "@/features/organizations/components/SidebarOrganizationButton";
+import { SidebarOrganizationButton } from "@/features/organizations/components/sidebar-organization-button";
 import { BackHomeButton } from "@/components/customs/custom-buttons";
 import { useLocale } from "next-intl";
 import { useOrganizations } from "@/hooks/use-organizations";

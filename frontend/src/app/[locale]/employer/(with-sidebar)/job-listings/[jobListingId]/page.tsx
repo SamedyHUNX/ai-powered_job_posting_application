@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { formatJobListingStatus } from "@/features/job-listings/lib/formatters";
 import { useJobListings } from "@/hooks/use-job-listing";
@@ -8,21 +10,27 @@ type Props = {
   params: { jobListingId: string };
 };
 
-export default async function JobListingPage({ params }: Props) {
+export default function JobListingPage({ params }: Props) {
   const { selectedOrganization } = useOrganizations();
-  const { fetchJobListingById } = useJobListings();
+  const { useJobListing } = useJobListings();
 
   if (!selectedOrganization) {
     return null;
   }
 
   const { jobListingId } = params;
-  const jobListing = await fetchJobListingById(selectedOrganization.id);
+  const { data: jobListing, isLoading, error } = useJobListing(jobListingId);
 
-  if (jobListing == null) return notFound();
+  if (isLoading) {
+    return <div className="p-4">Loading...</div>;
+  }
+
+  if (error || !jobListing) {
+    return notFound();
+  }
 
   return (
-    <div className="space-y-6 max-w-6xl max-auto p-4 @container">
+    <div className="space-y-6 max-w-6xl mx-auto p-4 @container">
       <div className="flex items-center justify-between gap-4 @max-4xl:flex-col @max-4xl:items-start">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
