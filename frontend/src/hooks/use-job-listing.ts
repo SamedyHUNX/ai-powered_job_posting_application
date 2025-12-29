@@ -45,7 +45,7 @@ export function useJobListings(params?: UseJobListingsParams) {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const jobListings = jobListingsData?.data.jobListings || [];
+  const jobListings = jobListingsData?.data?.jobListings || [];
   const count = jobListingsData?.count || 0;
 
   // Fetch single job listing
