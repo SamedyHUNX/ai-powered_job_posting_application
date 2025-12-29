@@ -9,10 +9,10 @@ import { authApi } from "@/lib/auth-api";
 import { useRouter } from "next/navigation";
 import { ResetPasswordFormData } from "@/schemas/resetPasswordSchema";
 import { useLocale } from "next-intl";
-import { clearOrganizations } from "@/store/slices/organizations-slice";
 import { AuthResponse } from "@/types";
 import { SignInFormData, SignUpFormData } from "@/schemas";
 import { ApiError } from "@/lib/api-error";
+import { clearSelection } from "@/store/slices/organizations-slice";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ export function useAuth() {
     onSuccess: ({ data }: AuthResponse) => {
       const user = data.users[0];
       dispatch(setAuth({ token: user.token, user }));
-      dispatch(clearOrganizations());
+      dispatch(clearSelection());
       localStorage.setItem("access_token", user.token);
       router.push(`/${locale}`);
     },
@@ -83,7 +83,7 @@ export function useAuth() {
 
   // Logout
   const logout = () => {
-    dispatch(clearOrganizations());
+    dispatch(clearSelection());
     dispatch(clearAuth());
     localStorage.removeItem("access_token");
     localStorage.removeItem("selectedOrganization");
